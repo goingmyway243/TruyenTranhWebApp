@@ -51,6 +51,14 @@ img {
     display: block;
 }
 
+a {
+    cursor: pointer;
+
+    &:hover {
+        color: blue;
+    }
+}
+
 .text-muted {
     color: var(--color-gray);
 }
