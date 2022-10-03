@@ -1,0 +1,54 @@
+.mini-comic-item {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+
+    .cover {
+        position: relative;
+        width: 4.5rem;
+        height: 4rem;
+        border: 1px solid var(--color-gray);
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .info-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+
+        .title {
+            font-size: 1rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .small-info {
+            display: flex;
+            justify-content: space-between;
+
+            a:hover {
+                color: red;
+            }
+
+            .chapter {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 0.8rem;
+                color: var(--color-gray);
+            }
+
+            .remove-button {
+                font-size: 0.85rem;
+                cursor: pointer;
+
+                &:hover {
+                    color: red;
+                }
+            }
+        }
+    }
+}
