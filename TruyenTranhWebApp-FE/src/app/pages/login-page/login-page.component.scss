@@ -1,0 +1,70 @@
+.login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    h2 {
+        color: var(--color-dark);
+    }
+
+    .login-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        font-size: 1.2rem;
+        width: 20rem;
+
+        input {
+            border: 1px solid var(--color-dark);
+            border-radius: 0.5rem;
+            padding: 0.5rem var(--card-padding);
+
+            &#login-email,
+            &#login-pass {
+                width: 100%;
+            }
+        }
+
+        label {
+            display: block;
+            margin: 0.2rem;
+            color: var(--color-primary);
+        }
+
+        .autolog-checkbox {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin: 0 auto;
+
+            label {
+                display: inline;
+                color: var(--color-primary);
+            }
+
+            input[type="checkbox"] {
+                width: 1.2rem;
+                height: 1.2rem;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .login-btn {
+        width: 15rem;
+    }
+
+    .redirect-signup {
+        display: flex;
+        gap: 0.5rem;
+
+        a {
+            color: var(--color-primary);
+
+            &:hover {
+                color: red;
+            }
+        }
+    }
+}
