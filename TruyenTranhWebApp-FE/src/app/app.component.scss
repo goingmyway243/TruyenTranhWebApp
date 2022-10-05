@@ -37,6 +37,10 @@ header {
         color: var(--color-white);
         display: flex;
         gap: 0.5rem;
+
+        a {
+            color: var(--color-white);
+        }
     }
 
     .profile-picture {
