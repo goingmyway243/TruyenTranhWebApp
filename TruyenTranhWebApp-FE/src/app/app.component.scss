@@ -57,6 +57,17 @@ header {
     }
 }
 
+footer {
+    background-color: var(--color-primary);
+    padding: 0.5rem;
+    margin-top: 3rem;
+    color: var(--color-white);
+
+    .hightlight {
+        color: var(--color-secondary);
+    }
+}
+
 @media screen and (max-width:992px) {
     .search-bar {
         display: none;

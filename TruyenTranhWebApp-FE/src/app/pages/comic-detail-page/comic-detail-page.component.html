@@ -10,40 +10,47 @@
                 alt="">
         </div>
 
-        <ul class="detail">
-            <li>
-                <span><i class="uil uil-user"></i> Người đăng</span>
-                <span>Horikita</span>
-            </li>
-            <li>
-                <span><i class="uil uil-book-reader"></i> Tác giả</span>
-                <span>Kinugasa Syohgo</span>
-            </li>
-            <li>
-                <span><i class="uil uil-tag-alt"></i> Thể loại</span>
-                <span>Comedy - Drama - Romance - Seinen - Slice of Life</span>
-            </li>
-            <li>
-                <span><i class="uil uil-eye"></i> Lượt xem</span>
-                <span>2.525.303</span>
-            </li>
-            <li class="like-group">
-                <div class="btn-wrapper">
-                    <i class="uil uil-heart btn clickable like"></i>
-                    <span>90</span>
-                </div>
-                <div class="btn-wrapper">
-                    <i class="uil uil-heart-break btn clickable dislike"></i>
-                    <span>90</span>
-                </div>
-            </li>
-        </ul>
+        <div>
+            <ul class="detail">
+                <li>
+                    <span><i class="uil uil-user"></i> Người đăng</span>
+                    <span>Horikita</span>
+                </li>
+                <li>
+                    <span><i class="uil uil-book-reader"></i> Tác giả</span>
+                    <span>Kinugasa Syohgo</span>
+                </li>
+                <li>
+                    <span><i class="uil uil-tag-alt"></i> Thể loại</span>
+                    <span>Comedy - Drama - Romance - Seinen - Slice of Life</span>
+                </li>
+                <li>
+                    <span><i class="uil uil-eye"></i> Lượt xem</span>
+                    <span>2.525.303</span>
+                </li>
+                <li class="like-group">
+                    <div class="btn-wrapper">
+                        <i class="uil uil-heart btn clickable like"></i>
+                        <span>90</span>
+                    </div>
+                    <div class="btn-wrapper">
+                        <i class="uil uil-heart-break btn clickable dislike"></i>
+                        <span>90</span>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="button-group">
+                <button>Đọc từ đầu</button>
+                <button>Đọc mới nhất</button>
+            </div>
+        </div>
     </div>
 
     <div class="description">
         <div class="header">
             <i class="uil uil-file-alt"></i>
-            <span>NỘI DUNG</span>
+            <span> NỘI DUNG</span>
         </div>
         <div class="desc">
             Một spinoff/route khác của Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e. Bộ truyện này tập trung về mối
@@ -53,8 +60,8 @@
 
     <div class="list-chapter">
         <div class="header">
-            <i class="uil uil-file-alt"></i>
-            <span>DANH SÁCH CHƯƠNG</span>
+            <i class="uil uil-list-ul"></i>
+            <span> DANH SÁCH CHƯƠNG</span>
         </div>
 
         <div class="table">
@@ -77,6 +84,23 @@
                     <span class="time">01/07/18</span>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <div class="comment-group">
+        <div class="header">
+            <i class="uil uil-comment-alt-lines"></i>
+            <span> BÌNH LUẬN</span>
+        </div>
+
+        <textarea id="comment_content" class="form-control" placeholder="Để lại bình luận của bạn..." aria-hidden="true"
+            (keyup)="autoGrowTextZone($event)"></textarea>
+
+        <div class="list-comment">
+            <app-comment-item></app-comment-item>
+            <app-comment-item></app-comment-item>
+            <app-comment-item></app-comment-item>
+            <app-comment-item></app-comment-item>
         </div>
     </div>
 </div>
