@@ -1,5 +1,53 @@
-<p class="container">
-    <app-main-comic-item></app-main-comic-item>
-    <app-slide-comic-item></app-slide-comic-item>
-    <app-mini-comic-item></app-mini-comic-item>
-</p>
+<div class="container">
+    <div class="slider">
+        <owl-carousel-o [options]="customOptions">
+            <ng-template carouselSlide>
+                <app-slide-comic-item></app-slide-comic-item>
+            </ng-template>
+            <ng-template carouselSlide>
+                <app-slide-comic-item></app-slide-comic-item>
+            </ng-template>
+            <ng-template carouselSlide>
+                <app-slide-comic-item></app-slide-comic-item>
+            </ng-template>
+            <ng-template carouselSlide>
+                <app-slide-comic-item></app-slide-comic-item>
+            </ng-template>
+            <ng-template carouselSlide>
+                <app-slide-comic-item></app-slide-comic-item>
+            </ng-template>
+            <ng-template carouselSlide>
+                <app-slide-comic-item></app-slide-comic-item>
+            </ng-template>
+        </owl-carousel-o>
+        <!-- <span class="slide-btn next"></span>
+        <span class="slide-btn previous"></span> -->
+    </div>
+
+    <div class="wrapper">
+        <div class="newly-added">
+            <h2 class="title">Truyện mới cập nhật ></h2>
+            <div class="comic-container">
+                <app-main-comic-item></app-main-comic-item>
+                <app-main-comic-item></app-main-comic-item>
+                <app-main-comic-item></app-main-comic-item>
+                <app-main-comic-item></app-main-comic-item>
+                <app-main-comic-item></app-main-comic-item>
+                <app-main-comic-item></app-main-comic-item>
+                <app-main-comic-item></app-main-comic-item>
+            </div>
+        </div>
+
+        <div class="history">
+            <div class="header">
+                <span>Lịch sử đọc truyện</span>
+                <a href="">Xem tất cả</a>
+            </div>
+            <div class="items">
+                <app-mini-comic-item></app-mini-comic-item>
+                <app-mini-comic-item></app-mini-comic-item>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,300&display=swap');
+@import '../node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import '../node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
 
 :root {
     --primary-color-hue: 252;
@@ -107,6 +109,38 @@ button:hover,
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.owl-theme .owl-nav [class*=owl-] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    margin-top: -45px;
+    padding-bottom: 0.5rem;
+    width: 55px;
+    height: 55px;
+    text-align: center;
+    font-size: 50px;
+    font-weight: 1000;
+    color: #000;
+    opacity: 0.5;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.75;
+        background-color: #fff;
+        color: #000;
+    }
+}
+
+.owl-next {
+    right: 10px;
+}
+
+.owl-prev {
+    left: 10px;
 }
 
 @media screen and (max-width: 1200px) {

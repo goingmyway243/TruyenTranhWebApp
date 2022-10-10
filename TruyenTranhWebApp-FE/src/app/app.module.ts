@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,8 @@ import { ComicDetailPageComponent } from './pages/comic-detail-page/comic-detail
 import { ComicChapterPageComponent } from './pages/comic-chapter-page/comic-chapter-page.component';
 import { CommentItemComponent } from './components/comment-item/comment-item.component';
 import { SearchResultPageComponent } from './pages/search-result-page/search-result-page.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { SearchResultPageComponent } from './pages/search-result-page/search-res
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CarouselModule,
+    RouterModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
