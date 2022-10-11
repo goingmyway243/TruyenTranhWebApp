@@ -44,8 +44,9 @@
 
 body {
     margin-top: 5rem;
-    min-height: calc(80vh - 20px);
+    min-height: calc(100vh - 180px);
     background-color: var(--color-light);
+    overflow-x: hidden;
 }
 
 img {
