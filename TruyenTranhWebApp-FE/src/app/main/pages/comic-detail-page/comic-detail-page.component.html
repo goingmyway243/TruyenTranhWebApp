@@ -80,7 +80,7 @@
                     <span class="time">16/07/18</span>
                 </li>
                 <li class="table-item">
-                    <a class="left">Chapter 1</a>
+                    <a class="left" [routerLink]="['./chuong/1']">Chapter 1</a>
                     <span class="time">01/07/18</span>
                 </li>
             </ul>
@@ -93,8 +93,7 @@
             <span> BÌNH LUẬN</span>
         </div>
 
-        <textarea id="comment_content" class="form-control" placeholder="Để lại bình luận của bạn..." aria-hidden="true"
-            (keyup)="autoGrowTextZone($event)"></textarea>
+        <app-auto-height-input></app-auto-height-input>
 
         <div class="list-comment">
             <app-comment-item></app-comment-item>

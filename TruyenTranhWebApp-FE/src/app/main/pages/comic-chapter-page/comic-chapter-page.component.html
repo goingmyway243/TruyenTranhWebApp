@@ -1,15 +1,25 @@
 <div class="comic-chapter-page">
     <div class="title">
-        <h2>Tên truyện</h2>
+        <a [routerLink]="['../../']">Chào mừng đến với lớp học Thượng đẳng</a>
         <span> - Chương 1</span>
-        <div class="time text-muted">[Cập nhật lúc 22:39 03/05/2022]</div>
+        <span class="time text-muted">[Cập nhật lúc 22:39 03/05/2022]</span>
     </div>
 
     <div class="nav-buttons">
-        <button>prev</button>
-        <select>
+        <span class="button clickable prev"><i class="uil uil-angle-left-b"></i></span>
+        <select title="chapter-select">
+            <option value="5">Chương 5</option>
+            <option value="4">Chương 4</option>
+            <option value="3">Chương 3</option>
+            <option value="2">Chương 2</option>
+            <option value="1" selected>Chương 1</option>
         </select>
-        <button>next</button>
+        <span class="button clickable next"><i class="uil uil-angle-right-b"></i></span>
+    </div>
+
+    <div class="contents">
+        <img src="https://i333.ntcdntempv3.com/data/images/12102/340769/024-fix.jpg?data=net" alt="">
+        <img src="https://i333.ntcdntempv3.com/data/images/12102/340769/025-fix.jpg?data=net" alt="">
     </div>
 
     <div class="comment-group">

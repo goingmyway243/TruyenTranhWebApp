@@ -65,7 +65,8 @@ a {
     }
 }
 
-button {
+button,
+.button {
     background-color: var(--color-primary);
     padding: 0.5rem var(--card-padding);
     border-radius: var(--card-border-radius);

@@ -8,10 +8,15 @@
     .title {
         width: 100%;
 
-        h2 {
+        a {
             display: inline;
             font-size: 1.5rem;
             color: var(--color-primary);
+
+            &:hover {
+                text-decoration: underline;
+                color: var(--color-danger);
+            }
         }
 
         span {
@@ -21,14 +26,72 @@
 
         .time {
             font-style: italic;
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            margin: 0.5rem;
+        }
+    }
+
+    .nav-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+
+        &.fixed {
+            position: fixed;
+            top: 0;
+            z-index: 100;
+        }
+
+        .button {
+            padding: 0.25rem 0.5rem;
+            background-color: var(--color-secondary);
+
+            i {
+                font-size: 1.5rem;
+                font-weight: bolder;
+            }
+
+            &.prev {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            &.next {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+
+        select {
+            width: 25%;
+            font-size: 1rem;
+            padding: 0.4rem;
+            border: 1px solid var(--color-gray);
+            border-radius: 0.1rem;
+        }
+    }
+
+    .contents {
+        img {
+            width: 100%;
         }
     }
 
     .comment-group {
         width: 100%;
+
+        .header {
+            border-bottom: 2px solid var(--color-primary);
+            font-size: 1.2rem;
+            padding-bottom: 0.3rem;
+            color: var(--color-primary);
+
+            i {
+                font-size: 1.5rem;
+            }
+        }
 
         .list-comment {
             width: 100%;
@@ -36,5 +99,11 @@
             flex-direction: column;
             gap: 1rem;
         }
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .comic-chapter-page {
+        padding: 0 5%;
     }
 }

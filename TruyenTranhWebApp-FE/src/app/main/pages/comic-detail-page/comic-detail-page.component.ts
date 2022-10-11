@@ -12,8 +12,4 @@ export class ComicDetailPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  autoGrowTextZone(e: any) {
-    e.target.style.height = "0px";
-    e.target.style.height = (e.target.scrollHeight + 25) + "px";
-  }
 }
