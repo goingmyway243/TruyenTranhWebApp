@@ -1,0 +1,18 @@
+.auto-height-input {
+    width: 100%;
+
+    textarea {
+        width: 100%;
+        color: var(--color-dark);
+        background-color: var(--color-white);
+        padding: 0.5rem;
+        margin: 1rem 0;
+        font-size: 1rem;
+        min-height: 3rem;
+        line-height: 25px;
+        overflow: auto;
+        resize: none;
+        white-space: pre;
+        border: 1px solid var(--color-gray);
+    }
+}
