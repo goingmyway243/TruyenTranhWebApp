@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
+import { AdminDashboardPageComponent } from './admin/pages/admin-dashboard-page/admin-dashboard-page.component';
 import { MainComponent } from './main/main.component';
 import { AddComicPageComponent } from './main/pages/add-comic-page/add-comic-page.component';
 import { ComicChapterPageComponent } from './main/pages/comic-chapter-page/comic-chapter-page.component';
@@ -26,7 +27,15 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'quan-tri', component: AdminComponent
+    path: 'quan-tri',
+    component: AdminComponent,
+    children: [
+      { path: '', component: AdminDashboardPageComponent },
+      { path: 'quan-ly-truyen', component: AdminDashboardPageComponent },
+      { path: 'quan-ly-the-loai', component: AdminDashboardPageComponent },
+      { path: 'quan-ly-tac-gia', component: AdminDashboardPageComponent },
+      { path: 'quan-ly-tai-khoan', component: AdminDashboardPageComponent }
+    ]
   },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

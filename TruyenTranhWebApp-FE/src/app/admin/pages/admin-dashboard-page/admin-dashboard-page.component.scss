@@ -1,0 +1,183 @@
+.admin-dashboard-page {
+    transition: 0.5s;
+    padding: 1rem;
+    min-height: 100vh;
+
+    .topbar {
+        width: 100%;
+        height: 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+
+        .toggle {
+            position: relative;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 3rem;
+            height: 3rem;
+            background: #ccc;
+            font-size: 2.5rem;
+        }
+
+        .search {
+            width: 20rem;
+
+            label {
+                position: relative;
+
+                input {
+                    width: 100%;
+                    height: 2.5rem;
+                    border-radius: 2.5rem;
+                    padding: 1rem;
+                    padding-left: 2rem;
+                    border: 1px solid var(--color-dark);
+                    font-size: 1rem;
+                }
+
+                i {
+                    position: absolute;
+                    top: -0.1rem;
+                    left: 0.6rem;
+                    font-size: 1.2rem;
+                }
+            }
+
+
+        }
+
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    .cardBox {
+        width: 100%;
+        padding: 1rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+
+        .card {
+            background: var(--color-white);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            display: flex;
+            justify-content: space-between;
+            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+
+            &:hover {
+                background: var(--color-primary);
+
+                .numbers,
+                .cardName,
+                .iconBx {
+                    color: var(--color-white);
+                }
+            }
+
+            .numbers {
+                font-weight: 500;
+                font-size: 2.5rem;
+                color: var(--color-primary);
+            }
+
+            .cardName {
+                color: var(--color-dark);
+                font-size: 1.1rem;
+                margin-top: 0.5rem;
+            }
+
+            .iconBx {
+                font-size: 3.5rem;
+                color: var(--color-gray);
+            }
+        }
+    }
+
+    .details {
+        width: 100%;
+        padding: 1rem;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.5rem;
+        margin-top: 0.5rem;
+
+        .statistics {
+            display: grid;
+            min-height: 5rem;
+            background: var(--color-white);
+            padding: 1rem;
+            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+
+            .cardHeader {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+
+                h2 {
+                    font-weight: 600;
+                    color: var(--color-primary);
+                }
+
+                .btn {
+                    padding: 0.5rem 1rem;
+                    background-color: var(--color-primary);
+                    color: var(--color-white);
+                    border-radius: 0.2rem;
+                }
+            }
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 5rem;
+
+            tr {
+                color: var(--color-dark);
+                border-bottom: 1px solid var(--color-dark);
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                td {
+                    padding: 0.5rem;
+
+                    &:last-child {
+                        text-align: end;
+                    }
+                }
+            }
+
+            thead {
+                td {
+                    font-weight: 600;
+                }
+
+            }
+
+            tbody {
+                tr {
+                    &:hover {
+                        color: var(--color-white);
+                        background: var(--color-primary);
+                    }
+                }
+            }
+        }
+    }
+}
