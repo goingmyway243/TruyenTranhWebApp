@@ -1,7 +1,15 @@
+body {
+    margin-left: 15rem;
+    transition: 0.5s;
+
+    &.active {
+        margin-left: 5rem;
+    }
+}
+
 nav {
     position: relative;
     width: 100%;
-    margin-top: -5rem;
 
     .navigation {
         position: fixed;
@@ -11,6 +19,10 @@ nav {
         border-left: 10px solid var(--color-primary);
         transition: 0.5s;
         overflow: hidden;
+
+        &.active {
+            width: 5rem;
+        }
 
         ul {
             position: absolute;
@@ -23,7 +35,8 @@ nav {
                 border-top-left-radius: 3rem;
                 border-bottom-left-radius: 3rem;
 
-                &:hover {
+                &:hover,
+                &.selected {
                     background-color: var(--color-white);
 
                     a {
@@ -49,7 +62,7 @@ nav {
                     text-decoration: none;
                     color: var(--color-white);
                     align-items: center;
-                    gap: 1rem;
+                    gap: 2rem;
                     height: 3rem;
                     line-height: 3rem;
                     padding: 0 1rem;
