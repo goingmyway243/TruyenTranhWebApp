@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { MainComponent } from './main/main.component';
+import { AddComicPageComponent } from './main/pages/add-comic-page/add-comic-page.component';
 import { ComicChapterPageComponent } from './main/pages/comic-chapter-page/comic-chapter-page.component';
 import { ComicDetailPageComponent } from './main/pages/comic-detail-page/comic-detail-page.component';
 import { HomePageComponent } from './main/pages/home-page/home-page.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'truyen-tranh/:id/chuong/:chapterId', component: ComicChapterPageComponent },
       { path: 'tim-kiem/:keyword', component: SearchResultPageComponent },
       { path: 'tim-kiem/the-loai/:genre', component: SearchResultPageComponent },
+      { path: 'them-truyen', component: AddComicPageComponent }
     ]
   },
   {

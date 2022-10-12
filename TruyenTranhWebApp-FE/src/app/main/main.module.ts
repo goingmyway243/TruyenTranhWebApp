@@ -15,6 +15,7 @@ import { SignupPageComponent } from './pages/signup-page/signup-page.component';
 import { SearchResultPageComponent } from './pages/search-result-page/search-result-page.component';
 import { ComicDetailPageComponent } from './pages/comic-detail-page/comic-detail-page.component';
 import { AutoHeightInputComponent } from './components/auto-height-input/auto-height-input.component';
+import { AddComicPageComponent } from './pages/add-comic-page/add-comic-page.component';
 
 
 
@@ -31,7 +32,8 @@ import { AutoHeightInputComponent } from './components/auto-height-input/auto-he
     SignupPageComponent,
     SearchResultPageComponent,
     ComicDetailPageComponent,
-    AutoHeightInputComponent
+    AutoHeightInputComponent,
+    AddComicPageComponent
   ],
   imports: [
     CommonModule,
