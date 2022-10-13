@@ -8,16 +8,16 @@
         </div>
 
         <div class="login-group">
-            <a class="clickable" href="/dang-nhap">Đăng nhập</a>
+            <a class="clickable" [routerLink]="['dang-nhap']">Đăng nhập</a>
             <span>|</span>
-            <a class="clickable" href="/dang-ky">Đăng ký</a>
+            <a class="clickable" [routerLink]="['dang-ky']">Đăng ký</a>
         </div>
 
-        <div class="user-info">
-            <span>Ayano Kyouji</span>
-            <div class="profile-picture clickable">
+        <div class="user-info clickable">
+            <div class="avatar">
                 <img src="https://i.pinimg.com/736x/4d/09/f5/4d09f59689e7cce8d16d225e1bd423bd.jpg" alt="">
             </div>
+            <span>Ayano Kyouji</span>
         </div>
     </div>
 </header>
@@ -39,7 +39,9 @@
     </div>
 </footer>
 
-<div class="info-more">
-    <span>Truyện của bạn</span>
-    <span>Đăng xuất</span>
+<div class="hover-panel">
+    <a><i class="uil uil-user"></i>Thông tin cá nhân</a>
+    <a><i class="uil uil-book-alt"></i>Truyện của bạn</a>
+    <a [routerLink]="['quan-tri']"><i class="uil uil-key-skeleton"></i>Quản trị</a>
+    <a><i class="uil uil-signout"></i>Đăng xuất</a>
 </div>

@@ -35,7 +35,7 @@ header {
 
     .login-group {
         color: var(--color-white);
-        display: none;
+        display: flex;
         gap: 0.5rem;
 
         a {
@@ -53,7 +53,7 @@ header {
             font-size: 0.9rem;
         }
 
-        .profile-picture {
+        .avatar {
             width: 2.5rem;
             height: 2.5rem;
             border-radius: 50%;
@@ -85,26 +85,30 @@ footer {
     }
 }
 
-.info-more {
+.hover-panel {
     position: fixed;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
-    top: 4rem;
-    right: 9rem;
+    top: 3rem;
+    right: 6.5rem;
     background: var(--color-white);
     border: 1px solid var(--color-gray);
-    padding: 0.5rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
     z-index: 100;
     font-size: 0.85rem;
 
-    &::after {
-        position: absolute;
-        content: '';
-        width: 1rem;
-        height: 1rem;
-        background: red;
+    a {
+        display: flex;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        align-items: center;
+
+        i {
+            font-size: 1rem;
+        }
     }
 }
 
