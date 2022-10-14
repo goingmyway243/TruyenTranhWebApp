@@ -7,6 +7,10 @@ import { AdminAuthorsPageComponent } from './pages/admin-authors-page/admin-auth
 import { AdminGenresPageComponent } from './pages/admin-genres-page/admin-genres-page.component';
 import { AdminAccountsPageComponent } from './pages/admin-accounts-page/admin-accounts-page.component';
 import { RouterModule } from '@angular/router';
+import { AdminAddComicPageComponent } from './pages/admin-add-comic-page/admin-add-comic-page.component';
+import { AdminAddAuthorPageComponent } from './pages/admin-add-author-page/admin-add-author-page.component';
+import { AdminAddGenrePageComponent } from './pages/admin-add-genre-page/admin-add-genre-page.component';
+import { AdminAddAccountPageComponent } from './pages/admin-add-account-page/admin-add-account-page.component';
 
 
 
@@ -17,7 +21,11 @@ import { RouterModule } from '@angular/router';
     AdminComicsPageComponent,
     AdminAuthorsPageComponent,
     AdminGenresPageComponent,
-    AdminAccountsPageComponent
+    AdminAccountsPageComponent,
+    AdminAddComicPageComponent,
+    AdminAddAuthorPageComponent,
+    AdminAddGenrePageComponent,
+    AdminAddAccountPageComponent
   ],
   imports: [
     CommonModule,

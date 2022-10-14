@@ -20,37 +20,37 @@
         <div class="card">
             <div>
                 <div class="numbers">1,504</div>
-                <div class="cardName">Daily Views</div>
+                <div class="cardName">Truyện</div>
             </div>
             <div class="iconBx">
-                <i class="uil uil-eye"></i>
+                <i class="uil uil-books"></i>
             </div>
         </div>
         <div class="card">
             <div>
                 <div class="numbers">80</div>
-                <div class="cardName">Sales</div>
+                <div class="cardName">Thể loại</div>
             </div>
             <div class="iconBx">
-                <i class="uil uil-eye"></i>
+                <i class="uil uil-apps"></i>
             </div>
         </div>
         <div class="card">
             <div>
                 <div class="numbers">284</div>
-                <div class="cardName">Comments</div>
+                <div class="cardName">Tác giả</div>
             </div>
             <div class="iconBx">
-                <i class="uil uil-eye"></i>
+                <i class="uil uil-book-reader"></i>
             </div>
         </div>
         <div class="card">
             <div>
-                <div class="numbers">$1,504</div>
-                <div class="cardName">Earning</div>
+                <div class="numbers">1,504</div>
+                <div class="cardName">Tài khoản</div>
             </div>
             <div class="iconBx">
-                <i class="uil uil-eye"></i>
+                <i class="uil uil-users-alt"></i>
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@
             <div class="recent-comics">
                 <div class="cardHeader">
                     <h2>Truyện mới đăng</h2>
-                    <a href="#" class="btn clickable">Xem tất cả</a>
+                    <a [routerLink]="['quan-ly-truyen']" class="btn clickable">Xem tất cả</a>
                 </div>
                 <table>
                     <thead>
@@ -96,9 +96,12 @@
         </div>
 
         <div class="preview">
-            <div class="wrapper">
+            <div class="cover" hidden>
                 <img src="https://d827xgdhgqbnd.cloudfront.net/wp-content/uploads/2016/04/09121712/book-cover-placeholder.png"
                     alt="">
+            </div>
+            <div class="default clickable">
+                <div>Bìa truyện</div>
             </div>
         </div>
     </div>
