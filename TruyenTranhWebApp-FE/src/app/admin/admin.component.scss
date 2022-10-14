@@ -95,3 +95,24 @@ nav {
         }
     }
 }
+
+@media screen and (max-width:992px) {
+    body {
+        margin-left: 0;
+
+        &.active {
+            margin-left: 15rem;
+        }
+    }
+
+    nav {
+        .navigation {
+            left: -15rem;
+
+            &.active {
+                left: 0;
+                width: 15rem;
+            }
+        }
+    }
+}
