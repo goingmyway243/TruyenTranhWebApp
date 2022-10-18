@@ -2,11 +2,13 @@ package com.mtt.d18.models;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@Table(name = "user")
 public class UserModel {
 	@Id
 	private String id;
@@ -14,6 +16,14 @@ public class UserModel {
 	private String email;
 	private String pass;
 	private int idRole;
+	
+	public UserModel() {
+		this.id = "";
+		this.name = "";
+		this.email = "";
+		this.pass = "";
+		this.idRole = 0;
+	}
 
 	public UserModel(String id, String name, String email, String pass, int idRole) {
 		super();
