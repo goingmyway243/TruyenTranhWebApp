@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -7,10 +8,16 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  constructor(private elmRef: ElementRef) { }
+  constructor(
+    private elmRef: ElementRef,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.initAvatarHoverEvent();
+  }
+
+  onSearch(event: any): void {
+    this.router.navigate(['tim-kiem/aaa']);
   }
 
   initAvatarHoverEvent(): void {

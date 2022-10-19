@@ -2,10 +2,10 @@
     <div class="container">
         <a class="logo clickable" href="">TruyenTranh</a>
 
-        <div class="search-bar">
+        <form class="search-bar" (submit)="onSearch($event)">
             <i class="uil uil-search"></i>
             <input type="search" placeholder="Tìm truyện...">
-        </div>
+        </form>
 
         <div class="login-group">
             <a class="clickable" [routerLink]="['dang-nhap']">Đăng nhập</a>
