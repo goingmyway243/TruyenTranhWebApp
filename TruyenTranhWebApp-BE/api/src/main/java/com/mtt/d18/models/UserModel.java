@@ -1,44 +1,52 @@
 package com.mtt.d18.models;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.data.annotation.CreatedDate;
+
+import com.mtt.d18.enums.RoleType;
 
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Table(name = "user")
 public class UserModel {
 	@Id
-	private String id;
-	private String name;
-	private String email;
-	private String pass;
-	private int idRole;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 	
+	private String name;
+	
+	private String email;
+	
+	private String pass;
+	
+	@Enumerated(EnumType.STRING)
+	private RoleType role;
+	
+	@CreatedDate
+	private Date createdTime;
+
 	public UserModel() {
-		this.id = "";
-		this.name = "";
-		this.email = "";
-		this.pass = "";
-		this.idRole = 0;
+		id = 0;
+		name = "";
+		email = "";
+		pass = "";
+		role = RoleType.USER;
+		createdTime = new Date(new java.util.Date().getTime());
 	}
 
-	public UserModel(String id, String name, String email, String pass, int idRole) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.pass = pass;
-		this.idRole = idRole;
-	}
-
-	public String getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -66,12 +74,19 @@ public class UserModel {
 		this.pass = pass;
 	}
 
-	public int getIdRole() {
-		return idRole;
+	public RoleType getRole() {
+		return role;
 	}
 
-	public void setIdRole(int idRole) {
-		this.idRole = idRole;
+	public void setRole(RoleType role) {
+		this.role = role;
 	}
 
+	public Date getCreateTime() {
+		return createdTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createdTime = createTime;
+	}
 }

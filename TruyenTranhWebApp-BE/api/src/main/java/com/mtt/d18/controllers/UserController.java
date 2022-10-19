@@ -31,7 +31,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<UserModel> getById(@PathVariable String id)
+	public ResponseEntity<UserModel> getById(@PathVariable long id)
 	{
 		Optional<UserModel> userOptional = userService.findById(id);
 		return userOptional.map(user -> new ResponseEntity<UserModel>(user, HttpStatus.OK))
@@ -45,7 +45,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<UserModel> update(@PathVariable String id, @RequestBody UserModel userModel)
+	public ResponseEntity<UserModel> update(@PathVariable long id, @RequestBody UserModel userModel)
 	{
 		Optional<UserModel> userOptional = userService.findById(id);
 		return userOptional.map(user -> {
@@ -55,7 +55,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<UserModel> delete(@PathVariable String id)
+	public ResponseEntity<UserModel> delete(@PathVariable long id)
 	{
 		Optional<UserModel> userOptional = userService.findById(id);
 		return userOptional.map(user -> {

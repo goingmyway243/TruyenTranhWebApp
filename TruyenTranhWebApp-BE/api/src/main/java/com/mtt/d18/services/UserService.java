@@ -18,7 +18,7 @@ public class UserService implements IUserService {
 		return userRepo.findAll();
 	}
 
-	public Optional<UserModel> findById(String id) {
+	public Optional<UserModel> findById(long id) {
 		// TODO Auto-generated method stub
 		return userRepo.findById(id);
 	}
@@ -28,7 +28,7 @@ public class UserService implements IUserService {
 		return userRepo.save(t);
 	}
 
-	public void remove(String id) {
+	public void remove(long id) {
 		// TODO Auto-generated method stub
 		userRepo.deleteById(id);
 	}

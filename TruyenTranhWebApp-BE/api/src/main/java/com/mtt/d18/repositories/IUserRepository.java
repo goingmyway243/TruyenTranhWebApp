@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.mtt.d18.models.UserModel;
 
 @Repository
-public interface IUserRepository extends JpaRepository<UserModel, String> {
+public interface IUserRepository extends JpaRepository<UserModel, Long> {
 
 }

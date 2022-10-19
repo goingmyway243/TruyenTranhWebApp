@@ -5,9 +5,9 @@ import java.util.Optional;
 public interface IGeneralService<T> {
 	Iterable<T> findAll();
 
-	Optional<T> findById(String id);
+	Optional<T> findById(long id);
 
 	T save(T t);
 
-	void remove(String id);
+	void remove(long id);
 }
