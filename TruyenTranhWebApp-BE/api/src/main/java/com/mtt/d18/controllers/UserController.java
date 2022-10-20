@@ -20,7 +20,7 @@ import com.mtt.d18.services.IUserService;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/user")
+@RequestMapping("/api/users")
 public class UserController {
 	@Autowired
 	private IUserService userService;

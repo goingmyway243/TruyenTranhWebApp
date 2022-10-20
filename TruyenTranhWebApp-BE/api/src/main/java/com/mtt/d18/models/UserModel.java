@@ -34,12 +34,13 @@ public class UserModel {
 	private Date createdTime;
 
 	public UserModel() {
-		id = 0;
-		name = "";
-		email = "";
-		pass = "";
-		role = RoleType.USER;
-		createdTime = new Date(new java.util.Date().getTime());
+	}
+
+	public UserModel(String name, String email, String pass, RoleType role) {
+		this.name = name;
+		this.email = email;
+		this.pass = pass;
+		this.role = role;
 	}
 
 	public long getId() {
@@ -84,9 +85,5 @@ public class UserModel {
 
 	public Date getCreateTime() {
 		return createdTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createdTime = createTime;
 	}
 }

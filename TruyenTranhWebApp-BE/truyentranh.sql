@@ -48,12 +48,12 @@ DROP TABLE IF EXISTS `chapter`;
 CREATE TABLE `chapter` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `chapterIndex` int(11) NOT NULL,
-  `comicId` bigint(20) NOT NULL,
-  `createdTime` datetime NOT NULL DEFAULT current_timestamp(),
+  `chapter_index` int(11) NOT NULL,
+  `comic_id` bigint(20) NOT NULL,
+  `created_time` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `comicId` (`comicId`),
-  CONSTRAINT `chapter_ibfk_1` FOREIGN KEY (`comicId`) REFERENCES `comic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `comicId` (`comic_id`),
+  CONSTRAINT `chapter_ibfk_1` FOREIGN KEY (`comic_id`) REFERENCES `comic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -107,12 +107,12 @@ DROP TABLE IF EXISTS `comic_genre`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comic_genre` (
-  `comicId` bigint(20) NOT NULL,
-  `genreId` bigint(20) NOT NULL,
-  PRIMARY KEY (`comicId`,`genreId`),
-  KEY `genreId` (`genreId`),
-  CONSTRAINT `comic_genre_ibfk_1` FOREIGN KEY (`genreId`) REFERENCES `genre` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comic_genre_ibfk_2` FOREIGN KEY (`comicId`) REFERENCES `comic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `comic_id` bigint(20) NOT NULL,
+  `genre_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`comic_id`,`genre_id`),
+  KEY `genreId` (`genre_id`),
+  CONSTRAINT `comic_genre_ibfk_1` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comic_genre_ibfk_2` FOREIGN KEY (`comic_id`) REFERENCES `comic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -133,14 +133,16 @@ DROP TABLE IF EXISTS `comment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comment` (
-  `userId` bigint(20) NOT NULL,
-  `chapterId` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `comment` mediumtext NOT NULL,
-  `createdTime` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`userId`,`chapterId`),
-  KEY `chapterId` (`chapterId`),
-  CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`chapterId`) REFERENCES `chapter` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `user_id` bigint(20) NOT NULL,
+  `chapter_id` bigint(20) NOT NULL,
+  `created_time` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `chapter_id` (`chapter_id`),
+  CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`chapter_id`) REFERENCES `chapter` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -162,12 +164,12 @@ DROP TABLE IF EXISTS `content`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `content` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `fileName` varchar(255) NOT NULL,
-  `contentIndex` int(11) NOT NULL,
-  `chapterId` bigint(20) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `content_index` int(11) NOT NULL,
+  `chapter_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `chapterId` (`chapterId`),
-  CONSTRAINT `content_ibfk_1` FOREIGN KEY (`chapterId`) REFERENCES `chapter` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `chapterId` (`chapter_id`),
+  CONSTRAINT `content_ibfk_1` FOREIGN KEY (`chapter_id`) REFERENCES `chapter` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -214,7 +216,7 @@ CREATE TABLE `review` (
   `userId` bigint(20) NOT NULL,
   `comicId` bigint(20) NOT NULL,
   `type` enum('LIKE','DISLIKE') NOT NULL,
-  `createdTime` datetime NOT NULL DEFAULT current_timestamp(),
+  `created_time` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`userId`,`comicId`),
   KEY `comicId` (`comicId`),
   CONSTRAINT `review_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -267,4 +269,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-19 23:44:48
+-- Dump completed on 2022-10-21  0:01:59

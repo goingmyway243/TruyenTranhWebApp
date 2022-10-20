@@ -1,13 +1,20 @@
 package com.mtt.d18.models;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -20,32 +27,39 @@ public class ComicModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	private String title;
-	
+
 	private String description;
-	
+
 	private long view;
-	
+
 	@Enumerated(EnumType.STRING)
 	private StatusType status;
-	
+
 	private long userId;
-	
+
 	private long authorId;
-	
+
 	@CreatedDate
 	private Date createdTime;
 
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "comic_genre", joinColumns = {
+			@JoinColumn(referencedColumnName = "comic_id") }, inverseJoinColumns = {
+					@JoinColumn(referencedColumnName = "genre_id") })
+	private Set<GenreModel> genres = new HashSet<>();
+
 	public ComicModel() {
-		id = 0;
-		title = "";
-		description = "";
-		view = 0;
-		status = StatusType.PENDING;
-		userId = 0;
-		authorId = 0;
-		createdTime = new Date(new java.util.Date().getTime());
+	}
+
+	public ComicModel(String title, String description, long view, StatusType status, long userId, long authorId) {
+		this.title = title;
+		this.description = description;
+		this.view = view;
+		this.status = status;
+		this.userId = userId;
+		this.authorId = authorId;
 	}
 
 	public long getId() {
@@ -108,7 +122,24 @@ public class ComicModel {
 		return createdTime;
 	}
 
-	public void setCreatedTime(Date createdTime) {
-		this.createdTime = createdTime;
+	public Set<GenreModel> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(Set<GenreModel> genres) {
+		this.genres = genres;
+	}
+
+	public void addGenre(GenreModel genre) {
+		this.genres.add(genre);
+		genre.getComics().add(this);
+	}
+
+	public void removeGenre(long genreId) {
+		GenreModel genre = this.genres.stream().filter(g -> g.getId() == genreId).findFirst().orElse(null);
+		if (genre != null) {
+			this.genres.remove(genre);
+			genre.getComics().remove(this);
+		}
 	}
 }
