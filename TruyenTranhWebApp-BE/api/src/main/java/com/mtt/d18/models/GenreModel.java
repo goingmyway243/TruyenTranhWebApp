@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,11 +18,12 @@ import javax.persistence.Table;
 public class GenreModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
 
 	private String name;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "genres")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "genres", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private Set<ComicModel> comics = new HashSet<>();
 
 	public GenreModel() {

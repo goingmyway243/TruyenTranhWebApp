@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.mtt.d18.models.GenreModel;
 
 public interface IGenreRepository extends JpaRepository<GenreModel, Long>{
-	List<GenreModel> findGenresByComicId(long comicId);
+	List<GenreModel> findGenresByComicsId(long comicId);
 }

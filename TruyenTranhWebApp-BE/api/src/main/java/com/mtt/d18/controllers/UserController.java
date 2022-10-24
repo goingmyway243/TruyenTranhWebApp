@@ -1,6 +1,7 @@
 package com.mtt.d18.controllers;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,51 +17,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mtt.d18.models.UserModel;
-import com.mtt.d18.services.IUserService;
+import com.mtt.d18.repositories.IUserRepository;
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/users")
 public class UserController {
 	@Autowired
-	private IUserService userService;
+	private IUserRepository userRepo;
 
 	@GetMapping
-	public ResponseEntity<Iterable<UserModel>> getAll(){
-		return new ResponseEntity<Iterable<UserModel>>(userService.findAll(), HttpStatus.OK);
+	public ResponseEntity<List<UserModel>> getAll() {
+		List<UserModel> users = new ArrayList<>();
+		
+		userRepo.findAll().forEach(users::add);
+		
+		if(users.isEmpty())
+		{
+			return new ResponseEntity<List<UserModel>>(HttpStatus.NO_CONTENT);
+		}
+		
+		return new ResponseEntity<List<UserModel>>(users, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<UserModel> getById(@PathVariable long id)
-	{
-		Optional<UserModel> userOptional = userService.findById(id);
-		return userOptional.map(user -> new ResponseEntity<UserModel>(user, HttpStatus.OK))
+	public ResponseEntity<UserModel> getById(@PathVariable long id) {
+		return userRepo.findById(id).map(user -> new ResponseEntity<UserModel>(user, HttpStatus.OK))
 				.orElseGet(() -> new ResponseEntity<UserModel>(HttpStatus.NOT_FOUND));
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<UserModel> create(@RequestBody UserModel userModel)
-	{
-		return new ResponseEntity<UserModel>(userService.save(userModel), HttpStatus.OK);
+	public ResponseEntity<UserModel> create(@RequestBody UserModel userModel) {
+		UserModel newUser = new UserModel(userModel.getName(), userModel.getEmail(), userModel.getPass(),
+				userModel.getRole());
+		return new ResponseEntity<UserModel>(userRepo.save(newUser), HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<UserModel> update(@PathVariable long id, @RequestBody UserModel userModel)
-	{
-		Optional<UserModel> userOptional = userService.findById(id);
-		return userOptional.map(user -> {
+	public ResponseEntity<UserModel> update(@PathVariable long id, @RequestBody UserModel userModel) {
+		return userRepo.findById(id).map(user -> {
 			userModel.setId(user.getId());
-			return new ResponseEntity<UserModel>(userService.save(userModel), HttpStatus.OK);
-		}) .orElseGet(()-> new ResponseEntity<UserModel>(HttpStatus.NOT_FOUND));
+			return new ResponseEntity<UserModel>(userRepo.save(userModel), HttpStatus.OK);
+		}).orElseGet(() -> new ResponseEntity<UserModel>(HttpStatus.NOT_FOUND));
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<UserModel> delete(@PathVariable long id)
-	{
-		Optional<UserModel> userOptional = userService.findById(id);
-		return userOptional.map(user -> {
-			userService.remove(id);
-			return new ResponseEntity<UserModel>(user, HttpStatus.OK);
-		}) .orElseGet(()-> new ResponseEntity<UserModel>(HttpStatus.NOT_FOUND));
+	public ResponseEntity<HttpStatus> delete(@PathVariable long id) {
+		userRepo.deleteById(id);
+		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 }

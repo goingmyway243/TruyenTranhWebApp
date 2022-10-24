@@ -110,9 +110,9 @@ CREATE TABLE `comic_genre` (
   `comic_id` bigint(20) NOT NULL,
   `genre_id` bigint(20) NOT NULL,
   PRIMARY KEY (`comic_id`,`genre_id`),
-  KEY `genreId` (`genre_id`),
-  CONSTRAINT `comic_genre_ibfk_1` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comic_genre_ibfk_2` FOREIGN KEY (`comic_id`) REFERENCES `comic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `genre_id` (`genre_id`),
+  CONSTRAINT `comic_genre_ibfk_1` FOREIGN KEY (`comic_id`) REFERENCES `comic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comic_genre_ibfk_2` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -213,14 +213,14 @@ DROP TABLE IF EXISTS `review`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `review` (
-  `userId` bigint(20) NOT NULL,
-  `comicId` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `comic_id` bigint(20) NOT NULL,
   `type` enum('LIKE','DISLIKE') NOT NULL,
   `created_time` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`userId`,`comicId`),
-  KEY `comicId` (`comicId`),
-  CONSTRAINT `review_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `review_ibfk_2` FOREIGN KEY (`comicId`) REFERENCES `comic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`user_id`,`comic_id`),
+  KEY `comicId` (`comic_id`),
+  CONSTRAINT `review_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `review_ibfk_2` FOREIGN KEY (`comic_id`) REFERENCES `comic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -247,7 +247,8 @@ CREATE TABLE `user` (
   `pass` varchar(128) NOT NULL,
   `role` enum('ADMIN','USER') NOT NULL,
   `created_time` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -269,4 +270,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-21  0:01:59
+-- Dump completed on 2022-10-25  0:17:05

@@ -2,6 +2,7 @@ package com.mtt.d18.models;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -23,6 +24,7 @@ public class UserModel {
 	
 	private String name;
 	
+	@Column(unique = true)
 	private String email;
 	
 	private String pass;

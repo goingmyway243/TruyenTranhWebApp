@@ -2,26 +2,22 @@ package com.mtt.d18.models;
 
 import java.sql.Date;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
 
 import com.mtt.d18.enums.ReviewType;
+import com.mtt.d18.identity.ReviewIdentity;
 
 @Entity
 @Table(name = "review")
-@IdClass(ReviewModel.class)
 public class ReviewModel {
-	@Id
-	private long userId;
-	
-	@Id
-	private long comicId;
+	@EmbeddedId
+	private ReviewIdentity reviewId;
 	
 	@Enumerated(EnumType.STRING)
 	private ReviewType type;
@@ -32,26 +28,20 @@ public class ReviewModel {
 	public ReviewModel() {
 	}
 
-	public ReviewModel(long userId, long comicId, ReviewType type) {
-		this.userId = userId;
-		this.comicId = comicId;
+
+	public ReviewModel(ReviewIdentity reviewId, ReviewType type) {
+		super();
+		this.reviewId = reviewId;
 		this.type = type;
 	}
 
-	public long getUserId() {
-		return userId;
+
+	public ReviewIdentity getReviewId() {
+		return reviewId;
 	}
 
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
-	public long getComicId() {
-		return comicId;
-	}
-
-	public void setComicId(long comicId) {
-		this.comicId = comicId;
+	public void setReviewId(ReviewIdentity reviewId) {
+		this.reviewId = reviewId;
 	}
 
 	public ReviewType getType() {

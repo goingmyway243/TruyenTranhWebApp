@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,6 +27,7 @@ import com.mtt.d18.enums.StatusType;
 public class ComicModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
 
 	private String title;
@@ -45,9 +47,7 @@ public class ComicModel {
 	private Date createdTime;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "comic_genre", joinColumns = {
-			@JoinColumn(referencedColumnName = "comic_id") }, inverseJoinColumns = {
-					@JoinColumn(referencedColumnName = "genre_id") })
+	@JoinTable(name = "comic_genre", joinColumns = @JoinColumn(name = "comic_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
 	private Set<GenreModel> genres = new HashSet<>();
 
 	public ComicModel() {
@@ -135,11 +135,8 @@ public class ComicModel {
 		genre.getComics().add(this);
 	}
 
-	public void removeGenre(long genreId) {
-		GenreModel genre = this.genres.stream().filter(g -> g.getId() == genreId).findFirst().orElse(null);
-		if (genre != null) {
-			this.genres.remove(genre);
-			genre.getComics().remove(this);
-		}
+	public void removeGenre(GenreModel genre) {
+		this.genres.remove(genre);
+		genre.getComics().remove(this);
 	}
 }
