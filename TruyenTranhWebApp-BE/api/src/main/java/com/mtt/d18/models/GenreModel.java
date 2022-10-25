@@ -3,7 +3,6 @@ package com.mtt.d18.models;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +22,7 @@ public class GenreModel {
 
 	private String name;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "genres", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "genres")
 	private Set<ComicModel> comics = new HashSet<>();
 
 	public GenreModel() {
