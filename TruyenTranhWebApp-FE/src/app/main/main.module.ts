@@ -18,7 +18,8 @@ import { AutoHeightInputComponent } from './components/auto-height-input/auto-he
 import { AddComicPageComponent } from './pages/add-comic-page/add-comic-page.component';
 import { MyComicPageComponent } from './pages/my-comic-page/my-comic-page.component';
 import { MyProfilePageComponent } from './pages/my-profile-page/my-profile-page.component';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 
 
 @NgModule({
@@ -43,7 +44,10 @@ import { MyProfilePageComponent } from './pages/my-profile-page/my-profile-page.
     CommonModule,
     CarouselModule,
     RouterModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule.forRoot()
   ]
 })
 export class MainModule { }

@@ -1,29 +1,29 @@
 <div class="signup-page">
     <h2>Đăng ký</h2>
 
-    <div class="signup-info">
+    <form class="signup-info" [formGroup]="signUpForm">
         <div>
             <label for="signup-name">Tên người dùng</label>
-            <input id="signup-name">
+            <input id="signup-name" maxlength="24" [(ngModel)]="newUser.name" formControlName="name">
         </div>
 
         <div>
             <label for="signup-email">Email</label>
-            <input id="signup-email">
+            <input id="signup-email" maxlength="320" [(ngModel)]="newUser.email" formControlName="email">
         </div>
 
         <div>
             <label for="signup-pass">Mật khẩu</label>
-            <input id="signup-pass">
+            <input id="signup-pass" type="password" maxlength="128" [(ngModel)]="newUser.pass" formControlName="pass">
         </div>
 
         <div>
             <label for="signup-repass">Nhập lại mật khẩu</label>
-            <input id="signup-repass">
+            <input id="signup-repass" type="password" maxlength="128" [(ngModel)]="retypePass" formControlName="repass">
         </div>
-    </div>
+    </form>
 
-    <button class="signup-btn">Đăng ký</button>
+    <button class="signup-btn" (click)="onRegister()">Đăng ký</button>
 
     <div class="redirect-login">
         <span>Đã có tài khoản?</span>
