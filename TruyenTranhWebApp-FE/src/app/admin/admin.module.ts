@@ -11,6 +11,7 @@ import { AdminAddComicPageComponent } from './pages/admin-add-comic-page/admin-a
 import { AdminAddAuthorPageComponent } from './pages/admin-add-author-page/admin-add-author-page.component';
 import { AdminAddGenrePageComponent } from './pages/admin-add-genre-page/admin-add-genre-page.component';
 import { AdminAddAccountPageComponent } from './pages/admin-add-account-page/admin-add-account-page.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -29,7 +30,9 @@ import { AdminAddAccountPageComponent } from './pages/admin-add-account-page/adm
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class AdminModule { }
