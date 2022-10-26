@@ -1,6 +1,6 @@
 package com.mtt.d18.models;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +33,7 @@ public class UserModel {
 	private RoleType role;
 	
 	@CreatedDate
-	private Date createdTime;
+	private LocalDateTime createdTime;
 
 	public UserModel() {
 	}
@@ -43,6 +43,7 @@ public class UserModel {
 		this.email = email;
 		this.pass = pass;
 		this.role = role;
+		this.createdTime = LocalDateTime.now();
 	}
 
 	public long getId() {
@@ -85,7 +86,7 @@ public class UserModel {
 		this.role = role;
 	}
 
-	public Date getCreateTime() {
+	public LocalDateTime getCreateTime() {
 		return createdTime;
 	}
 }

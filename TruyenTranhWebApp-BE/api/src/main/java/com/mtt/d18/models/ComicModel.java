@@ -1,6 +1,6 @@
 package com.mtt.d18.models;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,7 +43,7 @@ public class ComicModel {
 	private long authorId;
 
 	@CreatedDate
-	private Date createdTime;
+	private LocalDateTime createdTime;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "comic_genre", joinColumns = @JoinColumn(name = "comic_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
@@ -59,6 +59,7 @@ public class ComicModel {
 		this.status = status;
 		this.userId = userId;
 		this.authorId = authorId;
+		this.createdTime = LocalDateTime.now();
 	}
 
 	public long getId() {
@@ -117,7 +118,7 @@ public class ComicModel {
 		this.authorId = authorId;
 	}
 
-	public Date getCreatedTime() {
+	public LocalDateTime getCreatedTime() {
 		return createdTime;
 	}
 

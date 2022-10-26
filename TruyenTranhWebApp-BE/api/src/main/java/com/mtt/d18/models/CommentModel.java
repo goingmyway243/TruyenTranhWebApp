@@ -1,6 +1,6 @@
 package com.mtt.d18.models;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +24,7 @@ public class CommentModel {
 	private long chapterId;
 	
 	@CreatedDate
-	private Date createdTime;
+	private LocalDateTime createdTime;
 
 	public CommentModel() {
 	}
@@ -33,6 +33,7 @@ public class CommentModel {
 		this.comment = comment;
 		this.userId = userId;
 		this.chapterId = chapterId;
+		this.createdTime = LocalDateTime.now();
 	}
 
 	public long getId() {
@@ -67,7 +68,7 @@ public class CommentModel {
 		this.chapterId = chapterId;
 	}
 
-	public Date getCreatedTime() {
+	public LocalDateTime getCreatedTime() {
 		return createdTime;
 	}
 }

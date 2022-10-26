@@ -8,7 +8,7 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class AppComponent {
   title = 'TruyenTranhWebApp-FE';
-  static baseUrl: string = 'https://localhost:8080/';
+  static baseUrl: string = 'http://localhost:8080/';
   static httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'

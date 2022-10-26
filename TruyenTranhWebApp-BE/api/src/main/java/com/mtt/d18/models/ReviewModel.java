@@ -1,6 +1,6 @@
 package com.mtt.d18.models;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -23,7 +23,7 @@ public class ReviewModel {
 	private ReviewType type;
 	
 	@CreatedDate
-	private Date createdTime;
+	private LocalDateTime createdTime;
 
 	public ReviewModel() {
 	}
@@ -33,6 +33,7 @@ public class ReviewModel {
 		super();
 		this.reviewId = reviewId;
 		this.type = type;
+		this.createdTime = LocalDateTime.now();
 	}
 
 
@@ -52,7 +53,7 @@ public class ReviewModel {
 		this.type = type;
 	}
 
-	public Date getCreatedTime() {
+	public LocalDateTime getCreatedTime() {
 		return createdTime;
 	}
 }
