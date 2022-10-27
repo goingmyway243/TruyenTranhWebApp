@@ -29,14 +29,13 @@ public class AuthorController {
 	@GetMapping
 	public ResponseEntity<List<AuthorModel>> getAll() {
 		List<AuthorModel> authors = new ArrayList<>();
-		
+
 		authorRepo.findAll().forEach(authors::add);
-		
-		if(authors.isEmpty())
-		{
+
+		if (authors.isEmpty()) {
 			return new ResponseEntity<List<AuthorModel>>(HttpStatus.NO_CONTENT);
 		}
-		
+
 		return new ResponseEntity<List<AuthorModel>>(authors, HttpStatus.OK);
 	}
 
@@ -48,7 +47,12 @@ public class AuthorController {
 
 	@PostMapping
 	public ResponseEntity<AuthorModel> create(@RequestBody AuthorModel authorModel) {
-		AuthorModel newAuthor = new AuthorModel(authorModel.getName());
+		AuthorModel newAuthor = authorRepo.findByNameIgnoreCase(authorModel.getName());
+		if (newAuthor != null) {
+			return new ResponseEntity<AuthorModel>(newAuthor, HttpStatus.NOT_MODIFIED);
+		}
+		
+		newAuthor = new AuthorModel(authorModel.getName());
 		return new ResponseEntity<AuthorModel>(authorRepo.save(newAuthor), HttpStatus.OK);
 	}
 

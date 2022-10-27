@@ -32,30 +32,14 @@
             <table>
                 <thead>
                     <tr>
-                        <td>Tên truyện</td>
-                        <td>Mô tả</td>
-                        <td>Người đăng</td>
-                        <td>Trạng thái</td>
+                        <td>Mã thể loại</td>
+                        <td>Tên thể loại</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>A</td>
-                        <td>A</td>
-                        <td>A</td>
-                        <td><span class="status approved">Đã duyệt</span></td>
-                    </tr>
-                    <tr>
-                        <td>A</td>
-                        <td>A</td>
-                        <td>A</td>
-                        <td><span class="status pending">Chờ duyệt</span></td>
-                    </tr>
-                    <tr>
-                        <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                        <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                        <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                        <td><span class="status hidden">Bị ẩn</span></td>
+                    <tr *ngFor="let genre of listGenres">
+                        <td>{{genre.id}}</td>
+                        <td>{{genre.name}}</td>
                     </tr>
                 </tbody>
             </table>

@@ -27,7 +27,6 @@ export class SignupPageComponent implements OnInit {
   }
 
   onRegister(): void {
-    console.log(this.newUser);
     this.userService.add(this.newUser).subscribe(
       data => {
         // this.accountService.generateDefaultAvatar(data).subscribe();

@@ -22,7 +22,7 @@ public class GenreModel {
 
 	private String name;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "genres")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "genres")
 	private Set<ComicModel> comics = new HashSet<>();
 
 	public GenreModel() {
