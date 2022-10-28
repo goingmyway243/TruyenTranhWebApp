@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthorModel } from 'src/app/models/author.model';
 import { AuthorService } from 'src/app/services/author.service';
@@ -12,9 +13,17 @@ import Swal from 'sweetalert2';
 export class AdminAddAuthorPageComponent implements OnInit {
   newAuthor: AuthorModel = new AuthorModel();
 
+  addForm: FormGroup = new FormGroup({
+    name: new FormControl('', Validators.required)
+  });
+
   constructor(private authorService: AuthorService, private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  goBack(): void {
+    this.router.navigate(['quan-tri/quan-ly-tac-gia']);
   }
 
   postAuthor(): void {
@@ -27,7 +36,7 @@ export class AdminAddAuthorPageComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500
         }).then(result => {
-          this.router.navigate(['quan-tri/quan-ly-tac-gia']);
+          this.goBack();
         });
       },
       error => {

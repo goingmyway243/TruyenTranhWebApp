@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AppComponent } from 'src/app/app.component';
+import { UserModel } from 'src/app/models/user.model';
+import { UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2';
+import { MainComponent } from '../../main.component';
 
 @Component({
   selector: 'app-login-page',
@@ -6,10 +13,47 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login-page.component.scss']
 })
 export class LoginPageComponent implements OnInit {
+  loginUser: UserModel = new UserModel();
 
-  constructor() { }
+  loginForm: FormGroup = new FormGroup({
+    email: new FormControl('', Validators.required),
+    pass: new FormControl('', Validators.required)
+  });
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
+  onLogin(): void {
+    this.userService.login(this.loginUser).subscribe(
+      data => {
+        localStorage.setItem('authorizeToken', data.id + '');
+
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Đăng nhập thành công!',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(result => {
+          MainComponent.currentUser = data;
+          this.router.navigate(['']);
+        });
+      },
+      error => {
+        if (error.status == 404) {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Email hoặc mật khẩu không đúng!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+        else {
+          console.log(error);
+        }
+      }
+    )
+  }
 }

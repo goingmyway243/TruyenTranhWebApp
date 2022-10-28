@@ -1,24 +1,24 @@
 <div class="login-page">
     <h2>Đăng nhập</h2>
 
-    <div class="login-info">
+    <form class="login-info" [formGroup]="loginForm">
         <div>
             <label for="login-email">Email</label>
-            <input id="login-email">
+            <input id="login-email" type="email" [(ngModel)]="loginUser.email" formControlName="email">
         </div>
 
         <div>
             <label for="login-pass">Mật khẩu</label>
-            <input id="login-pass">
+            <input id="login-pass" type="password" [(ngModel)]="loginUser.pass" formControlName="pass">
         </div>
 
-        <div class="autolog-checkbox">
+        <div class="autolog-checkbox" hidden>
             <input type="checkbox" id="auto-login">
             <label for="auto-login">Ghi nhớ đăng nhập</label>
         </div>
-    </div>
+    </form>
 
-    <button class="login-btn">Đăng nhập</button>
+    <button class="login-btn" (click)="onLogin()">Đăng nhập</button>
 
     <div class="redirect-signup">
         <span>Chưa có tài khoản?</span>

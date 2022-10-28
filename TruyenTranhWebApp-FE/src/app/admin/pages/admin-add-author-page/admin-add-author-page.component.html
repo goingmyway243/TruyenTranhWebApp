@@ -1,20 +1,26 @@
 <div class="admin-add-author-page">
+    <div class="topbar">
+        <div class="toggle clickable">
+            <i class="uil uil-bars"></i>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h2>Thêm tác giả</h2>
         </div>
 
         <div class="wrapper">
-            <div class="input-fields">
+            <form class="input-fields" [formGroup]="addForm">
                 <div>
                     <label for="name">Tên tác giả</label>
-                    <input id="name" [(ngModel)]="newAuthor.name" name="authorName">
+                    <input id="name" [(ngModel)]="newAuthor.name" formControlName="name">
                 </div>
-            </div>
+            </form>
         </div>
 
         <div class="button-groups">
-            <button class="btn-back">Trở lại</button>
+            <button class="btn-back" (click)="goBack()">Trở lại</button>
             <button class="btn-add" (click)="postAuthor()">Thêm</button>
         </div>
     </div>

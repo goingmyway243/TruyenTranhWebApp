@@ -32,30 +32,18 @@
             <table>
                 <thead>
                     <tr>
-                        <td>Tên truyện</td>
-                        <td>Mô tả</td>
-                        <td>Người đăng</td>
-                        <td>Trạng thái</td>
+                        <td>Mã người dùng</td>
+                        <td>Tên người dùng</td>
+                        <td>Email</td>
+                        <td>Mật khẩu</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>A</td>
-                        <td>A</td>
-                        <td>A</td>
-                        <td><span class="status approved">Đã duyệt</span></td>
-                    </tr>
-                    <tr>
-                        <td>A</td>
-                        <td>A</td>
-                        <td>A</td>
-                        <td><span class="status pending">Chờ duyệt</span></td>
-                    </tr>
-                    <tr>
-                        <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                        <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                        <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                        <td><span class="status hidden">Bị ẩn</span></td>
+                    <tr *ngFor="let account of listAccounts">
+                        <td>{{account.id}}</td>
+                        <td>{{account.name}}</td>
+                        <td>{{account.email}}</td>
+                        <td>{{account.pass}}</td>
                     </tr>
                 </tbody>
             </table>

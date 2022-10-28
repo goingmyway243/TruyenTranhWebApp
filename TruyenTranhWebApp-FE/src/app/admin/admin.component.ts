@@ -1,15 +1,18 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, AfterViewInit {
 
   constructor(private elmRef: ElementRef) { }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
     this.initToggleEvent();
   }
 

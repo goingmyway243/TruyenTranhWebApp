@@ -49,7 +49,7 @@ public class AuthorController {
 	public ResponseEntity<AuthorModel> create(@RequestBody AuthorModel authorModel) {
 		AuthorModel newAuthor = authorRepo.findByNameIgnoreCase(authorModel.getName());
 		if (newAuthor != null) {
-			return new ResponseEntity<AuthorModel>(newAuthor, HttpStatus.NOT_MODIFIED);
+			return new ResponseEntity<AuthorModel>(HttpStatus.NOT_MODIFIED);
 		}
 		
 		newAuthor = new AuthorModel(authorModel.getName());

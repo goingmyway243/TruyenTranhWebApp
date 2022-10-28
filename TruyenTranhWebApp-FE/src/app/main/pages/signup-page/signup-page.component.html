@@ -4,12 +4,12 @@
     <form class="signup-info" [formGroup]="signUpForm">
         <div>
             <label for="signup-name">Tên người dùng</label>
-            <input id="signup-name" maxlength="24" [(ngModel)]="newUser.name" formControlName="name">
+            <input id="signup-name" type="text" maxlength="24" [(ngModel)]="newUser.name" formControlName="name">
         </div>
 
         <div>
             <label for="signup-email">Email</label>
-            <input id="signup-email" maxlength="320" [(ngModel)]="newUser.email" formControlName="email">
+            <input id="signup-email" type="email" maxlength="320" [(ngModel)]="newUser.email" formControlName="email">
         </div>
 
         <div>

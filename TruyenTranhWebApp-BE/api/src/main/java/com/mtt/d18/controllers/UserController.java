@@ -29,14 +29,13 @@ public class UserController {
 	@GetMapping
 	public ResponseEntity<List<UserModel>> getAll() {
 		List<UserModel> users = new ArrayList<>();
-		
+
 		userRepo.findAll().forEach(users::add);
-		
-		if(users.isEmpty())
-		{
+
+		if (users.isEmpty()) {
 			return new ResponseEntity<List<UserModel>>(HttpStatus.NO_CONTENT);
 		}
-		
+
 		return new ResponseEntity<List<UserModel>>(users, HttpStatus.OK);
 	}
 
@@ -48,7 +47,12 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<UserModel> create(@RequestBody UserModel userModel) {
-		UserModel newUser = new UserModel(userModel.getName(), userModel.getEmail(), userModel.getPass(),
+		UserModel newUser = userRepo.findByEmailIgnoreCase(userModel.getEmail());
+		if (newUser != null) {
+			return new ResponseEntity<UserModel>(HttpStatus.NOT_MODIFIED);
+		}
+		
+		newUser = new UserModel(userModel.getName(), userModel.getEmail(), userModel.getPass(),
 				userModel.getRole());
 		return new ResponseEntity<UserModel>(userRepo.save(newUser), HttpStatus.OK);
 	}
@@ -65,5 +69,15 @@ public class UserController {
 	public ResponseEntity<HttpStatus> delete(@PathVariable long id) {
 		userRepo.deleteById(id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<UserModel> login(@RequestBody UserModel userModel) {
+		UserModel auditUser = userRepo.findByEmailAndPass(userModel.getEmail(), userModel.getPass());
+		if (auditUser == null) {
+			return new ResponseEntity<UserModel>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<UserModel>(auditUser, HttpStatus.OK);
 	}
 }

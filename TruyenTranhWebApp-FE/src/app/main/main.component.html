@@ -7,13 +7,13 @@
             <input type="search" placeholder="Tìm truyện...">
         </form>
 
-        <div class="login-group">
+        <div class="login-group" [hidden]="getCurrentUser()">
             <a class="clickable" [routerLink]="['dang-nhap']">Đăng nhập</a>
             <span>|</span>
             <a class="clickable" [routerLink]="['dang-ky']">Đăng ký</a>
         </div>
 
-        <div class="user-info clickable">
+        <div class="user-info clickable" [hidden]="!getCurrentUser()">
             <div class="avatar">
                 <img src="https://i.pinimg.com/736x/4d/09/f5/4d09f59689e7cce8d16d225e1bd423bd.jpg" alt="">
             </div>
@@ -43,5 +43,5 @@
     <a [routerLink]="['thong-tin-ca-nhan']"><i class="uil uil-user"></i>Thông tin cá nhân</a>
     <a [routerLink]="['truyen-cua-toi']"><i class="uil uil-book-alt"></i>Truyện của bạn</a>
     <a [routerLink]="['quan-tri']"><i class="uil uil-key-skeleton"></i>Quản trị</a>
-    <a><i class="uil uil-signin"></i>Đăng xuất</a>
+    <a (click)="onLogout()"><i class="uil uil-signin"></i>Đăng xuất</a>
 </div>

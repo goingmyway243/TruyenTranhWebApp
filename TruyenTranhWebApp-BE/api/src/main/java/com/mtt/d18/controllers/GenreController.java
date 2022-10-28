@@ -64,7 +64,12 @@ public class GenreController {
 	
 	@PostMapping
 	public ResponseEntity<GenreModel> create(@RequestBody GenreModel genreModel) {
-		GenreModel newGenre = new GenreModel(genreModel.getName());
+		GenreModel newGenre = genreRepo.findByNameIgnoreCase(genreModel.getName());
+		if (newGenre != null) {
+			return new ResponseEntity<GenreModel>(HttpStatus.NOT_MODIFIED);
+		}
+		
+		newGenre = new GenreModel(genreModel.getName());
 		return new ResponseEntity<GenreModel>(genreRepo.save(newGenre), HttpStatus.OK);
 	}
 

@@ -144,6 +144,10 @@ button:hover,
     left: 10px;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 @media screen and (max-width: 1200px) {
     .container {
         width: 96%;

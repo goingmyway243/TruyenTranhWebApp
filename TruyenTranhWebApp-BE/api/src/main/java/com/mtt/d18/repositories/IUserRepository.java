@@ -7,5 +7,6 @@ import com.mtt.d18.models.UserModel;
 
 @Repository
 public interface IUserRepository extends JpaRepository<UserModel, Long> {
-
+	UserModel findByEmailAndPass(String email, String pass);
+	UserModel findByEmailIgnoreCase(String email);
 }

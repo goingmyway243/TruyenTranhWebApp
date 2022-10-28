@@ -34,4 +34,9 @@ export class UserService {
     let deleteUrl = `${this.apiUrl}/${id}`;
     return this.http.delete<string>(deleteUrl, AppComponent.httpOptions);
   }
+
+  login(user: UserModel) {
+    let loginUrl = `${this.apiUrl}/login`;
+    return this.http.post<UserModel>(loginUrl, user, AppComponent.httpOptions);
+  }
 }

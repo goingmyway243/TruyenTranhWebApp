@@ -1,1 +1,46 @@
-<p>admin-add-comic-page works!</p>
+<div class="admin-add-comic-page">
+    <div class="topbar">
+        <div class="toggle clickable">
+            <i class="uil uil-bars"></i>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h2>Thêm truyện</h2>
+        </div>
+
+        <div class="wrapper">
+            <div class="input-fields">
+                <div>
+                    <label for="name">Tên truyện</label>
+                    <input id="name">
+                </div>
+                <div>
+                    <label for="author">Tác giả</label>
+                    <input id="author">
+                </div>
+                <div>
+                    <label for="genres">Thể loại</label>
+                    <ng-multiselect-dropdown class="genres-multiselect" [placeholder]="'Chọn thể loại'"
+                        [settings]="dropdownSettings" [data]="dropdownList" [(ngModel)]="selectedItems"
+                        (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                    </ng-multiselect-dropdown>
+                </div>
+                <div>
+                    <label for="description">Mô tả</label>
+                    <input id="description">
+                </div>
+            </div>
+
+            <div class="cover clickable">
+                <div>Thêm bìa truyện</div>
+            </div>
+        </div>
+
+        <div class="button-groups">
+            <button class="btn-back" (click)="goBack()">Trở lại</button>
+            <button class="btn-add" (click)="postComic()">Thêm</button>
+        </div>
+    </div>
+</div>

@@ -12,6 +12,7 @@ import { AdminAddAuthorPageComponent } from './pages/admin-add-author-page/admin
 import { AdminAddGenrePageComponent } from './pages/admin-add-genre-page/admin-add-genre-page.component';
 import { AdminAddAccountPageComponent } from './pages/admin-add-account-page/admin-add-account-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 
 
@@ -32,7 +33,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule.forRoot()
   ]
 })
 export class AdminModule { }
