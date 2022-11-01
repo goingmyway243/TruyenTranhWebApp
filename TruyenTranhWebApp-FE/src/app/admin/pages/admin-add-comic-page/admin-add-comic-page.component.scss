@@ -58,7 +58,7 @@
                 }
             }
 
-            .cover {
+            .upload-cover {
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -69,6 +69,15 @@
                 font-size: 2rem;
                 padding: 1rem;
                 text-align: center;
+
+                .cover {
+                    width: 0;
+                    height: 0;
+                }
+
+                .placeholder {
+                    cursor: pointer;
+                }
             }
         }
 

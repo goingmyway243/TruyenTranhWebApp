@@ -144,6 +144,10 @@ button:hover,
     left: 10px;
 }
 
+.multiselect-dropdown .dropdown-btn .selected-item {
+    font-size: 0.85rem;
+}
+
 [hidden] {
     display: none !important;
 }

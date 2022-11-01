@@ -22,9 +22,10 @@
                 </div>
                 <div>
                     <label for="genres">Thể loại</label>
-                    <ng-multiselect-dropdown class="genres-multiselect" [placeholder]="'Chọn thể loại'"
-                        [settings]="dropdownSettings" [data]="dropdownList" [(ngModel)]="selectedItems"
-                        (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                    <ng-multiselect-dropdown #genreMultiSelect class="genres-multiselect"
+                        [placeholder]="'Chọn thể loại'" [settings]="dropdownSettings" [data]="dropdownList"
+                        [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)"
+                        (onSelectAll)="onSelectAll($event)">
                     </ng-multiselect-dropdown>
                 </div>
                 <div>
@@ -33,8 +34,12 @@
                 </div>
             </div>
 
-            <div class="cover clickable">
-                <div>Thêm bìa truyện</div>
+            <div class="upload-cover clickable">
+                <div class="cover-wrapper">
+                    <img class="cover">
+                </div>
+                <label for="upload-image" class="placeholder">Thêm bìa truyện</label>
+                <input id="upload-image" type="file" accept="image/*" (change)="onImageSelected($event)" hidden />
             </div>
         </div>
 
