@@ -11,18 +11,18 @@
         </div>
 
         <div class="wrapper">
-            <div class="input-fields">
+            <form [formGroup]="addForm" class="input-fields">
                 <div>
-                    <label for="name">Tên truyện</label>
-                    <input id="name">
+                    <label for="title">Tên truyện</label>
+                    <input id="title" [(ngModel)]="newComic.title" formControlName="title">
                 </div>
                 <div>
                     <label for="author">Tác giả</label>
-                    <input id="author">
+                    <input id="author" [(ngModel)]="authorName" formControlName="author">
                 </div>
                 <div>
                     <label for="genres">Thể loại</label>
-                    <ng-multiselect-dropdown #genreMultiSelect class="genres-multiselect"
+                    <ng-multiselect-dropdown #genreMultiSelect formControlName="genres" class="genres-multiselect"
                         [placeholder]="'Chọn thể loại'" [settings]="dropdownSettings" [data]="dropdownList"
                         [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)"
                         (onSelectAll)="onSelectAll($event)">
@@ -30,9 +30,10 @@
                 </div>
                 <div>
                     <label for="description">Mô tả</label>
-                    <input id="description">
+                    <textarea id="description" rows="5" [(ngModel)]="newComic.description"
+                        formControlName="description"></textarea>
                 </div>
-            </div>
+            </form>
 
             <div class="upload-cover clickable">
                 <div class="cover-wrapper">

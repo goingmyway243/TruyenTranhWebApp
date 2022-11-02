@@ -1,7 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { lastValueFrom } from 'rxjs';
+import { AuthorModel } from 'src/app/models/author.model';
 import { ComicModel } from 'src/app/models/comic.model';
+import { AuthorService } from 'src/app/services/author.service';
 import { GenreService } from 'src/app/services/genre.service';
 import { UploadService } from 'src/app/services/upload.service';
 import Swal from 'sweetalert2';
@@ -16,9 +19,13 @@ export class AdminAddComicPageComponent implements OnInit {
 
   newComic: ComicModel = new ComicModel();
   imageCover?: File;
+  authorName: string = '';
 
   addForm: FormGroup = new FormGroup({
-    title: new FormControl('', Validators.required)
+    title: new FormControl('', Validators.required),
+    author: new FormControl('', Validators.required),
+    genres: new FormControl([], Validators.required),
+    description: new FormControl('', Validators.required)
   });
 
   dropdownList: any[] = [];
@@ -38,6 +45,7 @@ export class AdminAddComicPageComponent implements OnInit {
   constructor(
     private elementRef: ElementRef,
     private genreService: GenreService,
+    private authorService: AuthorService,
     private uploadService: UploadService) { }
 
   ngOnInit(): void {
@@ -94,8 +102,23 @@ export class AdminAddComicPageComponent implements OnInit {
 
   }
 
-  postComic(): void {
+  async postComic(): Promise<void> {
     if (this.imageCover) {
+      let author = await lastValueFrom(this.authorService.getByName(this.authorName));
+
+      if (author.id != 0) {
+        this.newComic.authorId = author.id;
+      }
+      else {
+        let newAuthor = new AuthorModel();
+        newAuthor.name = this.authorName;
+
+        author = await lastValueFrom(this.authorService.add(newAuthor));
+        this.newComic.authorId = author.id;
+      }
+
+      console.log(this.newComic);
+
       this.uploadService.upload(this.imageCover).subscribe(data => console.log(data));
     }
   }

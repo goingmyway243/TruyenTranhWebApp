@@ -45,13 +45,19 @@ public class AuthorController {
 				.orElseGet(() -> new ResponseEntity<AuthorModel>(HttpStatus.NOT_FOUND));
 	}
 
+	@GetMapping("/name/{name}")
+	public ResponseEntity<AuthorModel> getByName(@PathVariable String name) {
+		AuthorModel author = authorRepo.findByNameIgnoreCase(name);
+		return new ResponseEntity<AuthorModel>(author, HttpStatus.OK);
+	}
+
 	@PostMapping
 	public ResponseEntity<AuthorModel> create(@RequestBody AuthorModel authorModel) {
 		AuthorModel newAuthor = authorRepo.findByNameIgnoreCase(authorModel.getName());
 		if (newAuthor != null) {
 			return new ResponseEntity<AuthorModel>(HttpStatus.NOT_MODIFIED);
 		}
-		
+
 		newAuthor = new AuthorModel(authorModel.getName());
 		return new ResponseEntity<AuthorModel>(authorRepo.save(newAuthor), HttpStatus.OK);
 	}

@@ -36,10 +36,10 @@ public class UploadController {
             files.add(file.getOriginalFilename());
 
             message = "You successfully uploaded " + file.getOriginalFilename() + "!";
-            return new ResponseEntity<String>(message, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(message);
         } catch (Exception e) {
             message = "FAIL to upload " + file.getOriginalFilename() + "!";
-            return new ResponseEntity<String>(message, HttpStatus.EXPECTATION_FAILED);
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
         }
     }
 

@@ -21,6 +21,11 @@ export class AuthorService {
     return this.http.get(getUrl).pipe(map(data => Object.assign(new AuthorModel(), data)));
   }
 
+  getByName(name: string): Observable<AuthorModel> {
+    let getUrl = `${this.apiUrl}/name/${name}`;
+    return this.http.get(getUrl).pipe(map(data => Object.assign(new AuthorModel(), data)));
+  }
+
   add(user: AuthorModel): Observable<AuthorModel> {
     return this.http.post<AuthorModel>(this.apiUrl, user, AppComponent.httpOptions);
   }
