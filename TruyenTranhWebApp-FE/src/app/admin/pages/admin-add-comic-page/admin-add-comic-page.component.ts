@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ComicModel } from 'src/app/models/comic.model';
 import { GenreService } from 'src/app/services/genre.service';
+import { UploadService } from 'src/app/services/upload.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -34,7 +35,10 @@ export class AdminAddComicPageComponent implements OnInit {
     noFilteredDataAvailablePlaceholderText: 'Không tìm thấy thể loại'
   };
 
-  constructor(private genreService: GenreService, private elementRef: ElementRef) { }
+  constructor(
+    private elementRef: ElementRef,
+    private genreService: GenreService,
+    private uploadService: UploadService) { }
 
   ngOnInit(): void {
     this.genreService.getAll().subscribe(data => {
@@ -91,6 +95,8 @@ export class AdminAddComicPageComponent implements OnInit {
   }
 
   postComic(): void {
-
+    if (this.imageCover) {
+      this.uploadService.upload(this.imageCover).subscribe(data => console.log(data));
+    }
   }
 }
