@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import { UserModel } from '../models/user.model';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-admin',
@@ -6,10 +8,19 @@ import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit, AfterViewInit {
+  static currentUser?: UserModel;
 
-  constructor(private elmRef: ElementRef) { }
+  constructor(private elmRef: ElementRef, private userService: UserService) { }
 
   ngOnInit(): void {
+    let userId = localStorage.getItem('authorizeToken');
+    if (userId) {
+      this.userService.getById(+userId).subscribe(data => AdminComponent.currentUser = data);
+    }
+  }
+
+  getCurrentUser(): UserModel | undefined {
+    return AdminComponent.currentUser;
   }
 
   ngAfterViewInit(): void {

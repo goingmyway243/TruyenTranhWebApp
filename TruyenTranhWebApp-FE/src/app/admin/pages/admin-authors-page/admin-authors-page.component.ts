@@ -14,10 +14,10 @@ export class AdminAuthorsPageComponent implements OnInit {
   constructor(private authorService: AuthorService) { }
 
   ngOnInit(): void {
-    this.getAllAuthor();
+    this.getAllAuthors();
   }
 
-  getAllAuthor(): void {
+  getAllAuthors(): void {
     this.authorService.getAll().subscribe(data => this.listAuthors = data);
   }
 
@@ -37,7 +37,7 @@ export class AdminAuthorsPageComponent implements OnInit {
       if (result.isConfirmed) {
         this.authorService.delete(id).subscribe(
           data => {
-            this.getAllAuthor();
+            this.getAllAuthors();
           },
           error => {
             console.log(error);

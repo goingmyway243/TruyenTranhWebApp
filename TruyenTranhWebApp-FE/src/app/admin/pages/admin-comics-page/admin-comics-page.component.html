@@ -40,23 +40,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>A</td>
-                            <td>A</td>
-                            <td>A</td>
-                            <td><span class="status approved">Đã duyệt</span></td>
-                        </tr>
-                        <tr>
-                            <td>A</td>
-                            <td>A</td>
-                            <td>A</td>
-                            <td><span class="status pending">Chờ duyệt</span></td>
-                        </tr>
-                        <tr>
-                            <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                            <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                            <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                            <td><span class="status hidden">Bị ẩn</span></td>
+                        <tr *ngFor="let comic of listComics">
+                            <td>{{comic.title}}</td>
+                            <td>{{comic.description}}</td>
+                            <td>{{comic.userId}}</td>
+                            <td><span class="status pending">{{comic.status}}</span></td>
                         </tr>
                     </tbody>
                 </table>

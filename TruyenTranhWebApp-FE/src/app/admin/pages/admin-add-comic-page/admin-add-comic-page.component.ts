@@ -1,13 +1,17 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { lastValueFrom } from 'rxjs';
+import { MainComponent } from 'src/app/main/main.component';
 import { AuthorModel } from 'src/app/models/author.model';
 import { ComicModel } from 'src/app/models/comic.model';
 import { AuthorService } from 'src/app/services/author.service';
+import { ComicService } from 'src/app/services/comic.service';
 import { GenreService } from 'src/app/services/genre.service';
 import { UploadService } from 'src/app/services/upload.service';
 import Swal from 'sweetalert2';
+import { AdminComponent } from '../../admin.component';
 
 @Component({
   selector: 'app-admin-add-comic-page',
@@ -31,8 +35,8 @@ export class AdminAddComicPageComponent implements OnInit {
   dropdownList: any[] = [];
   selectedItems: any[] = [];
   dropdownSettings: IDropdownSettings = {
-    idField: 'item_id',
-    textField: 'item_text',
+    idField: 'value',
+    textField: 'text',
     singleSelection: false,
     allowSearchFilter: true,
     selectAllText: 'Chọn tất cả',
@@ -46,12 +50,14 @@ export class AdminAddComicPageComponent implements OnInit {
     private elementRef: ElementRef,
     private genreService: GenreService,
     private authorService: AuthorService,
-    private uploadService: UploadService) { }
+    private comicService: ComicService,
+    private uploadService: UploadService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.genreService.getAll().subscribe(data => {
       data.forEach(genre => {
-        this.dropdownList.push(new Object({ item_id: genre.id, item_text: genre.name }));
+        this.dropdownList.push(new Object({ value: genre, text: genre.name }));
       });
 
       this.genreMultiSelect.data = this.dropdownList;
@@ -91,19 +97,17 @@ export class AdminAddComicPageComponent implements OnInit {
   }
 
   onItemSelect(item: any) {
-    console.log(item);
   }
 
   onSelectAll(items: any) {
-    console.log(items);
   }
 
   goBack(): void {
-
+    this.router.navigate(['quan-tri/quan-ly-truyen']);
   }
 
   async postComic(): Promise<void> {
-    if (this.imageCover) {
+    if (this.imageCover && this.selectedItems.length > 0) {
       let author = await lastValueFrom(this.authorService.getByName(this.authorName));
 
       if (author.id != 0) {
@@ -117,9 +121,23 @@ export class AdminAddComicPageComponent implements OnInit {
         this.newComic.authorId = author.id;
       }
 
-      console.log(this.newComic);
+      this.newComic.genres = this.selectedItems.map(item => item.value);
+      this.newComic.userId = AdminComponent.currentUser!.id;
+      // console.log(this.newComic);
 
-      this.uploadService.upload(this.imageCover).subscribe(data => console.log(data));
+      this.newComic = await lastValueFrom(this.comicService.add(this.newComic));
+
+      this.uploadService.upload(this.imageCover, 'cover.jpg', this.newComic.id + '').subscribe(data => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Thêm truyện thành công!',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(result => {
+          this.goBack();
+        });
+      });
     }
   }
 }

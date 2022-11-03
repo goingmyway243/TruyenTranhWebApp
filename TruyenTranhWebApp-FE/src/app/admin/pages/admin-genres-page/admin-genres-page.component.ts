@@ -8,7 +8,7 @@ import { GenreService } from 'src/app/services/genre.service';
   styleUrls: ['./admin-genres-page.component.scss']
 })
 export class AdminGenresPageComponent implements OnInit {
-  listGenres: GenreModel[] = []
+  listGenres: GenreModel[] = [];
 
   constructor(private genreService: GenreService) { }
 

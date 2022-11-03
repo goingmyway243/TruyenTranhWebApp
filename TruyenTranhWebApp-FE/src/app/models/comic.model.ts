@@ -1,3 +1,5 @@
+import { GenreModel } from "./genre.model";
+
 export enum StatusType {
     PENDING,
     PUBLISH,
@@ -26,6 +28,8 @@ export class ComicModel implements IComicModel {
     authorId: number;
     createdTime: Date;
 
+    genres: GenreModel[];
+
     constructor() {
         this.id = 0;
         this.title = "";
@@ -35,5 +39,7 @@ export class ComicModel implements IComicModel {
         this.userId = 0;
         this.authorId = 0;
         this.createdTime = new Date();
+
+        this.genres = [];
     }
 }

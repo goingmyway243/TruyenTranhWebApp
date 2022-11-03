@@ -9,7 +9,7 @@ export class GenreModel implements IGenreModel {
     id: number;
     name: string;
 
-    comics: ComicModel[]
+    comics: ComicModel[];
 
     constructor() {
         this.id = 0;

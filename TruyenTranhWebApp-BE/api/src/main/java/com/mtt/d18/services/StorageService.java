@@ -27,6 +27,16 @@ public class StorageService {
             throw new RuntimeException("FAIL!");
         }
     }
+    
+    public void store(MultipartFile file, String folderName) {
+        try {
+        	Path path = this.rootLocation.resolve(folderName);
+        	Files.createDirectories(path);
+        	Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+        } catch (Exception e) {
+            throw new RuntimeException("FAIL!");
+        }
+    }
 
     public Resource loadFile(String filename) {
         try {

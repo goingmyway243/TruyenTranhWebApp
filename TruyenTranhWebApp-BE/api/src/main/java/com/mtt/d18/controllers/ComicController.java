@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mtt.d18.models.ComicModel;
@@ -28,20 +27,17 @@ public class ComicController {
 	private IComicRepository comicRepo;
 
 	@GetMapping
-	public ResponseEntity<List<ComicModel>> getAll(@RequestParam(required = false) String title) {
-		List<ComicModel> comics = new ArrayList<>();
-
-		if (title != null) {
-			comicRepo.findAll().forEach(comics::add);
-		} else {
-			comicRepo.findByTitleContaining(title).forEach(comics::add);
+	public ResponseEntity<List<ComicModel>> getAll() {
+		List<ComicModel> genres = new ArrayList<>();
+		
+		comicRepo.findAll().forEach(genres::add);
+		
+		if(genres.isEmpty())
+		{
+			return new ResponseEntity<List<ComicModel>>(HttpStatus.NO_CONTENT);
 		}
-
-		if (comics.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-
-		return new ResponseEntity<>(comics, HttpStatus.OK);
+		
+		return new ResponseEntity<List<ComicModel>>(genres, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
@@ -54,6 +50,8 @@ public class ComicController {
 	public ResponseEntity<ComicModel> create(@RequestBody ComicModel comicModel) {
 		ComicModel newComic = new ComicModel(comicModel.getTitle(), comicModel.getDescription(), 0, comicModel.getStatus(),
 				comicModel.getUserId(), comicModel.getAuthorId());
+		newComic.setGenres(comicModel.getGenres());
+		
 		return new ResponseEntity<ComicModel>(comicRepo.save(newComic), HttpStatus.OK);
 	}
 
