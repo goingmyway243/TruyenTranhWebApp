@@ -26,7 +26,7 @@ CREATE TABLE `author` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,6 +35,7 @@ CREATE TABLE `author` (
 
 LOCK TABLES `author` WRITE;
 /*!40000 ALTER TABLE `author` DISABLE KEYS */;
+INSERT INTO `author` VALUES (1,'Hiroyuki'),(2,'Sawano'),(3,'Kayaba'),(4,'Hinata');
 /*!40000 ALTER TABLE `author` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,7 +75,7 @@ DROP TABLE IF EXISTS `comic`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comic` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `description` varchar(1000) NOT NULL,
   `view` bigint(20) NOT NULL,
@@ -87,7 +88,7 @@ CREATE TABLE `comic` (
   KEY `authorId` (`author_id`),
   CONSTRAINT `comic_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `comic_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `author` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,6 +97,7 @@ CREATE TABLE `comic` (
 
 LOCK TABLES `comic` WRITE;
 /*!40000 ALTER TABLE `comic` DISABLE KEYS */;
+INSERT INTO `comic` VALUES (1,'Test','Test desc',0,'PENDING',1,3,'2022-11-04 00:13:17'),(2,'Test 2','Truyện tranh tình cảm nhẹ nhàng',0,'PENDING',1,4,'2022-11-04 00:49:14');
 /*!40000 ALTER TABLE `comic` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,6 +124,7 @@ CREATE TABLE `comic_genre` (
 
 LOCK TABLES `comic_genre` WRITE;
 /*!40000 ALTER TABLE `comic_genre` DISABLE KEYS */;
+INSERT INTO `comic_genre` VALUES (2,1),(2,2);
 /*!40000 ALTER TABLE `comic_genre` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -193,7 +196,7 @@ CREATE TABLE `genre` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -202,6 +205,7 @@ CREATE TABLE `genre` (
 
 LOCK TABLES `genre` WRITE;
 /*!40000 ALTER TABLE `genre` DISABLE KEYS */;
+INSERT INTO `genre` VALUES (1,'Hài hước'),(2,'Lãng mạn'),(3,'Hành động'),(4,'Kinh dị');
 /*!40000 ALTER TABLE `genre` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -249,7 +253,7 @@ CREATE TABLE `user` (
   `created_time` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -258,6 +262,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'sysadmin','sysadmin@gmail.com','123','USER','2022-10-27 00:00:00'),(2,'Tester','test@gmail.com','123','USER','2022-10-27 00:00:00'),(3,'Nguyễn Hải Đăng','nguyenhaidang240800@gmail.com','123','USER','2022-10-27 00:30:48'),(4,'Người dùng mới','user@gmail.com','123','USER','2022-10-29 01:37:01');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -270,4 +275,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-25  0:17:05
+-- Dump completed on 2022-11-04  1:16:28
