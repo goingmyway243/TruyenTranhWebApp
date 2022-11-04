@@ -13,6 +13,7 @@ import { AdminAddGenrePageComponent } from './pages/admin-add-genre-page/admin-a
 import { AdminAddAccountPageComponent } from './pages/admin-add-account-page/admin-add-account-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { AdminAddChapterPageComponent } from './pages/admin-add-chapter-page/admin-add-chapter-page.component';
 
 
 
@@ -27,7 +28,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     AdminAddComicPageComponent,
     AdminAddAuthorPageComponent,
     AdminAddGenrePageComponent,
-    AdminAddAccountPageComponent
+    AdminAddAccountPageComponent,
+    AdminAddChapterPageComponent
   ],
   imports: [
     CommonModule,

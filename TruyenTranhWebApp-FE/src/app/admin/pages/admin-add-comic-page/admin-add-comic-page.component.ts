@@ -77,22 +77,25 @@ export class AdminAddComicPageComponent implements OnInit {
         return;
       }
 
-      const wrapper = this.elementRef.nativeElement.querySelector('.upload-cover') as HTMLElement;
-      const placeHolder = wrapper.querySelector('.placeholder') as HTMLElement;
+      const upload = this.elementRef.nativeElement.querySelector('.upload-cover') as HTMLElement;
+
+      const placeHolder = upload.querySelector('.upload-cover .placeholder') as HTMLElement;
+
+      const wrapper = upload.querySelector('.upload-cover .cover-wrapper') as HTMLElement;
       const img = wrapper.querySelector('.cover') as HTMLImageElement;
 
-      wrapper.style.padding = '0';
-      wrapper.style.borderWidth = '0';
+      upload.style.padding = '0';
+      upload.style.borderWidth = '0';
 
       placeHolder.style.display = 'none';
+
+      wrapper.style.width = '100%';
+      wrapper.style.height = '100%';
 
       img.onload = () => {
         URL.revokeObjectURL(img.src);  // no longer needed, free memory
       }
       img.src = URL.createObjectURL(this.imageCover); // set src to blob url
-      img.style.width = '100%';
-      img.style.height = '100%';
-      img.style.objectFit = 'cover';
     }
   }
 

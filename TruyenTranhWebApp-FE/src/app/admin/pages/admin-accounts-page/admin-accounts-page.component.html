@@ -35,7 +35,7 @@
                         <td>Mã người dùng</td>
                         <td>Tên người dùng</td>
                         <td>Email</td>
-                        <td>Mật khẩu</td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,7 +43,10 @@
                         <td>{{account.id}}</td>
                         <td>{{account.name}}</td>
                         <td>{{account.email}}</td>
-                        <td>{{account.pass}}</td>
+                        <td>
+                            <span class="edit clickable"><i class="uil uil-edit"></i></span>
+                            <span class="remove clickable"><i class=" uil uil-trash-alt"></i></span>
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -10,7 +10,7 @@
             <h2>Thêm truyện</h2>
         </div>
 
-        <div class="wrapper">
+        <div class="comic-group">
             <form [formGroup]="addForm" class="input-fields">
                 <div>
                     <label for="title">Tên truyện</label>
@@ -35,13 +35,43 @@
                 </div>
             </form>
 
-            <div class="upload-cover clickable">
+            <label for="upload-image" class="upload-cover clickable">
                 <div class="cover-wrapper">
                     <img class="cover">
                 </div>
-                <label for="upload-image" class="placeholder">Thêm bìa truyện</label>
-                <input id="upload-image" type="file" accept="image/*" (change)="onImageSelected($event)" hidden />
+                <span class="placeholder">Thêm bìa truyện</span>
+            </label>
+            <input id="upload-image" type="file" accept="image/*" (change)="onImageSelected($event)" hidden />
+        </div>
+
+        <div class="chapter-group">
+            <div class="header">
+                <div>
+                    <i class="uil uil-list-ul"></i>
+                    <span> DANH SÁCH CHƯƠNG</span>
+                </div>
+                <a href="quan-tri/them-chuong" class="add-chapter clickable">
+                    <i class="uil uil-plus-circle"></i>
+                    Thêm chương
+                </a>
             </div>
+
+            <ul class="chapters" hidden>
+                <li class="chapter-item">
+                    <a class="left">Chapter 3</a>
+                    <span class="remove clickable"><i class=" uil uil-trash-alt"></i></span>
+                </li>
+                <li class="chapter-item">
+                    <a class="left">Chapter 2</a>
+                    <span class="remove clickable"><i class=" uil uil-trash-alt"></i></span>
+                </li>
+                <li class="chapter-item">
+                    <a class="left" [routerLink]="['./chuong/1']">Chapter 1</a>
+                    <span class="remove clickable"><i class=" uil uil-trash-alt"></i></span>
+                </li>
+            </ul>
+
+            <div class="no-chapter">Chưa có chương truyện nào</div>
         </div>
 
         <div class="button-groups">
@@ -49,4 +79,3 @@
             <button class="btn-add" (click)="postComic()">Thêm</button>
         </div>
     </div>
-</div>

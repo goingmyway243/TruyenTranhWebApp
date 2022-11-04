@@ -4,6 +4,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminAccountsPageComponent } from './admin/pages/admin-accounts-page/admin-accounts-page.component';
 import { AdminAddAccountPageComponent } from './admin/pages/admin-add-account-page/admin-add-account-page.component';
 import { AdminAddAuthorPageComponent } from './admin/pages/admin-add-author-page/admin-add-author-page.component';
+import { AdminAddChapterPageComponent } from './admin/pages/admin-add-chapter-page/admin-add-chapter-page.component';
 import { AdminAddComicPageComponent } from './admin/pages/admin-add-comic-page/admin-add-comic-page.component';
 import { AdminAddGenrePageComponent } from './admin/pages/admin-add-genre-page/admin-add-genre-page.component';
 import { AdminAuthorsPageComponent } from './admin/pages/admin-authors-page/admin-authors-page.component';
@@ -48,6 +49,7 @@ const routes: Routes = [
       { path: 'quan-ly-tac-gia', component: AdminAuthorsPageComponent },
       { path: 'quan-ly-tai-khoan', component: AdminAccountsPageComponent },
       { path: 'them-truyen', component: AdminAddComicPageComponent },
+      { path: 'them-chuong', component: AdminAddChapterPageComponent },
       { path: 'them-the-loai', component: AdminAddGenrePageComponent },
       { path: 'them-tac-gia', component: AdminAddAuthorPageComponent },
       { path: 'them-tai-khoan', component: AdminAddAccountPageComponent }

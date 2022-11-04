@@ -1,3 +1,4 @@
+import { AppComponent } from "../app.component";
 import { GenreModel } from "./genre.model";
 
 export enum StatusType {
@@ -41,5 +42,9 @@ export class ComicModel implements IComicModel {
         this.createdTime = new Date();
 
         this.genres = [];
+    }
+
+    getComicCover(): string {
+        return `${AppComponent.baseUrl}/images/${this.id}/cover.jpg`;
     }
 }

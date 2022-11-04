@@ -127,7 +127,23 @@
                         min-width: 5.5rem;
 
                         &:last-child {
-                            text-align: end;
+                            display: flex;
+                            justify-content: flex-end;
+                            gap: 0.5rem;
+
+                            span {
+                                font-size: 1rem;
+                                border-radius: 0.2rem;
+                                padding: 0.1rem 0.2rem;
+
+                                &.edit {
+                                    background-color: var(--color-secondary);
+                                }
+
+                                &.remove {
+                                    background-color: var(--color-danger);
+                                }
+                            }
                         }
                     }
                 }
@@ -177,11 +193,17 @@
             justify-content: center;
 
             .cover {
-                width: 20vw;
-                height: auto;
+                width: 18vw;
+                height: 25vw;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
             }
 
-            .default {
+            .placeholder {
                 display: flex;
                 align-items: center;
                 justify-content: center;

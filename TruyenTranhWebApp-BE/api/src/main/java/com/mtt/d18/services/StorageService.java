@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class StorageService {
 
     Logger log = LoggerFactory.getLogger(this.getClass().getName());
-    private final Path rootLocation = Paths.get("uploads");
+    private final Path rootLocation = Paths.get("src/main/resources/static/images");
 
     public void store(MultipartFile file) {
         try {
