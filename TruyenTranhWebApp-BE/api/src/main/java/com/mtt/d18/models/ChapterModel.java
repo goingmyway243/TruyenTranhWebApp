@@ -2,10 +2,14 @@ package com.mtt.d18.models;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -21,10 +25,15 @@ public class ChapterModel {
 	
 	private int chapterIndex;
 	
+	@Column(name = "comic_id")
 	private long comicId;
 	
 	@CreatedDate
 	private LocalDateTime createdTime;
+
+	@ManyToOne(optional = false)
+    @JoinColumn(name = "comic_id", insertable = false, updatable = false)
+    private ComicModel comic;
 
 	public ChapterModel() {
 	}
@@ -70,5 +79,13 @@ public class ChapterModel {
 
 	public LocalDateTime getCreatedTime() {
 		return createdTime;
+	}
+	
+	public ComicModel getComic() {
+		return comic;
+	}
+
+	public void setComic(ComicModel comic) {
+		this.comic = comic;
 	}
 }

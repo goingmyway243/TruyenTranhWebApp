@@ -21,13 +21,13 @@ export class ComicService {
     return this.http.get(getUrl).pipe(map(data => Object.assign(new ComicModel(), data)));
   }
 
-  add(user: ComicModel): Observable<ComicModel> {
-    return this.http.post<ComicModel>(this.apiUrl, user, AppComponent.httpOptions);
+  add(comic: ComicModel): Observable<ComicModel> {
+    return this.http.post<ComicModel>(this.apiUrl, comic, AppComponent.httpOptions);
   }
 
-  update(user: ComicModel): Observable<ComicModel> {
-    let putUrl = `${this.apiUrl}/${user.id}`;
-    return this.http.put<ComicModel>(putUrl, user, AppComponent.httpOptions);
+  update(comic: ComicModel): Observable<ComicModel> {
+    let putUrl = `${this.apiUrl}/${comic.id}`;
+    return this.http.put<ComicModel>(putUrl, comic, AppComponent.httpOptions);
   }
 
   delete(id: number): Observable<string> {

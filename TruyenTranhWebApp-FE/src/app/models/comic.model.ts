@@ -1,4 +1,5 @@
 import { AppComponent } from "../app.component";
+import { ChapterModel } from "./chapter.model";
 import { GenreModel } from "./genre.model";
 
 export enum StatusType {
@@ -30,6 +31,8 @@ export class ComicModel implements IComicModel {
     createdTime: Date;
 
     genres: GenreModel[];
+    chapters: ChapterModel[];
+    coverImage?: File;
 
     constructor() {
         this.id = 0;
@@ -42,6 +45,7 @@ export class ComicModel implements IComicModel {
         this.createdTime = new Date();
 
         this.genres = [];
+        this.chapters = [];
     }
 
     getComicCover(): string {

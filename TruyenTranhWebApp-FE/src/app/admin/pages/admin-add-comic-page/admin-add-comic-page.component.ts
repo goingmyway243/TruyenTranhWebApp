@@ -5,6 +5,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { lastValueFrom } from 'rxjs';
 import { MainComponent } from 'src/app/main/main.component';
 import { AuthorModel } from 'src/app/models/author.model';
+import { ChapterModel } from 'src/app/models/chapter.model';
 import { ComicModel } from 'src/app/models/comic.model';
 import { AuthorService } from 'src/app/services/author.service';
 import { ComicService } from 'src/app/services/comic.service';
@@ -22,7 +23,7 @@ export class AdminAddComicPageComponent implements OnInit {
   @ViewChild('genreMultiSelect') genreMultiSelect: any;
 
   newComic: ComicModel = new ComicModel();
-  imageCover?: File;
+  coverImage?: File;
   authorName: string = '';
 
   addForm: FormGroup = new FormGroup({
@@ -55,6 +56,12 @@ export class AdminAddComicPageComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
+    if (AdminComponent.draftComic) {
+      this.newComic = AdminComponent.draftComic;
+      this.coverImage = this.newComic.coverImage;
+      this.loadCoverImage();
+    }
+
     this.genreService.getAll().subscribe(data => {
       data.forEach(genre => {
         this.dropdownList.push(new Object({ value: genre, text: genre.name }));
@@ -65,10 +72,10 @@ export class AdminAddComicPageComponent implements OnInit {
   }
 
   onImageSelected(event: any): void {
-    this.imageCover = event.target.files[0];
+    this.coverImage = event.target.files[0];
 
-    if (this.imageCover) {
-      if ((this.imageCover.size / 1024 / 1024) > 2) {
+    if (this.coverImage) {
+      if ((this.coverImage.size / 1024 / 1024) > 2) {
         Swal.fire(
           'Kích thước quá lớn!',
           'Kích thước ảnh tối đa cho phép là 2MB',
@@ -77,6 +84,12 @@ export class AdminAddComicPageComponent implements OnInit {
         return;
       }
 
+      this.loadCoverImage();
+    }
+  }
+
+  loadCoverImage(): void {
+    if (this.coverImage) {
       const upload = this.elementRef.nativeElement.querySelector('.upload-cover') as HTMLElement;
 
       const placeHolder = upload.querySelector('.upload-cover .placeholder') as HTMLElement;
@@ -95,7 +108,7 @@ export class AdminAddComicPageComponent implements OnInit {
       img.onload = () => {
         URL.revokeObjectURL(img.src);  // no longer needed, free memory
       }
-      img.src = URL.createObjectURL(this.imageCover); // set src to blob url
+      img.src = URL.createObjectURL(this.coverImage); // set src to blob url
     }
   }
 
@@ -106,11 +119,41 @@ export class AdminAddComicPageComponent implements OnInit {
   }
 
   goBack(): void {
+    AdminComponent.draftComic = undefined;
     this.router.navigate(['quan-tri/quan-ly-truyen']);
   }
 
+  navigateToAddChapter(chapter?: ChapterModel): void {
+    AdminComponent.draftComic = this.newComic;
+    AdminComponent.draftComic.coverImage = this.coverImage;
+
+    AdminComponent.draftChapter = chapter;
+
+    this.router.navigate(['quan-tri/them-chuong']);
+  }
+
+  deleteChapter(chapter: ChapterModel): void {
+    Swal.fire({
+      icon: 'question',
+      title: 'Xóa',
+      text: 'Bạn có chắc muốn xóa?',
+      showCancelButton: true,
+      showConfirmButton: true,
+      focusCancel: true,
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Không',
+      confirmButtonColor: 'var(--color-primary)',
+      cancelButtonColor: 'var(--color-danger)'
+    }).then(result => {
+      if (result.isConfirmed) {
+        let index = this.newComic.chapters.indexOf(chapter);
+        this.newComic.chapters.splice(index, 1);
+      }
+    });
+  }
+
   async postComic(): Promise<void> {
-    if (this.imageCover && this.selectedItems.length > 0) {
+    if (this.coverImage && this.selectedItems.length > 0) {
       let author = await lastValueFrom(this.authorService.getByName(this.authorName));
 
       if (author.id != 0) {
@@ -126,11 +169,10 @@ export class AdminAddComicPageComponent implements OnInit {
 
       this.newComic.genres = this.selectedItems.map(item => item.value);
       this.newComic.userId = AdminComponent.currentUser!.id;
-      // console.log(this.newComic);
 
       this.newComic = await lastValueFrom(this.comicService.add(this.newComic));
 
-      this.uploadService.upload(this.imageCover, 'cover.jpg', this.newComic.id + '').subscribe(data => {
+      this.uploadService.upload(this.coverImage, 'cover.jpg', this.newComic.id + '').subscribe(data => {
         Swal.fire({
           position: 'top-end',
           icon: 'success',

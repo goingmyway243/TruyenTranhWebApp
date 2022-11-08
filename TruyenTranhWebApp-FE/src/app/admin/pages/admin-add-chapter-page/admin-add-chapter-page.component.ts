@@ -6,6 +6,7 @@ import { ChapterModel } from 'src/app/models/chapter.model';
 import { ChapterService } from 'src/app/services/chapter.service';
 import { UploadService } from 'src/app/services/upload.service';
 import Swal from 'sweetalert2';
+import { AdminComponent } from '../../admin.component';
 
 @Component({
   selector: 'app-admin-add-chapter-page',
@@ -29,6 +30,12 @@ export class AdminAddChapterPageComponent implements OnInit {
     private uploadService: UploadService) { }
 
   ngOnInit(): void {
+    if (AdminComponent.draftChapter) {
+      this.newChapter = AdminComponent.draftChapter;
+      this.listImages = this.newChapter.contentImages;
+
+      this.listImages.forEach(image => this.loadImage(image));
+    }
   }
 
   goBack(): void {
@@ -36,28 +43,35 @@ export class AdminAddChapterPageComponent implements OnInit {
   }
 
   async postChapter(): Promise<void> {
-    if (this.listImages.length > 0) {
-      // let autitIndex = await lastValueFrom(this.chapterService.getByIndex(this.newChapter.chapterIndex));
-
-      this.newChapter.comicId = this.listImages.length;
-
-      console.log(this.newChapter);
-      // this.newChapter = await lastValueFrom(this.chapterService.add(this.newChapter));
-
-      this.listImages.forEach((image, index) => {
-
-        // this.uploadService.upload(image, index +'.jpg').subscribe(data => {
-        //   Swal.fire({
-        //     position: 'top-end',
-        //     icon: 'success',
-        //     title: 'Thêm truyện thành công!',
-        //     showConfirmButton: false,
-        //     timer: 1500
-        //   }).then(result => {
-        //     this.goBack();
-        //   });
-        // });
+    if (this.listImages.length > 0 && AdminComponent.draftComic) {
+      let duplicateIndex = -1;
+      AdminComponent.draftComic.chapters.forEach(chapter => {
+        if (this.newChapter.chapterIndex === chapter.chapterIndex) {
+          duplicateIndex = chapter.chapterIndex;
+          return;
+        }
       });
+
+      if (duplicateIndex === -1) {
+        this.newChapter.contentImages = this.listImages;
+        AdminComponent.draftComic.chapters.push(this.newChapter);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Thêm chương truyện thành công!',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(result => {
+          this.goBack();
+        });
+      }
+      else {
+        Swal.fire(
+          `Không hợp lệ`,
+          `Chương ${duplicateIndex} đã tồn tại!`,
+          'error'
+        );
+      }
     }
   }
 
@@ -79,43 +93,49 @@ export class AdminAddChapterPageComponent implements OnInit {
         );
       }
       else {
-        const wrapper = this.elementRef.nativeElement.querySelector('.add-content-group .contents') as HTMLElement;
-
-        const container = document.createElement('div');
-        container.style.position = 'relative';
-
-        const removeBtn = document.createElement('span');
-        removeBtn.innerHTML = '<i class="uil uil-multiply"></i>';
-        removeBtn.style.position = 'absolute';
-        removeBtn.style.top = '0.5rem';
-        removeBtn.style.right = '0.5rem';
-        removeBtn.style.fontSize = '2rem';
-        removeBtn.style.color = 'var(--color-danger)';
-        removeBtn.style.fontWeight = '500';
-        removeBtn.style.cursor = 'pointer';
-        removeBtn.addEventListener('click', () => {
-          let index = this.listImages.indexOf(image);
-          this.listImages.splice(index, 1);
-          container.remove();
-        });
-
-        const img = document.createElement('img');
-        img.addEventListener('mouseenter', () => {
-          img.style.border = '3px solid var(--color-primary)';
-        });
-        img.addEventListener('mouseleave', () => {
-          img.style.borderWidth = '0';
-        });
-        img.onload = () => {
-          URL.revokeObjectURL(img.src);  // no longer needed, free memory
-        }
-        img.src = URL.createObjectURL(image); // set src to blob url
-
-        container.appendChild(img);
-        container.appendChild(removeBtn);
-
-        wrapper.appendChild(container);
+        this.loadImage(image);
       }
     }
+
+    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 55);
+  }
+
+  loadImage(image: File): void {
+    const wrapper = this.elementRef.nativeElement.querySelector('.add-content-group .contents') as HTMLElement;
+
+    const container = document.createElement('div');
+    container.style.position = 'relative';
+
+    const removeBtn = document.createElement('span');
+    removeBtn.innerHTML = '<i class="uil uil-multiply"></i>';
+    removeBtn.style.position = 'absolute';
+    removeBtn.style.top = '0.5rem';
+    removeBtn.style.right = '0.5rem';
+    removeBtn.style.fontSize = '2rem';
+    removeBtn.style.color = 'var(--color-danger)';
+    removeBtn.style.fontWeight = '500';
+    removeBtn.style.cursor = 'pointer';
+    removeBtn.addEventListener('click', () => {
+      let index = this.listImages.indexOf(image);
+      this.listImages.splice(index, 1);
+      container.remove();
+    });
+
+    const img = document.createElement('img');
+    img.addEventListener('mouseenter', () => {
+      img.style.border = '3px solid var(--color-primary)';
+    });
+    img.addEventListener('mouseleave', () => {
+      img.style.borderWidth = '0';
+    });
+    img.onload = () => {
+      URL.revokeObjectURL(img.src);  // no longer needed, free memory
+    }
+    img.src = URL.createObjectURL(image); // set src to blob url
+
+    container.appendChild(img);
+    container.appendChild(removeBtn);
+
+    wrapper.appendChild(container);
   }
 }

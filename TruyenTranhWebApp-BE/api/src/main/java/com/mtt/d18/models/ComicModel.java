@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -49,6 +50,9 @@ public class ComicModel {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "comic_genre", joinColumns = @JoinColumn(name = "comic_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
 	private Set<GenreModel> genres = new HashSet<>();
+
+	@OneToMany(mappedBy = "comic", fetch = FetchType.EAGER)
+	private Set<ChapterModel> chapters = new HashSet<>();
 
 	public ComicModel() {
 	}
@@ -131,13 +135,11 @@ public class ComicModel {
 		this.genres = genres;
 	}
 
-	public void addGenre(GenreModel genre) {
-		this.genres.add(genre);
-		genre.getComics().add(this);
+	public Set<ChapterModel> getChapters() {
+		return chapters;
 	}
 
-	public void removeGenre(GenreModel genre) {
-		this.genres.remove(genre);
-		genre.getComics().remove(this);
+	public void setChapters(Set<ChapterModel> chapters) {
+		this.chapters = chapters;
 	}
 }

@@ -26,13 +26,13 @@ export class AuthorService {
     return this.http.get(getUrl).pipe(map(data => Object.assign(new AuthorModel(), data)));
   }
 
-  add(user: AuthorModel): Observable<AuthorModel> {
-    return this.http.post<AuthorModel>(this.apiUrl, user, AppComponent.httpOptions);
+  add(author: AuthorModel): Observable<AuthorModel> {
+    return this.http.post<AuthorModel>(this.apiUrl, author, AppComponent.httpOptions);
   }
 
-  update(user: AuthorModel): Observable<AuthorModel> {
-    let putUrl = `${this.apiUrl}/${user.id}`;
-    return this.http.put<AuthorModel>(putUrl, user, AppComponent.httpOptions);
+  update(author: AuthorModel): Observable<AuthorModel> {
+    let putUrl = `${this.apiUrl}/${author.id}`;
+    return this.http.put<AuthorModel>(putUrl, author, AppComponent.httpOptions);
   }
 
   delete(id: number): Observable<string> {

@@ -21,8 +21,8 @@ export class ReviewService {
     return this.http.get(getUrl).pipe(map(data => Object.assign(new ReviewModel(), data)));
   }
 
-  add(genre: ReviewModel): Observable<ReviewModel> {
-    return this.http.post<ReviewModel>(this.apiUrl, genre);
+  add(review: ReviewModel): Observable<ReviewModel> {
+    return this.http.post<ReviewModel>(this.apiUrl, review);
   }
 
   delete(id: number): Observable<string> {

@@ -29,14 +29,13 @@ public class ChapterController {
 	@GetMapping
 	public ResponseEntity<List<ChapterModel>> getAll() {
 		List<ChapterModel> chapters = new ArrayList<>();
-		
+
 		chapterRepo.findAll().forEach(chapters::add);
-		
-		if(chapters.isEmpty())
-		{
+
+		if (chapters.isEmpty()) {
 			return new ResponseEntity<List<ChapterModel>>(HttpStatus.NO_CONTENT);
 		}
-		
+
 		return new ResponseEntity<List<ChapterModel>>(chapters, HttpStatus.OK);
 	}
 
@@ -48,7 +47,8 @@ public class ChapterController {
 
 	@PostMapping
 	public ResponseEntity<ChapterModel> create(@RequestBody ChapterModel chapterModel) {
-		ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex(), chapterModel.getComicId());
+		ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex(),
+				chapterModel.getComicId());
 		return new ResponseEntity<ChapterModel>(chapterRepo.save(newChapter), HttpStatus.OK);
 	}
 
@@ -64,5 +64,12 @@ public class ChapterController {
 	public ResponseEntity<HttpStatus> delete(@PathVariable long id) {
 		chapterRepo.deleteById(id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+	}
+
+	@PostMapping("/validateIndex")
+	public ResponseEntity<Boolean> validateIndex(@RequestBody ChapterModel chapterModel) {
+		ChapterModel chapter = chapterRepo.findyByChapterIndexAndComicId(chapterModel.getChapterIndex(),
+				chapterModel.getComicId());
+		return new ResponseEntity<Boolean>(chapter == null, HttpStatus.OK);
 	}
 }

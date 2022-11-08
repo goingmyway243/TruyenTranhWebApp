@@ -21,13 +21,13 @@ export class CommentService {
     return this.http.get(getUrl).pipe(map(data => Object.assign(new CommentModel(), data)));
   }
 
-  add(user: CommentModel): Observable<CommentModel> {
-    return this.http.post<CommentModel>(this.apiUrl, user, AppComponent.httpOptions);
+  add(comment: CommentModel): Observable<CommentModel> {
+    return this.http.post<CommentModel>(this.apiUrl, comment, AppComponent.httpOptions);
   }
 
-  update(user: CommentModel): Observable<CommentModel> {
-    let putUrl = `${this.apiUrl}/${user.id}`;
-    return this.http.put<CommentModel>(putUrl, user, AppComponent.httpOptions);
+  update(comment: CommentModel): Observable<CommentModel> {
+    let putUrl = `${this.apiUrl}/${comment.id}`;
+    return this.http.put<CommentModel>(putUrl, comment, AppComponent.httpOptions);
   }
 
   delete(id: number): Observable<string> {

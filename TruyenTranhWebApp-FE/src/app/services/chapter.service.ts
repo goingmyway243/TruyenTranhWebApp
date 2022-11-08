@@ -21,17 +21,22 @@ export class ChapterService {
     return this.http.get(getUrl).pipe(map(data => Object.assign(new ChapterModel(), data)));
   }
 
-  add(user: ChapterModel): Observable<ChapterModel> {
-    return this.http.post<ChapterModel>(this.apiUrl, user, AppComponent.httpOptions);
+  add(chapter: ChapterModel): Observable<ChapterModel> {
+    return this.http.post<ChapterModel>(this.apiUrl, chapter, AppComponent.httpOptions);
   }
 
-  update(user: ChapterModel): Observable<ChapterModel> {
-    let putUrl = `${this.apiUrl}/${user.id}`;
-    return this.http.put<ChapterModel>(putUrl, user, AppComponent.httpOptions);
+  update(chapter: ChapterModel): Observable<ChapterModel> {
+    let putUrl = `${this.apiUrl}/${chapter.id}`;
+    return this.http.put<ChapterModel>(putUrl, chapter, AppComponent.httpOptions);
   }
 
   delete(id: number): Observable<string> {
     let deleteUrl = `${this.apiUrl}/${id}`;
     return this.http.delete<string>(deleteUrl, AppComponent.httpOptions);
+  }
+
+  validateIndex(chapter: ChapterModel): Observable<boolean> {
+    let validateUrl = `${this.apiUrl}/validateIndex`;
+    return this.http.post<boolean>(validateUrl, chapter, AppComponent.httpOptions);
   }
 }

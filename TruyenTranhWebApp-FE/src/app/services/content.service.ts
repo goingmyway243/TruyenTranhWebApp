@@ -21,13 +21,13 @@ export class ContentService {
     return this.http.get(getUrl).pipe(map(data => Object.assign(new ContentModel(), data)));
   }
 
-  add(user: ContentModel): Observable<ContentModel> {
-    return this.http.post<ContentModel>(this.apiUrl, user, AppComponent.httpOptions);
+  add(content: ContentModel): Observable<ContentModel> {
+    return this.http.post<ContentModel>(this.apiUrl, content, AppComponent.httpOptions);
   }
 
-  update(user: ContentModel): Observable<ContentModel> {
-    let putUrl = `${this.apiUrl}/${user.id}`;
-    return this.http.put<ContentModel>(putUrl, user, AppComponent.httpOptions);
+  update(content: ContentModel): Observable<ContentModel> {
+    let putUrl = `${this.apiUrl}/${content.id}`;
+    return this.http.put<ContentModel>(putUrl, content, AppComponent.httpOptions);
   }
 
   delete(id: number): Observable<string> {

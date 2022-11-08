@@ -40,8 +40,8 @@ export class MainComponent implements OnInit {
       focusCancel: true,
       confirmButtonText: 'Có, đăng xuất',
       cancelButtonText: 'Không, ở lại',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33'
+      confirmButtonColor: 'var(--color-primary)',
+      cancelButtonColor: 'var(--color-danger)'
     }).then(result => {
       if (result.isConfirmed) {
         localStorage.removeItem('authorizeToken');

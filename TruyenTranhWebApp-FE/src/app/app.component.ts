@@ -15,15 +15,4 @@ export class AppComponent {
   };
 
   title = 'TruyenTranhWebApp-FE';
-
-  // public doUnload(): void {
-  //   this.doBeforeUnload();
-  // }
-
-  // public doBeforeUnload(): void {
-  //   let stayLogin = localStorage.getItem('stayLogin');
-  //   if (!stayLogin) {
-  //     localStorage.removeItem('currentUser');
-  //   }
-  // }
 }

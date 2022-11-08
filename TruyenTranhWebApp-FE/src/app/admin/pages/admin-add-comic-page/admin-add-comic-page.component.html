@@ -50,24 +50,20 @@
                     <i class="uil uil-list-ul"></i>
                     <span> DANH SÁCH CHƯƠNG</span>
                 </div>
-                <a href="quan-tri/them-chuong" class="add-chapter clickable">
+                <a class="add-chapter clickable" (click)="navigateToAddChapter()">
                     <i class="uil uil-plus-circle"></i>
                     Thêm chương
                 </a>
             </div>
 
-            <ul class="chapters" hidden>
-                <li class="chapter-item">
-                    <a class="left">Chapter 3</a>
-                    <span class="remove clickable"><i class=" uil uil-trash-alt"></i></span>
-                </li>
-                <li class="chapter-item">
-                    <a class="left">Chapter 2</a>
-                    <span class="remove clickable"><i class=" uil uil-trash-alt"></i></span>
-                </li>
-                <li class="chapter-item">
-                    <a class="left" [routerLink]="['./chuong/1']">Chapter 1</a>
-                    <span class="remove clickable"><i class=" uil uil-trash-alt"></i></span>
+            <ul class="chapters" [hidden]="newComic.chapters.length == 0">
+                <li class="chapter-item" *ngFor="let chapter of newComic.chapters">
+                    <a class="left" (click)="navigateToAddChapter(chapter)">
+                        {{chapter.getChapterName()}}
+                    </a>
+                    <span class="remove clickable" (click)="deleteChapter(chapter)">
+                        <i class=" uil uil-trash-alt"></i>
+                    </span>
                 </li>
             </ul>
 

@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import { ChapterModel } from '../models/chapter.model';
+import { ComicModel } from '../models/comic.model';
 import { UserModel } from '../models/user.model';
 import { UserService } from '../services/user.service';
 
@@ -9,6 +11,8 @@ import { UserService } from '../services/user.service';
 })
 export class AdminComponent implements OnInit, AfterViewInit {
   static currentUser?: UserModel;
+  static draftComic?: ComicModel;
+  static draftChapter?: ChapterModel;
 
   constructor(private elmRef: ElementRef, private userService: UserService) { }
 
