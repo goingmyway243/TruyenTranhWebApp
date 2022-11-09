@@ -25,9 +25,7 @@ export class AdminAddChapterPageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private elementRef: ElementRef,
-    private chapterService: ChapterService,
-    private uploadService: UploadService) { }
+    private elementRef: ElementRef) { }
 
   ngOnInit(): void {
     if (AdminComponent.draftChapter) {

@@ -25,7 +25,7 @@ public class GenreModel {
 
 	private String name;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "genres")
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE }, mappedBy = "genres")
 	@JsonIgnore
 	private Set<ComicModel> comics = new HashSet<>();
 

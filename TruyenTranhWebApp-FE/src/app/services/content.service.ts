@@ -25,6 +25,11 @@ export class ContentService {
     return this.http.post<ContentModel>(this.apiUrl, content, AppComponent.httpOptions);
   }
 
+  addList(contents: ContentModel[]): Observable<ContentModel[]> {
+    let postUrl = `${this.apiUrl}/list`;
+    return this.http.post<ContentModel[]>(postUrl, contents, AppComponent.httpOptions);
+  }
+
   update(content: ContentModel): Observable<ContentModel> {
     let putUrl = `${this.apiUrl}/${content.id}`;
     return this.http.put<ContentModel>(putUrl, content, AppComponent.httpOptions);

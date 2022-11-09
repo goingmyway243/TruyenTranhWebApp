@@ -7,8 +7,11 @@ import { MainComponent } from 'src/app/main/main.component';
 import { AuthorModel } from 'src/app/models/author.model';
 import { ChapterModel } from 'src/app/models/chapter.model';
 import { ComicModel } from 'src/app/models/comic.model';
+import { ContentModel } from 'src/app/models/content.model';
 import { AuthorService } from 'src/app/services/author.service';
+import { ChapterService } from 'src/app/services/chapter.service';
 import { ComicService } from 'src/app/services/comic.service';
+import { ContentService } from 'src/app/services/content.service';
 import { GenreService } from 'src/app/services/genre.service';
 import { UploadService } from 'src/app/services/upload.service';
 import Swal from 'sweetalert2';
@@ -52,6 +55,8 @@ export class AdminAddComicPageComponent implements OnInit {
     private genreService: GenreService,
     private authorService: AuthorService,
     private comicService: ComicService,
+    private chapterService: ChapterService,
+    private contentService: ContentService,
     private uploadService: UploadService,
     private router: Router) { }
 
@@ -156,7 +161,7 @@ export class AdminAddComicPageComponent implements OnInit {
     if (this.coverImage && this.selectedItems.length > 0) {
       let author = await lastValueFrom(this.authorService.getByName(this.authorName));
 
-      if (author.id != 0) {
+      if (author.id !== 0) {
         this.newComic.authorId = author.id;
       }
       else {
@@ -167,10 +172,15 @@ export class AdminAddComicPageComponent implements OnInit {
         this.newComic.authorId = author.id;
       }
 
+      let chapters = this.newComic.chapters;
+
       this.newComic.genres = this.selectedItems.map(item => item.value);
       this.newComic.userId = AdminComponent.currentUser!.id;
 
       this.newComic = await lastValueFrom(this.comicService.add(this.newComic));
+      // this.newComic = await lastValueFrom(this.comicService.getById(1));
+
+      await lastValueFrom(this.chapterService.addList(chapters, this.newComic.id));
 
       this.uploadService.upload(this.coverImage, 'cover.jpg', this.newComic.id + '').subscribe(data => {
         Swal.fire({
@@ -184,5 +194,20 @@ export class AdminAddComicPageComponent implements OnInit {
         });
       });
     }
+  }
+
+  async postChapter(chapter: ChapterModel): Promise<void> {
+    const contentImages = chapter.contentImages;
+
+    chapter = await lastValueFrom(this.chapterService.add(chapter));
+
+    contentImages.forEach(async (image, index) => {
+      let content = new ContentModel();
+      content.contentIndex = index;
+      content.fileName = String(index).padStart(3, '0') + '.jpg';
+
+      content = await lastValueFrom(this.contentService.add(content));
+      await lastValueFrom(this.uploadService.upload(image, content.id + '.jpg', chapter.comic!.id + ''));
+    });
   }
 }

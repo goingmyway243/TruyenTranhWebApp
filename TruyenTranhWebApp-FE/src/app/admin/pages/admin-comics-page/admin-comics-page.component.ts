@@ -35,8 +35,6 @@ export class AdminComicsPageComponent implements OnInit {
     wrapper.removeAttribute('hidden');
 
     img.src = comic.getComicCover();
-
-    console.log(img.src);
   }
 
   onTableMouseLeave(): void {

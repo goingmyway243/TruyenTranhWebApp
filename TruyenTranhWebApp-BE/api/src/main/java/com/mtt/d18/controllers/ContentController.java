@@ -2,6 +2,7 @@ package com.mtt.d18.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mtt.d18.models.ChapterModel;
 import com.mtt.d18.models.ContentModel;
+import com.mtt.d18.repositories.IChapterRepository;
 import com.mtt.d18.repositories.IContentRepository;
-
 
 @RestController
 @CrossOrigin("*")
@@ -26,18 +28,20 @@ import com.mtt.d18.repositories.IContentRepository;
 public class ContentController {
 	@Autowired
 	private IContentRepository contentRepo;
+	
+	@Autowired
+	private IChapterRepository chapterRepo;
 
 	@GetMapping
 	public ResponseEntity<List<ContentModel>> getAll() {
 		List<ContentModel> contents = new ArrayList<>();
-		
+
 		contentRepo.findAll().forEach(contents::add);
-		
-		if(contents.isEmpty())
-		{
+
+		if (contents.isEmpty()) {
 			return new ResponseEntity<List<ContentModel>>(HttpStatus.NO_CONTENT);
 		}
-		
+
 		return new ResponseEntity<List<ContentModel>>(contents, HttpStatus.OK);
 	}
 
@@ -49,8 +53,24 @@ public class ContentController {
 
 	@PostMapping
 	public ResponseEntity<ContentModel> create(@RequestBody ContentModel contentModel) {
-		ContentModel newContent = new ContentModel(contentModel.getFileName(), contentModel.getContentIndex(), contentModel.getChapterId());
+		ContentModel newContent = new ContentModel(contentModel.getFileName(), contentModel.getContentIndex());
 		return new ResponseEntity<ContentModel>(contentRepo.save(newContent), HttpStatus.OK);
+	}
+	
+	@PostMapping("/list/{chapterId}")
+	public ResponseEntity<Set<ContentModel>> createList(@RequestBody Set<ContentModel> listContent, @PathVariable long chapterId) {
+		ChapterModel chapter = chapterRepo.findById(chapterId).orElseGet(null);
+		if (chapter == null) {
+			return new ResponseEntity<Set<ContentModel>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		listContent.forEach(contentModel -> {
+			ContentModel newContent = new ContentModel(contentModel.getFileName(), contentModel.getContentIndex());
+			newContent.setChapter(chapter);
+			contentRepo.save(newContent);
+		});
+
+		return new ResponseEntity<Set<ContentModel>>(listContent, HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")

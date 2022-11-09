@@ -1,18 +1,24 @@
 package com.mtt.d18.models;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "chapter")
@@ -20,35 +26,36 @@ public class ChapterModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	private String name;
-	
+
 	private int chapterIndex;
-	
-	@Column(name = "comic_id")
-	private long comicId;
-	
+
 	@CreatedDate
 	private LocalDateTime createdTime;
 
-	@ManyToOne(optional = false)
-    @JoinColumn(name = "comic_id", insertable = false, updatable = false)
-    private ComicModel comic;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "comic_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private ComicModel comic;
+
+	@OneToMany(mappedBy = "chapter", fetch = FetchType.EAGER)
+	private Set<ContentModel> contents = new HashSet<>();
 
 	public ChapterModel() {
 	}
 
-	public ChapterModel(String name, int chapterIndex, long comicId) {
+	public ChapterModel(String name, int chapterIndex) {
 		this.name = name;
 		this.chapterIndex = chapterIndex;
-		this.comicId = comicId;
 		this.createdTime = LocalDateTime.now();
 	}
 
 	public long getId() {
 		return id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -68,19 +75,11 @@ public class ChapterModel {
 	public void setChapterIndex(int chapterIndex) {
 		this.chapterIndex = chapterIndex;
 	}
-
-	public long getComicId() {
-		return comicId;
-	}
-
-	public void setComicId(long comicId) {
-		this.comicId = comicId;
-	}
-
+	
 	public LocalDateTime getCreatedTime() {
 		return createdTime;
 	}
-	
+
 	public ComicModel getComic() {
 		return comic;
 	}

@@ -25,6 +25,12 @@ export class ChapterService {
     return this.http.post<ChapterModel>(this.apiUrl, chapter, AppComponent.httpOptions);
   }
 
+  addList(chapters: ChapterModel[], comicId: number): Observable<ChapterModel[]> {
+    let postUrl = `${this.apiUrl}/list/${comicId}`;
+    console.log(chapters);
+    return this.http.post<ChapterModel[]>(postUrl, chapters, AppComponent.httpOptions);
+  }
+
   update(chapter: ChapterModel): Observable<ChapterModel> {
     let putUrl = `${this.apiUrl}/${chapter.id}`;
     return this.http.put<ChapterModel>(putUrl, chapter, AppComponent.httpOptions);

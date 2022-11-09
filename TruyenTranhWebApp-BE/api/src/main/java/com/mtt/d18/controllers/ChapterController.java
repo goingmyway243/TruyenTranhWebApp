@@ -2,6 +2,7 @@ package com.mtt.d18.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mtt.d18.models.ChapterModel;
+import com.mtt.d18.models.ComicModel;
 import com.mtt.d18.repositories.IChapterRepository;
+import com.mtt.d18.repositories.IComicRepository;
 
 @RestController
 @CrossOrigin("*")
@@ -25,6 +28,9 @@ import com.mtt.d18.repositories.IChapterRepository;
 public class ChapterController {
 	@Autowired
 	private IChapterRepository chapterRepo;
+
+	@Autowired
+	private IComicRepository comicRepo;
 
 	@GetMapping
 	public ResponseEntity<List<ChapterModel>> getAll() {
@@ -47,9 +53,26 @@ public class ChapterController {
 
 	@PostMapping
 	public ResponseEntity<ChapterModel> create(@RequestBody ChapterModel chapterModel) {
-		ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex(),
-				chapterModel.getComicId());
+		ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex());
+		newChapter.setComic(chapterModel.getComic());
 		return new ResponseEntity<ChapterModel>(chapterRepo.save(newChapter), HttpStatus.OK);
+	}
+
+	@PostMapping("/list/{comicId}")
+	public ResponseEntity<Set<ChapterModel>> createList(@RequestBody Set<ChapterModel> listChapter,
+			@PathVariable long comicId) {
+		ComicModel comic = comicRepo.findById(comicId).orElseGet(() -> null);
+		if (comic == null) {
+			return new ResponseEntity<Set<ChapterModel>>(HttpStatus.BAD_REQUEST);
+		}
+
+		listChapter.forEach(chapterModel -> {
+			ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex());
+			newChapter.setComic(comic);
+			chapterRepo.save(newChapter);
+		});
+
+		return new ResponseEntity<Set<ChapterModel>>(listChapter, HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")
@@ -64,12 +87,5 @@ public class ChapterController {
 	public ResponseEntity<HttpStatus> delete(@PathVariable long id) {
 		chapterRepo.deleteById(id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-	}
-
-	@PostMapping("/validateIndex")
-	public ResponseEntity<Boolean> validateIndex(@RequestBody ChapterModel chapterModel) {
-		ChapterModel chapter = chapterRepo.findyByChapterIndexAndComicId(chapterModel.getChapterIndex(),
-				chapterModel.getComicId());
-		return new ResponseEntity<Boolean>(chapter == null, HttpStatus.OK);
 	}
 }

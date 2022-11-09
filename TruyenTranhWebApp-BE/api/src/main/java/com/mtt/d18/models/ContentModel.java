@@ -1,10 +1,18 @@
 package com.mtt.d18.models;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "content")
@@ -12,20 +20,23 @@ public class ContentModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	private String fileName;
-	
+
 	private int contentIndex;
-	
-	private long chapterId;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "chapter_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private ChapterModel chapter;
 
 	public ContentModel() {
 	}
 
-	public ContentModel(String fileName, int contentIndex, long chapterId) {
+	public ContentModel(String fileName, int contentIndex) {
 		this.fileName = fileName;
 		this.contentIndex = contentIndex;
-		this.chapterId = chapterId;
 	}
 
 	public long getId() {
@@ -51,12 +62,12 @@ public class ContentModel {
 	public void setContentIndex(int contentIndex) {
 		this.contentIndex = contentIndex;
 	}
-
-	public long getChapterId() {
-		return chapterId;
+	
+	public ChapterModel getChapter() {
+		return chapter;
 	}
 
-	public void setChapterId(long chapterId) {
-		this.chapterId = chapterId;
+	public void setChapter(ChapterModel chapter) {
+		this.chapter = chapter;
 	}
 }

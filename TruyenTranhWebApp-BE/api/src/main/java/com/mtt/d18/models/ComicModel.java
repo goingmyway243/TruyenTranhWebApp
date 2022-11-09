@@ -47,7 +47,7 @@ public class ComicModel {
 	@CreatedDate
 	private LocalDateTime createdTime;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinTable(name = "comic_genre", joinColumns = @JoinColumn(name = "comic_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
 	private Set<GenreModel> genres = new HashSet<>();
 
