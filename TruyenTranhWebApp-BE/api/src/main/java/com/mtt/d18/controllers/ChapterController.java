@@ -1,6 +1,7 @@
 package com.mtt.d18.controllers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -61,7 +62,9 @@ public class ChapterController {
 	@PostMapping("/list/{comicId}")
 	public ResponseEntity<Set<ChapterModel>> createList(@RequestBody Set<ChapterModel> listChapter,
 			@PathVariable long comicId) {
+		Set<ChapterModel> listResult = new HashSet<>();
 		ComicModel comic = comicRepo.findById(comicId).orElseGet(() -> null);
+		
 		if (comic == null) {
 			return new ResponseEntity<Set<ChapterModel>>(HttpStatus.BAD_REQUEST);
 		}
@@ -69,10 +72,10 @@ public class ChapterController {
 		listChapter.forEach(chapterModel -> {
 			ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex());
 			newChapter.setComic(comic);
-			chapterRepo.save(newChapter);
+			listResult.add(chapterRepo.save(newChapter));
 		});
 
-		return new ResponseEntity<Set<ChapterModel>>(listChapter, HttpStatus.OK);
+		return new ResponseEntity<Set<ChapterModel>>(listResult, HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")

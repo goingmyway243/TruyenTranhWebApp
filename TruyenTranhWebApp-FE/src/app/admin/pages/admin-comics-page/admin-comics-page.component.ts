@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { ComicModel } from 'src/app/models/comic.model';
 import { ComicService } from 'src/app/services/comic.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-comics-page',
@@ -43,5 +44,45 @@ export class AdminComicsPageComponent implements OnInit {
 
     wrapper.setAttribute('hidden', '');
     placeHolder.removeAttribute('hidden');
+  }
+
+  removeComic(id: number): void {
+    Swal.fire({
+      icon: 'question',
+      title: 'Xóa',
+      text: `Bạn có chắc muốn xóa truyện có mã '${id}'?`,
+      showCancelButton: true,
+      showConfirmButton: true,
+      focusCancel: true,
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Không',
+      confirmButtonColor: 'var(--color-primary)',
+      cancelButtonColor: 'var(--color-danger)'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.comicService.delete(id).subscribe(
+          data => {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Xóa thành công!',
+              showConfirmButton: false,
+              timer: 1000
+            }).then(result => {
+              this.getAllComics();
+            });
+          },
+          error => {
+            console.log(error);
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Có lỗi xảy ra!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          });
+      }
+    });
   }
 }

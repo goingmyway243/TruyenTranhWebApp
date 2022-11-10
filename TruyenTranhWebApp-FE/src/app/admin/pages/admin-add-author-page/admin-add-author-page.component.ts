@@ -34,7 +34,7 @@ export class AdminAddAuthorPageComponent implements OnInit {
           icon: 'success',
           title: 'Thêm tác giả thành công!',
           showConfirmButton: false,
-          timer: 1500
+          timer: 1000
         }).then(result => {
           this.goBack();
         });

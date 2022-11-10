@@ -1,6 +1,7 @@
 package com.mtt.d18.controllers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -51,15 +52,23 @@ public class ContentController {
 				.orElseGet(() -> new ResponseEntity<ContentModel>(HttpStatus.NOT_FOUND));
 	}
 
-	@PostMapping
-	public ResponseEntity<ContentModel> create(@RequestBody ContentModel contentModel) {
+	@PostMapping("/{chapterId}")
+	public ResponseEntity<ContentModel> create(@RequestBody ContentModel contentModel, @PathVariable long chapterId) {
+		ChapterModel chapter = chapterRepo.findById(chapterId).orElseGet(null);
+		if (chapter == null) {
+			return new ResponseEntity<ContentModel>(HttpStatus.BAD_REQUEST);
+		}
+		
 		ContentModel newContent = new ContentModel(contentModel.getFileName(), contentModel.getContentIndex());
+		newContent.setChapter(chapter);
 		return new ResponseEntity<ContentModel>(contentRepo.save(newContent), HttpStatus.OK);
 	}
 	
 	@PostMapping("/list/{chapterId}")
 	public ResponseEntity<Set<ContentModel>> createList(@RequestBody Set<ContentModel> listContent, @PathVariable long chapterId) {
+		Set<ContentModel> listResult = new HashSet<>();
 		ChapterModel chapter = chapterRepo.findById(chapterId).orElseGet(null);
+		
 		if (chapter == null) {
 			return new ResponseEntity<Set<ContentModel>>(HttpStatus.BAD_REQUEST);
 		}
@@ -67,10 +76,10 @@ public class ContentController {
 		listContent.forEach(contentModel -> {
 			ContentModel newContent = new ContentModel(contentModel.getFileName(), contentModel.getContentIndex());
 			newContent.setChapter(chapter);
-			contentRepo.save(newContent);
+			listResult.add(contentRepo.save(newContent));
 		});
 
-		return new ResponseEntity<Set<ContentModel>>(listContent, HttpStatus.OK);
+		return new ResponseEntity<Set<ContentModel>>(listResult, HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")

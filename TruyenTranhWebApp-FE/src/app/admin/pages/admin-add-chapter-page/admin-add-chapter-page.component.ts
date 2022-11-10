@@ -58,7 +58,7 @@ export class AdminAddChapterPageComponent implements OnInit {
           icon: 'success',
           title: 'Thêm chương truyện thành công!',
           showConfirmButton: false,
-          timer: 1500
+          timer: 1000
         }).then(result => {
           this.goBack();
         });

@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { lastValueFrom } from 'rxjs';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { MainComponent } from 'src/app/main/main.component';
 import { AuthorModel } from 'src/app/models/author.model';
 import { ChapterModel } from 'src/app/models/chapter.model';
@@ -159,6 +159,8 @@ export class AdminAddComicPageComponent implements OnInit {
 
   async postComic(): Promise<void> {
     if (this.coverImage && this.selectedItems.length > 0) {
+      this.toggleSpinner();
+
       let author = await lastValueFrom(this.authorService.getByName(this.authorName));
 
       if (author.id !== 0) {
@@ -178,9 +180,29 @@ export class AdminAddComicPageComponent implements OnInit {
       this.newComic.userId = AdminComponent.currentUser!.id;
 
       this.newComic = await lastValueFrom(this.comicService.add(this.newComic));
-      // this.newComic = await lastValueFrom(this.comicService.getById(1));
 
-      await lastValueFrom(this.chapterService.addList(chapters, this.newComic.id));
+      let result = await lastValueFrom(this.chapterService.addList(chapters, this.newComic.id));
+
+      for (let i = 0; i < chapters.length; i++) {
+        let chapter = chapters[i];
+        chapter.id = result[i].id;
+
+        for (let j = 0; j < chapter.contentImages.length; j++) {
+          let image = chapter.contentImages[j];
+          let content = new ContentModel();
+          content.contentIndex = j;
+          content.fileName = String(j).padStart(3, '0') + '.jpg';
+
+          content = await lastValueFrom(this.contentService.add(content, chapter.id));
+          try {
+            await firstValueFrom(this.uploadService.upload(image, content.id + '.jpg', this.newComic.id + ''));
+          }
+          catch {
+          }
+        }
+      }
+
+      this.toggleSpinner();
 
       this.uploadService.upload(this.coverImage, 'cover.jpg', this.newComic.id + '').subscribe(data => {
         Swal.fire({
@@ -196,18 +218,8 @@ export class AdminAddComicPageComponent implements OnInit {
     }
   }
 
-  async postChapter(chapter: ChapterModel): Promise<void> {
-    const contentImages = chapter.contentImages;
-
-    chapter = await lastValueFrom(this.chapterService.add(chapter));
-
-    contentImages.forEach(async (image, index) => {
-      let content = new ContentModel();
-      content.contentIndex = index;
-      content.fileName = String(index).padStart(3, '0') + '.jpg';
-
-      content = await lastValueFrom(this.contentService.add(content));
-      await lastValueFrom(this.uploadService.upload(image, content.id + '.jpg', chapter.comic!.id + ''));
-    });
+  toggleSpinner(): void {
+    let spinner = this.elementRef.nativeElement.querySelector('.spinner') as HTMLElement;
+    spinner.classList.toggle('hidden');
   }
 }

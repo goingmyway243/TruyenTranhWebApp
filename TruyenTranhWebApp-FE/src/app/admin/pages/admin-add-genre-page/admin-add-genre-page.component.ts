@@ -25,6 +25,7 @@ export class AdminAddGenrePageComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['quan-tri/quan-ly-the-loai']);
   }
+
   postGenre(): void {
     this.genreService.add(this.newGenre).subscribe(
       data => {
@@ -33,7 +34,7 @@ export class AdminAddGenrePageComponent implements OnInit {
           icon: 'success',
           title: 'Thêm thể loại thành công!',
           showConfirmButton: false,
-          timer: 1500
+          timer: 1000
         }).then(result => {
           this.goBack();
         });

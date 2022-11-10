@@ -43,7 +43,8 @@
                         <td>{{genre.name}}</td>
                         <td>
                             <span class="edit clickable"><i class="uil uil-edit"></i></span>
-                            <span class="remove clickable"><i class=" uil uil-trash-alt"></i></span>
+                            <span class="remove clickable" (click)="removeGenre(genre.id)"><i
+                                    class=" uil uil-trash-alt"></i></span>
                         </td>
                     </tr>
                 </tbody>

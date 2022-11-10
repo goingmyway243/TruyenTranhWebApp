@@ -24,7 +24,7 @@ export class AdminAuthorsPageComponent implements OnInit {
   removeAuthor(id: number): void {
     Swal.fire({
       icon: 'question',
-      title: 'Đăng xuất',
+      title: 'Xóa',
       text: `Bạn có chắc muốn xóa tác giả có mã '${id}'?`,
       showCancelButton: true,
       showConfirmButton: true,
@@ -37,14 +37,23 @@ export class AdminAuthorsPageComponent implements OnInit {
       if (result.isConfirmed) {
         this.authorService.delete(id).subscribe(
           data => {
-            this.getAllAuthors();
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Xóa thành công!',
+              showConfirmButton: false,
+              timer: 1000
+            }).then(result => {
+              this.getAllAuthors();
+            });
           },
           error => {
             console.log(error);
             Swal.fire({
               position: 'top-end',
               icon: 'error',
-              title: 'Có lỗi xảy ra!',
+              title: 'Không thể xóa!',
+              text: 'Có thể đang có truyện thuộc giả này tồn tại',
               showConfirmButton: false,
               timer: 1500
             });

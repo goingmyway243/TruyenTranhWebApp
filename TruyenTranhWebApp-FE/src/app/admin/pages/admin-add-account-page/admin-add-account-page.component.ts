@@ -42,7 +42,7 @@ export class AdminAddAccountPageComponent implements OnInit {
           icon: 'success',
           title: 'Thêm tài khoản thành công!',
           showConfirmButton: false,
-          timer: 1500
+          timer: 1000
         }).then(result => {
           this.goBack();
         });

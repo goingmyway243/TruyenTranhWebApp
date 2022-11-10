@@ -16,11 +16,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mtt.d18.enums.StatusType;
 
 @Entity
@@ -40,13 +44,21 @@ public class ComicModel {
 	@Enumerated(EnumType.STRING)
 	private StatusType status;
 
-	private long userId;
-
-	private long authorId;
-
 	@CreatedDate
 	private LocalDateTime createdTime;
 
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "user_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private UserModel user;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "author_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private AuthorModel author;
+	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinTable(name = "comic_genre", joinColumns = @JoinColumn(name = "comic_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
 	private Set<GenreModel> genres = new HashSet<>();
@@ -57,13 +69,11 @@ public class ComicModel {
 	public ComicModel() {
 	}
 
-	public ComicModel(String title, String description, long view, StatusType status, long userId, long authorId) {
+	public ComicModel(String title, String description, long view, StatusType status) {
 		this.title = title;
 		this.description = description;
 		this.view = view;
 		this.status = status;
-		this.userId = userId;
-		this.authorId = authorId;
 		this.createdTime = LocalDateTime.now();
 	}
 
@@ -107,24 +117,24 @@ public class ComicModel {
 		this.status = status;
 	}
 
-	public long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
-	public long getAuthorId() {
-		return authorId;
-	}
-
-	public void setAuthorId(long authorId) {
-		this.authorId = authorId;
-	}
-
 	public LocalDateTime getCreatedTime() {
 		return createdTime;
+	}
+
+	public UserModel getUser() {
+		return user;
+	}
+
+	public void setUser(UserModel user) {
+		this.user = user;
+	}
+
+	public AuthorModel getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(AuthorModel author) {
+		this.author = author;
 	}
 
 	public Set<GenreModel> getGenres() {

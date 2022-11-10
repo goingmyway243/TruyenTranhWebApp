@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GenreModel } from 'src/app/models/genre.model';
 import { GenreService } from 'src/app/services/genre.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-genres-page',
@@ -13,7 +14,51 @@ export class AdminGenresPageComponent implements OnInit {
   constructor(private genreService: GenreService) { }
 
   ngOnInit(): void {
+    this.getAllGenres();
+  }
+
+  getAllGenres(): void {
     this.genreService.getAll().subscribe(data => this.listGenres = data);
   }
 
+  removeGenre(id: number): void {
+    Swal.fire({
+      icon: 'question',
+      title: 'Xóa',
+      text: `Bạn có chắc muốn xóa thể loại có mã '${id}'?`,
+      showCancelButton: true,
+      showConfirmButton: true,
+      focusCancel: true,
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Không',
+      confirmButtonColor: 'var(--color-primary)',
+      cancelButtonColor: 'var(--color-danger)'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.genreService.delete(id).subscribe(
+          data => {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Xóa thành công!',
+              showConfirmButton: false,
+              timer: 1000
+            }).then(result => {
+              this.getAllGenres();
+            });
+          },
+          error => {
+            console.log(error);
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Không thể xóa!',
+              text: 'Có thể đang có truyện thuộc thể loại này tồn tại',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          });
+      }
+    });
+  }
 }
