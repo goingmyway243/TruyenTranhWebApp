@@ -194,11 +194,7 @@ export class AdminAddComicPageComponent implements OnInit {
           content.fileName = String(j).padStart(3, '0') + '.jpg';
 
           content = await lastValueFrom(this.contentService.add(content, chapter.id));
-          try {
-            await firstValueFrom(this.uploadService.upload(image, content.id + '.jpg', this.newComic.id + ''));
-          }
-          catch {
-          }
+          await lastValueFrom(this.uploadService.upload(image, content.id + '.jpg', this.newComic.id + ''));
         }
       }
 

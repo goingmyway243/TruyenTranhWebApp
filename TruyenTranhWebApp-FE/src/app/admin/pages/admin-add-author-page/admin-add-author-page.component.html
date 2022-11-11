@@ -7,7 +7,7 @@
 
     <div class="container">
         <div class="header">
-            <h2>Thêm tác giả</h2>
+            <h2>{{editId ? 'Cập nhật ' : 'Thêm '}}tác giả</h2>
         </div>
 
         <div class="wrapper">
@@ -15,6 +15,11 @@
                 <div>
                     <label for="name">Tên tác giả</label>
                     <input id="name" [(ngModel)]="newAuthor.name" formControlName="name">
+                    <div *ngIf="name!.invalid && (name!.dirty || name!.touched)" class="alert alert-danger">
+                        <div *ngIf="name!.errors?.['required']">
+                            Vui lòng nhập tên tác giả
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

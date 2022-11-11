@@ -52,7 +52,12 @@ const routes: Routes = [
       { path: 'them-chuong', component: AdminAddChapterPageComponent },
       { path: 'them-the-loai', component: AdminAddGenrePageComponent },
       { path: 'them-tac-gia', component: AdminAddAuthorPageComponent },
-      { path: 'them-tai-khoan', component: AdminAddAccountPageComponent }
+      { path: 'them-tai-khoan', component: AdminAddAccountPageComponent },
+      { path: 'cap-nhat-truyen/:id', component: AdminAddComicPageComponent },
+      { path: 'cap-nhat-chuong/:id', component: AdminAddChapterPageComponent },
+      { path: 'cap-nhat-the-loai/:id', component: AdminAddGenrePageComponent },
+      { path: 'cap-nhat-tac-gia/:id', component: AdminAddAuthorPageComponent },
+      { path: 'cap-nhat-tai-khoan/:id', component: AdminAddAccountPageComponent },
     ]
   },
   { path: '**', redirectTo: '', pathMatch: 'full' }

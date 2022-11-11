@@ -24,7 +24,7 @@
         <div class="recent-comics">
             <div class="cardHeader">
                 <h2>Danh sách tác giả</h2>
-                <a href="quan-tri/them-tac-gia" class="btn clickable">
+                <a class="btn clickable" (click)="addAuthor()">
                     <i class="uil uil-plus-circle"></i>
                     Thêm mới
                 </a>
@@ -42,9 +42,12 @@
                         <td>{{author.id}}</td>
                         <td>{{author.name}}</td>
                         <td>
-                            <span class="edit clickable"><i class="uil uil-edit"></i></span>
-                            <span class="remove clickable" (click)="removeAuthor(author.id)"><i
-                                    class=" uil uil-trash-alt"></i></span>
+                            <span class="edit clickable" (click)="editAuthor(author.id)">
+                                <i class="uil uil-edit"></i>
+                            </span>
+                            <span class="remove clickable" (click)="removeAuthor(author.id)">
+                                <i class=" uil uil-trash-alt"></i>
+                            </span>
                         </td>
                     </tr>
                 </tbody>

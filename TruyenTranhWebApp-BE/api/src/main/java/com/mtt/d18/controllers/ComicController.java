@@ -29,14 +29,13 @@ public class ComicController {
 	@GetMapping
 	public ResponseEntity<List<ComicModel>> getAll() {
 		List<ComicModel> genres = new ArrayList<>();
-		
+
 		comicRepo.findAll().forEach(genres::add);
-		
-		if(genres.isEmpty())
-		{
+
+		if (genres.isEmpty()) {
 			return new ResponseEntity<List<ComicModel>>(HttpStatus.NO_CONTENT);
 		}
-		
+
 		return new ResponseEntity<List<ComicModel>>(genres, HttpStatus.OK);
 	}
 
@@ -48,9 +47,10 @@ public class ComicController {
 
 	@PostMapping
 	public ResponseEntity<ComicModel> create(@RequestBody ComicModel comicModel) {
-		ComicModel newComic = new ComicModel(comicModel.getTitle(), comicModel.getDescription(), 0, comicModel.getStatus());
+		ComicModel newComic = new ComicModel(comicModel.getTitle(), comicModel.getDescription(), 0,
+				comicModel.getUserId(), comicModel.getAuthorId(), comicModel.getStatus());
 		newComic.setGenres(comicModel.getGenres());
-		
+
 		return new ResponseEntity<ComicModel>(comicRepo.save(newComic), HttpStatus.OK);
 	}
 
@@ -61,9 +61,9 @@ public class ComicController {
 			return new ResponseEntity<>(comicRepo.save(comicModel), HttpStatus.OK);
 		}).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id){
+	public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id) {
 		comicRepo.deleteById(id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}

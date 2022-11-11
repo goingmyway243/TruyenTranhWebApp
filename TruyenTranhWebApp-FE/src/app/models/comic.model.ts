@@ -1,6 +1,8 @@
 import { AppComponent } from "../app.component";
+import { AuthorModel } from "./author.model";
 import { ChapterModel } from "./chapter.model";
 import { GenreModel } from "./genre.model";
+import { UserModel } from "./user.model";
 
 export enum StatusType {
     PENDING,
@@ -30,6 +32,8 @@ export class ComicModel implements IComicModel {
     authorId: number;
     createdTime: Date;
 
+    user?: UserModel;
+    author?: AuthorModel;
     genres: GenreModel[];
     chapters: ChapterModel[];
     coverImage?: File;

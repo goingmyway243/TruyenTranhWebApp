@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { GenreModel } from 'src/app/models/genre.model';
 import { GenreService } from 'src/app/services/genre.service';
 import Swal from 'sweetalert2';
@@ -11,7 +12,9 @@ import Swal from 'sweetalert2';
 export class AdminGenresPageComponent implements OnInit {
   listGenres: GenreModel[] = [];
 
-  constructor(private genreService: GenreService) { }
+  constructor(
+    private router: Router,
+    private genreService: GenreService) { }
 
   ngOnInit(): void {
     this.getAllGenres();
@@ -19,6 +22,14 @@ export class AdminGenresPageComponent implements OnInit {
 
   getAllGenres(): void {
     this.genreService.getAll().subscribe(data => this.listGenres = data);
+  }
+
+  addGenre(): void {
+    this.router.navigate(['quan-tri/them-the-loai']);
+  }
+
+  editGenre(id: number): void {
+    this.router.navigate([`quan-tri/cap-nhat-the-loai/${id}`]);
   }
 
   removeGenre(id: number): void {

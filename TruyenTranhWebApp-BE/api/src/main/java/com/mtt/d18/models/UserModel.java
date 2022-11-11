@@ -1,18 +1,14 @@
 package com.mtt.d18.models;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -38,9 +34,6 @@ public class UserModel {
 	
 	@CreatedDate
 	private LocalDateTime createdTime;
-
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-	private Set<ComicModel> comics = new HashSet<>();
 	
 	public UserModel() {
 	}
@@ -95,13 +88,5 @@ public class UserModel {
 
 	public LocalDateTime getCreateTime() {
 		return createdTime;
-	}
-
-	public Set<ComicModel> getComics() {
-		return comics;
-	}
-
-	public void setComics(Set<ComicModel> comics) {
-		this.comics = comics;
 	}
 }

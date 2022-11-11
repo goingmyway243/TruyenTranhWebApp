@@ -133,7 +133,11 @@
                                 border-radius: 0.2rem;
                                 padding: 0.1rem 0.2rem;
 
-                                &.edit {
+                                &.view {
+                                    background-color: var(--color-success);
+                                }
+
+                                &.lock {
                                     background-color: var(--color-secondary);
                                 }
 

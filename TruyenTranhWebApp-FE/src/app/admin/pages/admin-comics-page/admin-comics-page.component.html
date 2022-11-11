@@ -35,7 +35,7 @@
                         <tr>
                             <td>Mã truyện</td>
                             <td>Tên truyện</td>
-                            <td>Mô tả</td>
+                            <td>Tác giả</td>
                             <td>Người đăng</td>
                             <td>Trạng thái</td>
                             <td></td>
@@ -45,8 +45,8 @@
                         <tr *ngFor="let comic of listComics" (mouseenter)="onRowDataHover(comic)">
                             <td>{{comic.id}}</td>
                             <td>{{comic.title}}</td>
-                            <td>{{comic.description}}</td>
-                            <td>{{comic.userId}}</td>
+                            <td>{{comic.author?.name}}</td>
+                            <td>{{comic.user?.name}}</td>
                             <td><span class="status pending">{{comic.status}}</span></td>
                             <td>
                                 <span class="edit clickable"><i class="uil uil-edit"></i></span>

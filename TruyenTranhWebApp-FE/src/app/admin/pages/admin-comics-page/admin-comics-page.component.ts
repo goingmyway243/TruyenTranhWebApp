@@ -1,6 +1,9 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
+import { lastValueFrom, map } from 'rxjs';
 import { ComicModel } from 'src/app/models/comic.model';
+import { AuthorService } from 'src/app/services/author.service';
 import { ComicService } from 'src/app/services/comic.service';
+import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,14 +17,20 @@ export class AdminComicsPageComponent implements OnInit {
 
   constructor(
     private elementRef: ElementRef,
-    private comicService: ComicService) { }
+    private comicService: ComicService,
+    private authorService: AuthorService,
+    private userService: UserService) { }
 
   ngOnInit(): void {
     this.getAllComics();
   }
 
-  getAllComics(): void {
-    this.comicService.getAll().subscribe(data => this.listComics = data);
+  async getAllComics(): Promise<void> {
+    this.listComics = await lastValueFrom(this.comicService.getAll());
+    this.listComics.forEach(async comic => {
+      comic.author = await lastValueFrom(this.authorService.getById(comic.authorId));
+      comic.user = await lastValueFrom(this.userService.getById(comic.userId));
+    });
   }
 
   onRowDataHover(comic: ComicModel): void {

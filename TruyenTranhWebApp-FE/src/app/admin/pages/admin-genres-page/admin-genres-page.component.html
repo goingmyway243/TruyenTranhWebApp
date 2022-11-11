@@ -24,7 +24,7 @@
         <div class="recent-comics">
             <div class="cardHeader">
                 <h2>Danh sách thể loại</h2>
-                <a href="quan-tri/them-the-loai" class="btn clickable">
+                <a class="btn clickable" (click)="addGenre()">
                     <i class="uil uil-plus-circle"></i>
                     Thêm mới
                 </a>
@@ -42,9 +42,12 @@
                         <td>{{genre.id}}</td>
                         <td>{{genre.name}}</td>
                         <td>
-                            <span class="edit clickable"><i class="uil uil-edit"></i></span>
-                            <span class="remove clickable" (click)="removeGenre(genre.id)"><i
-                                    class=" uil uil-trash-alt"></i></span>
+                            <span class="edit clickable" (click)="editGenre(genre.id)">
+                                <i class="uil uil-edit"></i>
+                            </span>
+                            <span class="remove clickable" (click)="removeGenre(genre.id)">
+                                <i class=" uil uil-trash-alt"></i>
+                            </span>
                         </td>
                     </tr>
                 </tbody>

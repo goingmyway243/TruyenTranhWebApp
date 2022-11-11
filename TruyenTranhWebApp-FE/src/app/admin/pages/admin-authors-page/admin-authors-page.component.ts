@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthorModel } from 'src/app/models/author.model';
 import { AuthorService } from 'src/app/services/author.service';
 import Swal from 'sweetalert2';
@@ -11,7 +12,9 @@ import Swal from 'sweetalert2';
 export class AdminAuthorsPageComponent implements OnInit {
   listAuthors: AuthorModel[] = [];
 
-  constructor(private authorService: AuthorService) { }
+  constructor(
+    private authorService: AuthorService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.getAllAuthors();
@@ -19,6 +22,14 @@ export class AdminAuthorsPageComponent implements OnInit {
 
   getAllAuthors(): void {
     this.authorService.getAll().subscribe(data => this.listAuthors = data);
+  }
+
+  addAuthor(): void {
+    this.router.navigate(['quan-tri/them-tac-gia']);
+  }
+
+  editAuthor(id: number): void {
+    this.router.navigate([`quan-tri/cap-nhat-tac-gia/${id}`]);
   }
 
   removeAuthor(id: number): void {

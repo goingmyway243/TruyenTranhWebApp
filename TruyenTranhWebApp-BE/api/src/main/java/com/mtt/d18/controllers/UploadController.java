@@ -37,17 +37,17 @@ public class UploadController {
 	}
 
 	@PostMapping("/{folderName}")
-	public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
+	public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file,
 			@PathVariable("folderName") String folderName) {
 		String message = "";
 		try {
 			storageService.store(file, folderName);
 
 			message = "You successfully uploaded " + file.getOriginalFilename() + "!";
-			return ResponseEntity.status(HttpStatus.OK).body(message);
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 		} catch (Exception e) {
 			message = "FAIL to upload " + file.getOriginalFilename() + "!";
-			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
 		}
 	}
 }
