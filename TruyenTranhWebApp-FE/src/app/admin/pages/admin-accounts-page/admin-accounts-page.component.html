@@ -24,7 +24,7 @@
         <div class="recent-comics">
             <div class="cardHeader">
                 <h2>Danh sách tài khoản</h2>
-                <a href="quan-tri/them-tai-khoan" class="btn clickable">
+                <a class="btn clickable" (click)="addAccount()">
                     <i class="uil uil-plus-circle"></i>
                     Thêm mới
                 </a>
@@ -44,9 +44,15 @@
                         <td>{{account.name}}</td>
                         <td>{{account.email}}</td>
                         <td>
-                            <span class="view clickable"><i class="uil uil-eye"></i></span>
-                            <span class="lock clickable"><i class="uil uil-lock-alt"></i></span>
-                            <span class="remove clickable"><i class=" uil uil-trash-alt"></i></span>
+                            <span class="view clickable" (click)="editAccount(account.id)">
+                                <i class="uil uil-edit"></i>
+                            </span>
+                            <span class="lock clickable" (click)="lockAccount(account.id)" hidden>
+                                <i class="uil uil-lock-alt"></i>
+                            </span>
+                            <span class="remove clickable" (click)="removeAccount(account.id)">
+                                <i class=" uil uil-trash-alt"></i>
+                            </span>
                         </td>
                     </tr>
                 </tbody>

@@ -38,6 +38,9 @@ export class ComicModel implements IComicModel {
     chapters: ChapterModel[];
     coverImage?: File;
 
+    statusString?: string;
+    statusClass?: string;
+
     constructor() {
         this.id = 0;
         this.title = "";
@@ -55,4 +58,54 @@ export class ComicModel implements IComicModel {
     getComicCover(): string {
         return `${AppComponent.baseUrl}/images/${this.id}/cover.jpg`;
     }
+
+    // getComicStatusString(): string {
+    //     let result = '';
+
+    //     switch (this.status.toString()) {
+    //         case StatusType[StatusType.PENDING]: {
+    //             result = 'Chờ duyệt';
+    //             break;
+    //         }
+    //         case StatusType[StatusType.PUBLISH]: {
+    //             result = 'Công khai';
+    //             break;
+    //         }
+    //         case StatusType[StatusType.UNPUBLISH]: {
+    //             result = 'Ẩn';
+    //             break;
+    //         }
+    //         case StatusType[StatusType.REJECTED]: {
+    //             result = 'Không duyệt';
+    //             break;
+    //         }
+    //     }
+
+    //     return result;
+    // }
+
+    // getComicStatusClass(): string {
+    //     let result = '';
+
+    //     switch (this.status.toString()) {
+    //         case StatusType[StatusType.PENDING]: {
+    //             result = 'pending';
+    //             break;
+    //         }
+    //         case StatusType[StatusType.PUBLISH]: {
+    //             result = 'publish';
+    //             break;
+    //         }
+    //         case StatusType[StatusType.UNPUBLISH]: {
+    //             result = 'unpublish';
+    //             break;
+    //         }
+    //         case StatusType[StatusType.REJECTED]: {
+    //             result = 'reject';
+    //             break;
+    //         }
+    //     }
+
+    //     return result;
+    // }
 }

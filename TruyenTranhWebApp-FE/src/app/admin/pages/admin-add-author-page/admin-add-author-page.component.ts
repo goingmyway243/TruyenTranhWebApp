@@ -47,6 +47,9 @@ export class AdminAddAuthorPageComponent implements OnInit {
         this.addAuthor();
       }
     }
+    else {
+      this.addForm.markAllAsTouched();
+    }
   }
 
   addAuthor(): void {

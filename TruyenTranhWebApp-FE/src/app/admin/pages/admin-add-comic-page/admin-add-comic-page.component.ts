@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { MainComponent } from 'src/app/main/main.component';
@@ -28,6 +28,7 @@ export class AdminAddComicPageComponent implements OnInit {
   newComic: ComicModel = new ComicModel();
   coverImage?: File;
   authorName: string = '';
+  editId?: number;
 
   addForm: FormGroup = new FormGroup({
     title: new FormControl('', Validators.required),
@@ -58,13 +59,24 @@ export class AdminAddComicPageComponent implements OnInit {
     private chapterService: ChapterService,
     private contentService: ContentService,
     private uploadService: UploadService,
-    private router: Router) { }
+    private router: Router,
+    private activeRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+    const id = this.activeRoute.snapshot.paramMap.get('id');
+
     if (AdminComponent.draftComic) {
       this.newComic = AdminComponent.draftComic;
       this.coverImage = this.newComic.coverImage;
       this.loadCoverImage();
+    }
+    else if (id) {
+      this.editId = +id;
+      this.comicService.getById(this.editId).subscribe(data => {
+        this.newComic = data;
+        this.newComic.chapters = this.newComic.chapters.map(chapter => Object.assign(new ChapterModel(), chapter));
+        this.authorService.getById(this.newComic.authorId).subscribe(author => this.authorName = author.name);
+      });
     }
 
     this.genreService.getAll().subscribe(data => {

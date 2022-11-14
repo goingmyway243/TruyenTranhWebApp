@@ -46,6 +46,9 @@ export class AdminAddGenrePageComponent implements OnInit {
         this.addGenre();
       }
     }
+    else {
+      this.addForm.markAllAsTouched();
+    }
   }
 
   addGenre(): void {

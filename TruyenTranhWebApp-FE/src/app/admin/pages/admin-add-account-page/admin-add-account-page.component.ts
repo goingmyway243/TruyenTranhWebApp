@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RoleType, UserModel } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
@@ -14,18 +14,36 @@ export class AdminAddAccountPageComponent implements OnInit {
   newAccount: UserModel = new UserModel();
   retypePass: string = '';
   selectedRole: number = 0;
+  editId?: number;
 
   addForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required),
-    pass: new FormControl('', Validators.required),
-    repass: new FormControl('', Validators.required),
-    role: new FormControl(0)
+    name: new FormControl(this.newAccount.name, Validators.required),
+    email: new FormControl(this.newAccount.email, [Validators.required, Validators.email]),
+    pass: new FormControl(this.newAccount.pass, Validators.required),
+    repass: new FormControl(this.retypePass, Validators.required),
+    role: new FormControl(this.selectedRole, Validators.required)
   });
 
-  constructor(private userService: UserService, private router: Router) { }
+  get name() { return this.addForm.get('name'); }
+  get email() { return this.addForm.get('email'); }
+  get pass() { return this.addForm.get('pass'); }
+  get repass() { return this.addForm.get('repass'); }
+
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private activeRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+    const id = this.activeRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.editId = +id;
+      this.userService.getById(this.editId).subscribe(data => {
+        this.newAccount = data;
+        this.retypePass = this.newAccount.pass;
+        this.selectedRole = this.newAccount.role.toString() == RoleType[RoleType.ADMIN] ? 1 : 0;
+      });
+    }
   }
 
   goBack(): void {
@@ -33,7 +51,33 @@ export class AdminAddAccountPageComponent implements OnInit {
   }
 
   postAccount(): void {
-    this.newAccount.role = this.selectedRole == 1 ? RoleType.ADMIN : RoleType.USER;
+    if (this.addForm.valid) {
+      this.newAccount.role = this.selectedRole == 1 ? RoleType.ADMIN : RoleType.USER;
+
+      if (this.editId) {
+        this.updateAccount();
+      }
+      else {
+        this.addAccount();
+      }
+    }
+    else {
+      this.addForm.markAllAsTouched();
+    }
+  }
+
+  addAccount(): void {
+    if (this.newAccount.pass !== this.retypePass) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Mật khẩu nhập lại không chính xác',
+        showConfirmButton: false,
+        timer: 1500
+      });
+
+      return;
+    }
 
     this.userService.add(this.newAccount).subscribe(
       data => {
@@ -58,6 +102,30 @@ export class AdminAddAccountPageComponent implements OnInit {
           position: 'top-end',
           icon: 'error',
           title: message,
+          showConfirmButton: false,
+          timer: 1500
+        });
+      });
+  }
+
+  updateAccount(): void {
+    this.userService.update(this.newAccount).subscribe(
+      data => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Cập nhật tài khoản thành công!',
+          showConfirmButton: false,
+          timer: 1000
+        }).then(result => {
+          this.goBack();
+        });
+      },
+      error => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Có lỗi xảy ra!',
           showConfirmButton: false,
           timer: 1500
         });

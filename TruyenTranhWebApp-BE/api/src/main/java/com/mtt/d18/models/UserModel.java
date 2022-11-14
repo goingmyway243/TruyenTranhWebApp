@@ -1,7 +1,5 @@
 package com.mtt.d18.models;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.springframework.data.annotation.CreatedDate;
 
 import com.mtt.d18.enums.RoleType;
 
@@ -32,9 +28,6 @@ public class UserModel {
 	@Enumerated(EnumType.STRING)
 	private RoleType role;
 	
-	@CreatedDate
-	private LocalDateTime createdTime;
-	
 	public UserModel() {
 	}
 
@@ -43,7 +36,6 @@ public class UserModel {
 		this.email = email;
 		this.pass = pass;
 		this.role = role;
-		this.createdTime = LocalDateTime.now();
 	}
 
 	public long getId() {
@@ -84,9 +76,5 @@ public class UserModel {
 
 	public void setRole(RoleType role) {
 		this.role = role;
-	}
-
-	public LocalDateTime getCreateTime() {
-		return createdTime;
 	}
 }

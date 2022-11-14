@@ -169,7 +169,7 @@
                                 border-radius: 0.2rem;
                                 font-size: 0.85rem;
 
-                                &.approved {
+                                &.publish {
                                     background-color: forestgreen;
                                 }
 
@@ -177,8 +177,12 @@
                                     background-color: darkgoldenrod;
                                 }
 
-                                &.hidden {
+                                &.unpublish {
                                     background-color: dimgray;
+                                }
+
+                                &.reject {
+                                    background-color: red;
                                 }
                             }
                         }

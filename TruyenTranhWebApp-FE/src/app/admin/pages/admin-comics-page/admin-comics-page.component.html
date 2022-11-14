@@ -25,7 +25,7 @@
             <div class="list-comics">
                 <div class="cardHeader">
                     <h2>Danh sách truyện</h2>
-                    <a href="quan-tri/them-truyen" class="btn clickable">
+                    <a class="btn clickable" (click)="addComic()">
                         <i class="uil uil-plus-circle"></i>
                         Thêm mới
                     </a>
@@ -47,11 +47,14 @@
                             <td>{{comic.title}}</td>
                             <td>{{comic.author?.name}}</td>
                             <td>{{comic.user?.name}}</td>
-                            <td><span class="status pending">{{comic.status}}</span></td>
+                            <td><span class="status" [ngClass]="comic.statusClass">{{comic.statusString}}</span></td>
                             <td>
-                                <span class="edit clickable"><i class="uil uil-edit"></i></span>
-                                <span class="remove clickable" (click)="removeComic(comic.id)"><i
-                                        class=" uil uil-trash-alt"></i></span>
+                                <span class="edit clickable" (click)="editComic(comic.id)">
+                                    <i class="uil uil-edit"></i>
+                                </span>
+                                <span class="remove clickable" (click)="removeComic(comic.id)">
+                                    <i class=" uil uil-trash-alt"></i>
+                                </span>
                             </td>
                         </tr>
                     </tbody>

@@ -9,7 +9,6 @@ export interface IUserModel {
     email: string;
     pass: string;
     role: RoleType;
-    createdTime: Date;
 }
 
 export class UserModel implements IUserModel {
@@ -18,7 +17,6 @@ export class UserModel implements IUserModel {
     email: string;
     pass: string;
     role: RoleType;
-    createdTime: Date;
 
     constructor() {
         this.id = 0;
@@ -26,6 +24,5 @@ export class UserModel implements IUserModel {
         this.email = "";
         this.pass = "";
         this.role = RoleType.USER;
-        this.createdTime = new Date();
     }
 }
