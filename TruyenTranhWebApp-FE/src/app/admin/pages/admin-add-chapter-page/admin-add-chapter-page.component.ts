@@ -1,10 +1,9 @@
+import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { lastValueFrom } from 'rxjs';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ChapterModel } from 'src/app/models/chapter.model';
-import { ChapterService } from 'src/app/services/chapter.service';
-import { UploadService } from 'src/app/services/upload.service';
+import { ContentModel } from 'src/app/models/content.model';
+import { ContentService } from 'src/app/services/content.service';
 import Swal from 'sweetalert2';
 import { AdminComponent } from '../../admin.component';
 
@@ -24,20 +23,28 @@ export class AdminAddChapterPageComponent implements OnInit {
   listImages: File[] = [];
 
   constructor(
-    private router: Router,
-    private elementRef: ElementRef) { }
+    private location: Location,
+    private elementRef: ElementRef,
+    private contentService: ContentService) { }
 
   ngOnInit(): void {
     if (AdminComponent.draftChapter) {
       this.newChapter = AdminComponent.draftChapter;
       this.listImages = this.newChapter.contentImages;
 
+      if (this.newChapter.id != 0) {
+        this.contentService.getByChapterId(this.newChapter.id).subscribe(data => {
+          this.newChapter.contents = data;
+          this.newChapter.contents.forEach(content => this.loadImageFromContent(content, AdminComponent.draftComic!.id))
+        });
+      }
+
       this.listImages.forEach(image => this.loadImage(image));
     }
   }
 
   goBack(): void {
-    this.router.navigate(['quan-tri/them-truyen']);
+    this.location.back();
   }
 
   async postChapter(): Promise<void> {
@@ -130,6 +137,47 @@ export class AdminAddChapterPageComponent implements OnInit {
       URL.revokeObjectURL(img.src);  // no longer needed, free memory
     }
     img.src = URL.createObjectURL(image); // set src to blob url
+
+    container.appendChild(img);
+    container.appendChild(removeBtn);
+
+    wrapper.appendChild(container);
+  }
+
+  loadImageFromContent(content: ContentModel, comicId: number) {
+    content = Object.assign(new ContentModel(), content);
+
+    const wrapper = this.elementRef.nativeElement.querySelector('.add-content-group .contents') as HTMLElement;
+
+    const container = document.createElement('div');
+    container.style.position = 'relative';
+
+    const removeBtn = document.createElement('span');
+    removeBtn.innerHTML = '<i class="uil uil-multiply"></i>';
+    removeBtn.style.position = 'absolute';
+    removeBtn.style.top = '0.5rem';
+    removeBtn.style.right = '0.5rem';
+    removeBtn.style.fontSize = '2rem';
+    removeBtn.style.color = 'var(--color-danger)';
+    removeBtn.style.fontWeight = '500';
+    removeBtn.style.cursor = 'pointer';
+    removeBtn.addEventListener('click', () => {
+      let index = content.contentIndex;
+      this.listImages.splice(index, 1);
+      container.remove();
+    });
+
+    const img = document.createElement('img');
+    img.addEventListener('mouseenter', () => {
+      img.style.border = '3px solid var(--color-primary)';
+    });
+    img.addEventListener('mouseleave', () => {
+      img.style.borderWidth = '0';
+    });
+    img.onload = () => {
+      URL.revokeObjectURL(img.src);  // no longer needed, free memory
+    }
+    img.src = content.getContentImage(comicId); // set src to blob url
 
     container.appendChild(img);
     container.appendChild(removeBtn);

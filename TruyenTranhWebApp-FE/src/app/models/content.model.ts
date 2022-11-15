@@ -1,3 +1,4 @@
+import { AppComponent } from "../app.component";
 import { ChapterModel } from "./chapter.model";
 
 export interface IContentModel {
@@ -17,5 +18,9 @@ export class ContentModel implements IContentModel {
         this.id = 0;
         this.fileName = "";
         this.contentIndex = 0;
+    }
+
+    getContentImage(comicId: number): string {
+        return `${AppComponent.baseUrl}/images/${comicId}/${this.id}.jpg`;
     }
 }

@@ -7,7 +7,7 @@
 
     <div class="container">
         <div class="header">
-            <h2>Thêm truyện</h2>
+            <h2>{{editId ? 'Cập nhật ' : 'Thêm '}}truyện</h2>
         </div>
 
         <div class="comic-group">
@@ -15,18 +15,35 @@
                 <div>
                     <label for="title">Tên truyện</label>
                     <input id="title" [(ngModel)]="newComic.title" formControlName="title">
+                    <div *ngIf="addForm.get('title')!.invalid && (addForm.get('title')!.dirty || addForm.get('title')!.touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="addForm.get('title')!.errors?.['required']">
+                            Vui lòng nhập tên truyện
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label for="author">Tác giả</label>
                     <input id="author" [(ngModel)]="authorName" formControlName="author">
+                    <div *ngIf="addForm.get('author')!.invalid && (addForm.get('author')!.dirty || addForm.get('author')!.touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="addForm.get('author')!.errors?.['required']">
+                            Vui lòng nhập tên tác giả
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label for="genres">Thể loại</label>
                     <ng-multiselect-dropdown #genreMultiSelect formControlName="genres" class="genres-multiselect"
                         [placeholder]="'Chọn thể loại'" [settings]="dropdownSettings" [data]="dropdownList"
-                        [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)"
-                        (onSelectAll)="onSelectAll($event)">
+                        [(ngModel)]="selectedItems" (click)="onMultiSelectTouched()">
                     </ng-multiselect-dropdown>
+                    <div *ngIf="addForm.get('genres')!.invalid && addForm.get('genres')!.touched"
+                        class="alert alert-danger">
+                        <div *ngIf="addForm.get('genres')!.errors?.['multiRequired']">
+                            Vui lòng chọn thể loại
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label for="description">Mô tả</label>
@@ -72,7 +89,7 @@
 
         <div class="button-groups">
             <button class="btn-back" (click)="goBack()">Trở lại</button>
-            <button class="btn-add" (click)="postComic()">Thêm</button>
+            <button class="btn-add" (click)="postComic()">{{editId ? 'Cập nhật ' : 'Thêm '}}</button>
         </div>
     </div>
 </div>

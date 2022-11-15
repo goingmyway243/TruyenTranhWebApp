@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public class StorageService {
         try {
         	Path path = this.rootLocation.resolve(folderName);
         	Files.createDirectories(path);
-        	Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()));
+        	Files.copy(file.getInputStream(), path.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             throw new RuntimeException("FAIL!");
         }

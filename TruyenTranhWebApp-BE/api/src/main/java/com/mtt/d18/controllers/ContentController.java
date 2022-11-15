@@ -51,6 +51,17 @@ public class ContentController {
 		return contentRepo.findById(id).map(content -> new ResponseEntity<ContentModel>(content, HttpStatus.OK))
 				.orElseGet(() -> new ResponseEntity<ContentModel>(HttpStatus.NOT_FOUND));
 	}
+	
+	@GetMapping("/list/{chapterId}")
+	public ResponseEntity<List<ContentModel>> getAllByChapterId(@PathVariable long chapterId)
+	{
+		ChapterModel chapter = chapterRepo.findById(chapterId).orElseGet(null);
+		if (chapter == null) {
+			return new ResponseEntity<List<ContentModel>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<List<ContentModel>>(contentRepo.findByChapter(chapter), HttpStatus.OK);
+	}
 
 	@PostMapping("/{chapterId}")
 	public ResponseEntity<ContentModel> create(@RequestBody ContentModel contentModel, @PathVariable long chapterId) {
