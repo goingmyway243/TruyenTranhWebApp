@@ -1,3 +1,4 @@
+import { Utils } from "../utils/utils";
 import { ComicModel } from "./comic.model";
 import { ContentModel } from "./content.model";
 
@@ -28,8 +29,13 @@ export class ChapterModel implements IChapterModel {
         this.contentImages = [];
     }
 
-    getChapterName(): string {
+    getChapterName(indexOnly?: boolean): string {
         let name = this.name ? ` - ${this.name}` : '';
-        return 'Chương ' + this.chapterIndex + name;
+        let result = 'Chương ' + this.chapterIndex;
+        return indexOnly ? result : result + name;
+    }
+
+    getTimeDiff(): string {
+        return Utils.getTimeDiff(this.createdTime);
     }
 }

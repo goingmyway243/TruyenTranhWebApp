@@ -53,6 +53,21 @@
                         }
                     }
                 }
+
+                .genre-group {
+
+                    a,
+                    span,
+                    div {
+                        display: inline;
+                    }
+
+                    &:last-child {
+                        &span {
+                            display: none;
+                        }
+                    }
+                }
             }
         }
 

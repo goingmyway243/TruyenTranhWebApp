@@ -1,24 +1,23 @@
 <div class="comic-detail-page">
     <div class="title">
-        <h2>Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e √Horikita</h2>
+        <h2>{{comic.title}}</h2>
         <div class="text-muted">[Cập nhật lúc: 06:30 24/08/2000]</div>
     </div>
 
     <div class="comic-detail">
         <div class="cover">
-            <img src="https://i7.xem-truyen.com/manga/29/29081/286778770_157652653465425_4498154203164872003_n.thumb_500x.jpg"
-                alt="">
+            <img [src]="comic.getComicCover()" alt="">
         </div>
 
         <div>
             <ul class="detail">
                 <li>
                     <span><i class="uil uil-user"></i> Người đăng</span>
-                    <span>Horikita</span>
+                    <span>{{user.name}}</span>
                 </li>
                 <li>
                     <span><i class="uil uil-book-reader"></i> Tác giả</span>
-                    <span>Kinugasa Syohgo</span>
+                    <span>{{author.name}}</span>
                 </li>
                 <li>
                     <span><i class="uil uil-tag-alt"></i> Thể loại</span>
@@ -26,7 +25,7 @@
                 </li>
                 <li>
                     <span><i class="uil uil-eye"></i> Lượt xem</span>
-                    <span>2.525.303</span>
+                    <span>{{comic.view}}</span>
                 </li>
                 <li class="like-group">
                     <div class="btn-wrapper">
@@ -53,8 +52,7 @@
             <span> NỘI DUNG</span>
         </div>
         <div class="desc">
-            Một spinoff/route khác của Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e. Bộ truyện này tập trung về mối
-            quan hệ giữa Kiyotaka Ayanokoji và cô bạn cùng lớp Suzune Horikita của cậu.
+            {{comic.description}}
         </div>
     </div>
 
@@ -71,17 +69,9 @@
             </div>
 
             <ul class="chapters">
-                <li class="table-item">
-                    <a class="left">Chapter 3</a>
-                    <span class="time">23/08/18</span>
-                </li>
-                <li class="table-item">
-                    <a class="left">Chapter 2</a>
-                    <span class="time">16/07/18</span>
-                </li>
-                <li class="table-item">
-                    <a class="left" [routerLink]="['./chuong/1']">Chapter 1</a>
-                    <span class="time">01/07/18</span>
+                <li class="table-item" *ngFor="let chapter of listChapters">
+                    <a class="left">{{chapter.getChapterName()}}</a>
+                    <span class="time">{{chapter.getTimeDiff()}}</span>
                 </li>
             </ul>
         </div>

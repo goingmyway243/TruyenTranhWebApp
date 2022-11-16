@@ -23,16 +23,14 @@ export class Utils {
         let diff = Math.round((now.getTime() - date.getTime()) / 60000);
 
         if (diff < 1) {
-            return 'Just now';
+            return 'Mới đây';
         } else if (diff < 60) {
-            return diff + ' minutes ago';
+            return diff + ' phút trước';
         } else if (diff < 1440) {
-            let hour = diff < 120 ? 'hour' : 'hours';
-            return Math.floor(diff / 60) + ' ' + hour + ' ago';
+            return Math.floor(diff / 60) + ' giờ trước';
         }
         else if (diff < 10080) {
-            let day = diff < 2880 ? 'day' : 'days';
-            return Math.floor(diff / 1440) + ' ' + day + ' ago';
+            return Math.floor(diff / 1440) + ' ngày trước';
         }
         else {
             return Utils.formatDate(date);

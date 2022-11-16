@@ -21,6 +21,11 @@ export class ComicService {
     return this.http.get(getUrl).pipe(map(data => Object.assign(new ComicModel(), data)));
   }
 
+  getAllOrderByTime(): Observable<ComicModel[]> {
+    let getUrl = `${this.apiUrl}/new`;
+    return this.http.get<ComicModel[]>(getUrl);
+  }
+
   add(comic: ComicModel): Observable<ComicModel> {
     return this.http.post<ComicModel>(this.apiUrl, comic, AppComponent.httpOptions);
   }

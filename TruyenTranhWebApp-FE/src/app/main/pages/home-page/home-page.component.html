@@ -2,23 +2,8 @@
     <div class="container">
         <div class="slider">
             <owl-carousel-o [options]="customOptions">
-                <ng-template carouselSlide>
-                    <app-slide-comic-item></app-slide-comic-item>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <app-slide-comic-item></app-slide-comic-item>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <app-slide-comic-item></app-slide-comic-item>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <app-slide-comic-item></app-slide-comic-item>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <app-slide-comic-item></app-slide-comic-item>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <app-slide-comic-item></app-slide-comic-item>
+                <ng-template carouselSlide *ngFor="let comic of listRecommends">
+                    <app-slide-comic-item [comic]="comic"></app-slide-comic-item>
                 </ng-template>
             </owl-carousel-o>
             <!-- <span class="slide-btn next"></span>
@@ -29,13 +14,7 @@
             <div class="newly-added">
                 <h2 class="title">Truyện mới cập nhật ></h2>
                 <div class="comic-container">
-                    <app-main-comic-item></app-main-comic-item>
-                    <app-main-comic-item></app-main-comic-item>
-                    <app-main-comic-item></app-main-comic-item>
-                    <app-main-comic-item></app-main-comic-item>
-                    <app-main-comic-item></app-main-comic-item>
-                    <app-main-comic-item></app-main-comic-item>
-                    <app-main-comic-item></app-main-comic-item>
+                    <app-main-comic-item *ngFor="let comic of listComics" [comic]="comic"></app-main-comic-item>
                 </div>
             </div>
 

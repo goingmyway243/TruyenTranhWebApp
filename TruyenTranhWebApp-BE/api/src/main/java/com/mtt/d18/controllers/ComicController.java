@@ -1,6 +1,5 @@
 package com.mtt.d18.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +27,7 @@ public class ComicController {
 
 	@GetMapping
 	public ResponseEntity<List<ComicModel>> getAll() {
-		List<ComicModel> genres = new ArrayList<>();
-
-		comicRepo.findAll().forEach(genres::add);
-
-		if (genres.isEmpty()) {
-			return new ResponseEntity<List<ComicModel>>(HttpStatus.NO_CONTENT);
-		}
-
-		return new ResponseEntity<List<ComicModel>>(genres, HttpStatus.OK);
+		return new ResponseEntity<List<ComicModel>>(comicRepo.findAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
@@ -45,6 +36,11 @@ public class ComicController {
 				.orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
+	@GetMapping("/new")
+	public ResponseEntity<List<ComicModel>> getAllOrderByTime(){
+		return new ResponseEntity<List<ComicModel>>(comicRepo.findByOrderByCreatedTimeDesc(), HttpStatus.OK);
+	}
+	
 	@PostMapping
 	public ResponseEntity<ComicModel> create(@RequestBody ComicModel comicModel) {
 		ComicModel newComic = new ComicModel(comicModel.getTitle(), comicModel.getDescription(), 0,
