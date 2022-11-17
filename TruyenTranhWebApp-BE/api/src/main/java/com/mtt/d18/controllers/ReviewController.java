@@ -44,6 +44,9 @@ public class ReviewController {
 	@PostMapping
 	public ResponseEntity<ReviewModel> create(@RequestBody ReviewModel reviewModel) {
 		ReviewModel newReview = new ReviewModel(reviewModel.getReviewId(), reviewModel.getType());
+		newReview.setComic(reviewModel.getComic());
+		newReview.setUser(reviewModel.getUser());
+		
 		return new ResponseEntity<ReviewModel>(reviewRepo.save(newReview), HttpStatus.OK);
 	}
 

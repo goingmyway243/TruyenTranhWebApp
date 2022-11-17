@@ -19,6 +19,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.mtt.d18.enums.StatusType;
@@ -53,6 +55,10 @@ public class ComicModel {
 
 	@OneToMany(mappedBy = "comic", fetch = FetchType.EAGER)
 	private Set<ChapterModel> chapters = new HashSet<>();
+	
+	@OneToMany(mappedBy = "comic")
+	@Fetch(FetchMode.JOIN)
+	private Set<ReviewModel> reviews;
 
 	public ComicModel() {
 	}
@@ -141,5 +147,13 @@ public class ComicModel {
 
 	public void setChapters(Set<ChapterModel> chapters) {
 		this.chapters = chapters;
+	}
+
+	public Set<ReviewModel> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Set<ReviewModel> reviews) {
+		this.reviews = reviews;
 	}
 }

@@ -6,6 +6,9 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -24,6 +27,16 @@ public class ReviewModel {
 	
 	@CreatedDate
 	private LocalDateTime createdTime;
+	
+	@ManyToOne
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
+    UserModel user;
+	
+	@ManyToOne()
+	@MapsId("comicId")
+	@JoinColumn(name = "comic_id")
+	ComicModel comic;
 
 	public ReviewModel() {
 	}
@@ -55,5 +68,25 @@ public class ReviewModel {
 
 	public LocalDateTime getCreatedTime() {
 		return createdTime;
+	}
+
+
+	public UserModel getUser() {
+		return user;
+	}
+
+
+	public void setUser(UserModel user) {
+		this.user = user;
+	}
+
+
+	public ComicModel getComic() {
+		return comic;
+	}
+
+
+	public void setComic(ComicModel comic) {
+		this.comic = comic;
 	}
 }

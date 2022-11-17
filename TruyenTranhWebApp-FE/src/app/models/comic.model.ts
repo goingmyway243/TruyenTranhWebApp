@@ -2,6 +2,7 @@ import { AppComponent } from "../app.component";
 import { AuthorModel } from "./author.model";
 import { ChapterModel } from "./chapter.model";
 import { GenreModel } from "./genre.model";
+import { ReviewModel } from "./review.model";
 import { UserModel } from "./user.model";
 
 export enum StatusType {
@@ -36,6 +37,7 @@ export class ComicModel implements IComicModel {
     author?: AuthorModel;
     genres: GenreModel[];
     chapters: ChapterModel[];
+    reviews: ReviewModel[];
     coverImage?: File;
 
     statusString?: string;
@@ -53,9 +55,10 @@ export class ComicModel implements IComicModel {
 
         this.genres = [];
         this.chapters = [];
+        this.reviews = [];
     }
 
     getComicCover(): string {
-        return `${AppComponent.baseUrl}/images/${this.id}/cover.jpg`;
+        return `${AppComponent.baseUrl}images/${this.id}/cover.jpg`;
     }
 }

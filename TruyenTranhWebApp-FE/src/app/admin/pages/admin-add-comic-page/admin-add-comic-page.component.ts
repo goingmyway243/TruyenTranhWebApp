@@ -177,6 +177,17 @@ export class AdminAddComicPageComponent implements OnInit {
   }
 
   async postComic(): Promise<void> {
+    if (this.newComic.chapters.length == 0) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Vui lòng thêm ít nhất 1 chương!',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return;
+    }
+
     if (this.addForm.valid) {
       if (this.editId) {
         this.updateComic();

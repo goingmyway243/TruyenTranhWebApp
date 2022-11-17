@@ -2,12 +2,14 @@
     <img [src]="comic.getComicCover()" alt="">
 
     <div class="info">
-        <a class="title">
+        <a (click)="navigateToComicDetail()" class="title">
             {{comic.title}}
         </a>
 
         <div class="chapter">
-            <a>{{newestChapter.getChapterName(true)}}</a>
+            <a (click)="navigateToChapter(newestChapter.chapterIndex)">
+                {{newestChapter.getChapterName(true)}}
+            </a>
             <div class="time">
                 <i class="uil uil-clock"></i>
                 <span class="text">{{newestChapter.getTimeDiff()}}</span>

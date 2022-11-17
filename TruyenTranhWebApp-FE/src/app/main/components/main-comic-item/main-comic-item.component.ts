@@ -25,4 +25,8 @@ export class MainComicItemComponent implements OnInit {
   navigateToComicDetail(): void {
     this.router.navigate([`/truyen-tranh/${this.comic.id}`]);
   }
+
+  navigateToChapter(index: number) {
+    this.router.navigate([`/truyen-tranh/${this.comic.id}/chuong/${index}`]);
+  }
 }

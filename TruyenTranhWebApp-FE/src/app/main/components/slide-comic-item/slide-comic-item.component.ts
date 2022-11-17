@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ChapterModel } from 'src/app/models/chapter.model';
 import { ComicModel } from 'src/app/models/comic.model';
 
@@ -11,7 +12,7 @@ export class SlideComicItemComponent implements OnInit {
   @Input() comic: ComicModel = new ComicModel();
   newestChapter: ChapterModel = new ChapterModel();
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.comic = Object.assign(new ComicModel(), this.comic);
@@ -21,4 +22,11 @@ export class SlideComicItemComponent implements OnInit {
     );
   }
 
+  navigateToComicDetail(): void {
+    this.router.navigate([`/truyen-tranh/${this.comic.id}`]);
+  }
+
+  navigateToChapter(index: number) {
+    this.router.navigate([`/truyen-tranh/${this.comic.id}/chuong/${index}`]);
+  }
 }

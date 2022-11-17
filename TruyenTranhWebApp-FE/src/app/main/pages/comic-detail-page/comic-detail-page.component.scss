@@ -16,8 +16,9 @@
 
     .comic-detail {
         display: grid;
-        grid-template-columns: 25% 70%;
+        grid-template-columns: 25% auto;
         gap: 5%;
+        width: 100%;
 
         .cover {
             width: 100%;
@@ -31,7 +32,7 @@
 
             li {
                 display: grid;
-                grid-template-columns: 25% 70%;
+                grid-template-columns: 25% auto;
                 gap: 5%;
 
                 &.like-group {
@@ -50,21 +51,6 @@
                             &.dislike {
                                 color: var(--color-primary);
                             }
-                        }
-                    }
-                }
-
-                .genre-group {
-
-                    a,
-                    span,
-                    div {
-                        display: inline;
-                    }
-
-                    &:last-child {
-                        &span {
-                            display: none;
                         }
                     }
                 }

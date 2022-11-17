@@ -43,11 +43,14 @@
         }
 
         .wrapper {
-            display: flex;
+            display: grid;
             align-items: flex-start;
             justify-content: space-between;
+            grid-template-columns: auto 300px;
 
             .newly-added {
+                width: 100%;
+
                 .title {
                     color: var(--color-primary);
                 }
@@ -67,7 +70,7 @@
                 gap: 0.5rem;
                 border: 1px solid var(--color-gray);
                 padding: 0.5rem;
-                width: 500px;
+                width: 100%;
 
                 .header {
                     display: flex;
@@ -112,6 +115,7 @@
         .container {
             .wrapper {
                 width: 100%;
+                grid-template-columns: 100%;
 
                 .history {
                     display: none;

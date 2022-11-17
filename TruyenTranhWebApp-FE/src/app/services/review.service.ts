@@ -8,7 +8,7 @@ import { ReviewModel } from '../models/review.model';
   providedIn: 'root'
 })
 export class ReviewService {
-  private apiUrl: string = AppComponent.baseUrl + 'api/genres';
+  private apiUrl: string = AppComponent.baseUrl + 'api/reviews';
 
   constructor(private http: HttpClient) { }
 
@@ -22,7 +22,7 @@ export class ReviewService {
   }
 
   add(review: ReviewModel): Observable<ReviewModel> {
-    return this.http.post<ReviewModel>(this.apiUrl, review);
+    return this.http.post<ReviewModel>(this.apiUrl, review, AppComponent.httpOptions);
   }
 
   delete(id: number): Observable<string> {

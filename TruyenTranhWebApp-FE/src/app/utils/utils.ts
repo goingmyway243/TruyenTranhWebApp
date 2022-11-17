@@ -33,7 +33,18 @@ export class Utils {
             return Math.floor(diff / 1440) + ' ngày trước';
         }
         else {
-            return Utils.formatDate(date);
+            return date.toLocaleDateString('en-GB');
         }
+    }
+
+    static getUpdatedDateTime(dateTime: Date): string {
+        dateTime = new Date(dateTime.valueOf());
+
+        return `${Utils.padTo2Digits(dateTime.getHours())}`
+            + `:${Utils.padTo2Digits(dateTime.getMinutes())}`
+            + `:${Utils.padTo2Digits(dateTime.getSeconds())} `
+            + `${Utils.padTo2Digits(dateTime.getDate())}`
+            + `/${Utils.padTo2Digits(dateTime.getMonth() + 1)}`
+            + `/${dateTime.getFullYear()}`;
     }
 }

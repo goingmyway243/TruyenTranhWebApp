@@ -18,7 +18,7 @@
     <div class="info-group">
         <a class="title" (click)="navigateToComicDetail()">{{comic.title}}</a>
 
-        <a class="chapter" *ngFor="let chapter of listChapters">
+        <a *ngFor="let chapter of listChapters" (click)="navigateToChapter(chapter.chapterIndex)" class="chapter">
             {{chapter.getChapterName(true)}}
             <span class="text-muted">{{chapter.getTimeDiff()}}</span>
         </a>

@@ -21,6 +21,6 @@ export class ContentModel implements IContentModel {
     }
 
     getContentImage(comicId: number): string {
-        return `${AppComponent.baseUrl}/images/${comicId}/${this.id}.jpg`;
+        return comicId == 0 ? '' : `${AppComponent.baseUrl}images/${comicId}/${this.id}.jpg`;
     }
 }

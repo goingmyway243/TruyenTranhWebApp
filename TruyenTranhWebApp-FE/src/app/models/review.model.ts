@@ -1,3 +1,6 @@
+import { ComicModel } from "./comic.model";
+import { UserModel } from "./user.model";
+
 export enum ReviewType {
     LIKE,
     DISLIKE
@@ -15,6 +18,9 @@ export class ReviewModel implements IReviewModel {
     comicId: number;
     type: ReviewType;
     createdTime: Date;
+
+    comic?: ComicModel;
+    user?: UserModel;
 
     constructor() {
         this.userId = 0;

@@ -1,5 +1,7 @@
 package com.mtt.d18.models;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -7,7 +9,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.mtt.d18.enums.RoleType;
 
@@ -27,6 +33,10 @@ public class UserModel {
 	
 	@Enumerated(EnumType.STRING)
 	private RoleType role;
+	
+	@OneToMany(mappedBy = "user")
+	@Fetch(FetchMode.JOIN)
+	private Set<ReviewModel> reviews;
 	
 	public UserModel() {
 	}
@@ -76,5 +86,13 @@ public class UserModel {
 
 	public void setRole(RoleType role) {
 		this.role = role;
+	}
+
+	public Set<ReviewModel> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Set<ReviewModel> reviews) {
+		this.reviews = reviews;
 	}
 }
