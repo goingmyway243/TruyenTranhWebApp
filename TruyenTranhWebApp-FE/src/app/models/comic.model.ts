@@ -18,9 +18,13 @@ export interface IComicModel {
     description: string;
     view: number;
     status: StatusType;
-    userId: number;
-    authorId: number;
     createdTime: Date;
+
+    user?: UserModel;
+    author?: AuthorModel;
+    genres: GenreModel[];
+    chapters: ChapterModel[];
+    reviews: ReviewModel[];
 }
 
 export class ComicModel implements IComicModel {
@@ -29,8 +33,6 @@ export class ComicModel implements IComicModel {
     description: string;
     view: number;
     status: StatusType;
-    userId: number;
-    authorId: number;
     createdTime: Date;
 
     user?: UserModel;
@@ -49,8 +51,6 @@ export class ComicModel implements IComicModel {
         this.description = "";
         this.view = 0;
         this.status = StatusType.PENDING;
-        this.userId = 0;
-        this.authorId = 0;
         this.createdTime = new Date();
 
         this.genres = [];

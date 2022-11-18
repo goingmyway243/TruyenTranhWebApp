@@ -35,8 +35,8 @@ export class AuthorService {
     return this.http.put<AuthorModel>(putUrl, author, AppComponent.httpOptions);
   }
 
-  delete(id: number): Observable<string> {
+  delete(id: number): Observable<any> {
     let deleteUrl = `${this.apiUrl}/${id}`;
-    return this.http.delete<string>(deleteUrl, AppComponent.httpOptions);
+    return this.http.delete<any>(deleteUrl);
   }
 }

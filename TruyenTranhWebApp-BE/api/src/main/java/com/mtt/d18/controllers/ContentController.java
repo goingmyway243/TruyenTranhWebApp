@@ -63,15 +63,10 @@ public class ContentController {
 		return new ResponseEntity<List<ContentModel>>(contentRepo.findByChapter(chapter), HttpStatus.OK);
 	}
 
-	@PostMapping("/{chapterId}")
-	public ResponseEntity<ContentModel> create(@RequestBody ContentModel contentModel, @PathVariable long chapterId) {
-		ChapterModel chapter = chapterRepo.findById(chapterId).orElseGet(null);
-		if (chapter == null) {
-			return new ResponseEntity<ContentModel>(HttpStatus.BAD_REQUEST);
-		}
-		
+	@PostMapping()
+	public ResponseEntity<ContentModel> create(@RequestBody ContentModel contentModel) {
 		ContentModel newContent = new ContentModel(contentModel.getFileName(), contentModel.getContentIndex());
-		newContent.setChapter(chapter);
+		newContent.setChapter(contentModel.getChapter());
 		return new ResponseEntity<ContentModel>(contentRepo.save(newContent), HttpStatus.OK);
 	}
 	

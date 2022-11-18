@@ -6,14 +6,19 @@
     </div>
 
     <div class="nav-buttons">
-        <span class="button clickable prev"><i class="uil uil-angle-left-b"></i></span>
-        <select title="chapter-select">
-            <option *ngFor="let chapter of comicData.chapters" [value]="chapter.id"
+        <button class="prev" (click)="previousChapter()"
+            [disabled]="this.comicData.chapters.at(-1) == this.chapterData">
+            <i class="uil uil-angle-left-b"></i>
+        </button>
+        <select title="chapter-select" (change)="navigateToChapterForSelect($event)">
+            <option *ngFor="let chapter of comicData.chapters" [value]="chapter.chapterIndex"
                 [selected]="chapter.chapterIndex == chapterData.chapterIndex">
                 {{chapter.getChapterName()}}
             </option>
         </select>
-        <span class="button clickable next"><i class="uil uil-angle-right-b"></i></span>
+        <button class="next" (click)="nextChapter()" [disabled]="this.comicData.chapters[0] == this.chapterData">
+            <i class="uil uil-angle-right-b"></i>
+        </button>
     </div>
 
     <div class="contents">
@@ -34,5 +39,14 @@
             <app-comment-item></app-comment-item>
             <app-comment-item></app-comment-item>
         </div>
+    </div>
+
+    <div (click)="topFunction()" class="top-button">
+        <span class="arrow">
+            <i class="uil uil-angle-up"></i>
+        </span>
+        <span class="segunda">
+            <i class="uil uil-angle-up"></i>
+        </span>
     </div>
 </div>

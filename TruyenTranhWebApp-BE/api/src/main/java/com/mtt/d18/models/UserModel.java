@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mtt.d18.enums.RoleType;
 
 @Entity
@@ -36,6 +37,12 @@ public class UserModel {
 	
 	@OneToMany(mappedBy = "user")
 	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
+	private Set<ComicModel> comics;
+	
+	@OneToMany(mappedBy = "user")
+	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
 	private Set<ReviewModel> reviews;
 	
 	public UserModel() {

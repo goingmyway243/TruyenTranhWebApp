@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
@@ -40,7 +42,9 @@ public class ChapterModel {
 	@JsonIgnore
 	private ComicModel comic;
 
-	@OneToMany(mappedBy = "chapter", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "chapter")
+	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
 	private Set<ContentModel> contents = new HashSet<>();
 
 	public ChapterModel() {

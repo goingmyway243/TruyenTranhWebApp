@@ -42,10 +42,12 @@ public class ReviewModel {
 	}
 
 
-	public ReviewModel(ReviewIdentity reviewId, ReviewType type) {
+	public ReviewModel(UserModel user, ComicModel comic, ReviewType type) {
 		super();
-		this.reviewId = reviewId;
+		this.user = user;
+		this.comic = comic;
 		this.type = type;
+		this.reviewId = new ReviewIdentity(user.getId(), comic.getId());
 		this.createdTime = LocalDateTime.now();
 	}
 

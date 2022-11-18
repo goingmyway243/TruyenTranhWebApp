@@ -1,10 +1,8 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { lastValueFrom, map } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { ComicModel, StatusType } from 'src/app/models/comic.model';
-import { AuthorService } from 'src/app/services/author.service';
 import { ComicService } from 'src/app/services/comic.service';
-import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -19,9 +17,7 @@ export class AdminComicsPageComponent implements OnInit {
   constructor(
     private elementRef: ElementRef,
     private router: Router,
-    private comicService: ComicService,
-    private authorService: AuthorService,
-    private userService: UserService) { }
+    private comicService: ComicService) { }
 
   ngOnInit(): void {
     this.getAllComics();
@@ -32,8 +28,6 @@ export class AdminComicsPageComponent implements OnInit {
     this.listComics.forEach(async comic => {
       comic.statusString = this.getComicStatusString(comic);
       comic.statusClass = this.getComicStatusClass(comic);
-      comic.author = await lastValueFrom(this.authorService.getById(comic.authorId));
-      comic.user = await lastValueFrom(this.userService.getById(comic.userId));
     });
   }
 

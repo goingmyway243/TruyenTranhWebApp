@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChapterModel } from 'src/app/models/chapter.model';
 import { ComicModel } from 'src/app/models/comic.model';
@@ -21,11 +21,14 @@ export class ComicChapterPageComponent implements OnInit {
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
+    private elementRef: ElementRef,
     private comicService: ComicService,
     private contentService: ContentService
   ) { }
 
   ngOnInit(): void {
+    window.onscroll = () => this.scrollFunction();
+
     const comicId = this.activeRoute.snapshot.paramMap.get('id');
     const chapterIndex = this.activeRoute.snapshot.paramMap.get('chapterId');
 
@@ -48,6 +51,9 @@ export class ComicChapterPageComponent implements OnInit {
         });
 
         this.updatedTime = Utils.getUpdatedDateTime(this.chapterData.createdTime);
+
+        this.comicData.view++;
+        this.comicService.update(this.comicData).subscribe();
       });
     }
     else {
@@ -55,4 +61,39 @@ export class ComicChapterPageComponent implements OnInit {
     }
   }
 
+  nextChapter() {
+    let currentIndex = this.comicData.chapters.indexOf(this.chapterData);
+    const index = this.comicData.chapters[--currentIndex].chapterIndex;
+    this.router
+      .navigate([`../../chuong/${index}`], { relativeTo: this.activeRoute })
+      .then(() => window.location.reload());;
+  }
+
+  previousChapter() {
+    let currentIndex = this.comicData.chapters.indexOf(this.chapterData);
+    const index = this.comicData.chapters[++currentIndex].chapterIndex;
+    this.router
+      .navigate([`../../chuong/${index}`], { relativeTo: this.activeRoute })
+      .then(() => window.location.reload());;
+  }
+
+  navigateToChapterForSelect(event: any) {
+    this.router
+      .navigate([`../../chuong/${event.target.value}`], { relativeTo: this.activeRoute })
+      .then(() => window.location.reload());
+  }
+
+  scrollFunction(): void {
+    const topButton = this.elementRef.nativeElement.querySelector('.top-button') as HTMLElement;
+    if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+      topButton.style.display = "block";
+    } else {
+      topButton.style.display = "none";
+    }
+  }
+
+  topFunction(): void {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
 }

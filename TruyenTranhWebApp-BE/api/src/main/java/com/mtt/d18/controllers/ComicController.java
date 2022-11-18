@@ -43,8 +43,9 @@ public class ComicController {
 	
 	@PostMapping
 	public ResponseEntity<ComicModel> create(@RequestBody ComicModel comicModel) {
-		ComicModel newComic = new ComicModel(comicModel.getTitle(), comicModel.getDescription(), 0,
-				comicModel.getUserId(), comicModel.getAuthorId(), comicModel.getStatus());
+		ComicModel newComic = new ComicModel(comicModel.getTitle(), comicModel.getDescription(), 0, comicModel.getStatus());
+		newComic.setAuthor(comicModel.getAuthor());
+		newComic.setUser(comicModel.getUser());
 		newComic.setGenres(comicModel.getGenres());
 
 		return new ResponseEntity<ComicModel>(comicRepo.save(newComic), HttpStatus.OK);

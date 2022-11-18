@@ -26,9 +26,8 @@ export class ContentService {
     return this.http.get<ContentModel[]>(getUrl);
   }
 
-  add(content: ContentModel, chapterId: number): Observable<ContentModel> {
-    let postUrl = `${this.apiUrl}/${chapterId}`;
-    return this.http.post<ContentModel>(postUrl, content, AppComponent.httpOptions);
+  add(content: ContentModel): Observable<ContentModel> {
+    return this.http.post<ContentModel>(this.apiUrl, content, AppComponent.httpOptions);
   }
 
   addList(contents: ContentModel[], chapterId: number): Observable<ContentModel[]> {
@@ -41,8 +40,8 @@ export class ContentService {
     return this.http.put<ContentModel>(putUrl, content, AppComponent.httpOptions);
   }
 
-  delete(id: number): Observable<string> {
+  delete(id: number): Observable<any> {
     let deleteUrl = `${this.apiUrl}/${id}`;
-    return this.http.delete<string>(deleteUrl, AppComponent.httpOptions);
+    return this.http.delete<any>(deleteUrl);
   }
 }

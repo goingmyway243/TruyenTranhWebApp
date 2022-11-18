@@ -78,7 +78,6 @@ export class AdminAddComicPageComponent implements OnInit {
         this.newComic = data;
         this.newComic.chapters = this.newComic.chapters.map(chapter => Object.assign(new ChapterModel(), chapter));
         this.newComic.chapters.sort((a, b) => a.chapterIndex - b.chapterIndex);
-        this.authorService.getById(this.newComic.authorId).subscribe(author => this.authorName = author.name);
         this.selectedItems = this.newComic.genres;
         this.loadCoverImage();
       });
@@ -150,6 +149,7 @@ export class AdminAddComicPageComponent implements OnInit {
     AdminComponent.draftComic.coverImage = this.coverImage;
     AdminComponent.draftComic.author = new AuthorModel();
     AdminComponent.draftComic.author.name = this.authorName;
+    AdminComponent.draftComic.genres = this.selectedItems;
 
     AdminComponent.draftChapter = chapter;
 
@@ -215,21 +215,17 @@ export class AdminAddComicPageComponent implements OnInit {
     else {
       this.toggleSpinner();
 
-      let author = await lastValueFrom(this.authorService.getByName(this.authorName));
+      this.newComic.author = await lastValueFrom(this.authorService.getByName(this.authorName));
 
-      if (author.id !== 0) {
-        this.newComic.authorId = author.id;
-      }
-      else {
+      if (this.newComic.author.id == 0) {
         let newAuthor = new AuthorModel();
         newAuthor.name = this.authorName;
 
-        author = await lastValueFrom(this.authorService.add(newAuthor));
-        this.newComic.authorId = author.id;
+        this.newComic.author = await lastValueFrom(this.authorService.add(newAuthor));
       }
 
       this.newComic.genres = this.selectedItems;
-      this.newComic.userId = AdminComponent.currentUser!.id;
+      this.newComic.user = AdminComponent.currentUser;
 
       let resultComic = await lastValueFrom(this.comicService.add(this.newComic));
       this.newComic.id = resultComic.id;
@@ -246,8 +242,9 @@ export class AdminAddComicPageComponent implements OnInit {
           let content = new ContentModel();
           content.contentIndex = j;
           content.fileName = String(j).padStart(3, '0') + '.jpg';
+          content.chapter = chapter;
 
-          content = await lastValueFrom(this.contentService.add(content, chapter.id));
+          content = await lastValueFrom(this.contentService.add(content));
           await lastValueFrom(this.uploadService.upload(image, content.id + '.jpg', this.newComic.id + ''));
         }
       }
@@ -271,23 +268,19 @@ export class AdminAddComicPageComponent implements OnInit {
   async updateComic(): Promise<void> {
     this.toggleSpinner();
 
-    let author = await lastValueFrom(this.authorService.getByName(this.authorName));
+    this.newComic.author = await lastValueFrom(this.authorService.getByName(this.authorName));
 
-    if (author.id !== 0) {
-      this.newComic.authorId = author.id;
-    }
-    else {
+    if (this.newComic.author.id == 0) {
       let newAuthor = new AuthorModel();
       newAuthor.name = this.authorName;
 
-      author = await lastValueFrom(this.authorService.add(newAuthor));
-      this.newComic.authorId = author.id;
+      this.newComic.author = await lastValueFrom(this.authorService.add(newAuthor));
     }
 
     let chapters = this.newComic.chapters;
 
     this.newComic.genres = this.selectedItems;
-    this.newComic.userId = AdminComponent.currentUser!.id;
+    this.newComic.user = AdminComponent.currentUser;
 
     await lastValueFrom(this.comicService.update(this.newComic));
 
@@ -302,6 +295,7 @@ export class AdminAddComicPageComponent implements OnInit {
     //     let content = new ContentModel();
     //     content.contentIndex = j;
     //     content.fileName = String(j).padStart(3, '0') + '.jpg';
+    //     content.chapter = chapter;
 
     //     content = await lastValueFrom(this.contentService.add(content, chapter.id));
     //     await lastValueFrom(this.uploadService.upload(image, content.id + '.jpg', this.newComic.id + ''));

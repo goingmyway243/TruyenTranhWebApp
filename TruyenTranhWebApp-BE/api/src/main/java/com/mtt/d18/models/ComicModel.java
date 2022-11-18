@@ -16,13 +16,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mtt.d18.enums.StatusType;
 
 @Entity
@@ -38,16 +42,22 @@ public class ComicModel {
 	private String description;
 
 	private long view;
-	
-	private long userId;
-	
-	private long authorId;
 
 	@Enumerated(EnumType.STRING)
 	private StatusType status;
 
 	@CreatedDate
 	private LocalDateTime createdTime;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "user_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private UserModel user;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "author_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private AuthorModel author;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinTable(name = "comic_genre", joinColumns = @JoinColumn(name = "comic_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
@@ -58,17 +68,16 @@ public class ComicModel {
 	
 	@OneToMany(mappedBy = "comic")
 	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
 	private Set<ReviewModel> reviews;
 
 	public ComicModel() {
 	}
 
-	public ComicModel(String title, String description, long view, long userId, long authorId, StatusType status) {
+	public ComicModel(String title, String description, long view, StatusType status) {
 		this.title = title;
 		this.description = description;
 		this.view = view;
-		this.userId = userId;
-		this.authorId = authorId;
 		this.status = status;
 		this.createdTime = LocalDateTime.now();
 	}
@@ -104,22 +113,6 @@ public class ComicModel {
 	public void setView(long view) {
 		this.view = view;
 	}
-	
-	public long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
-	public long getAuthorId() {
-		return authorId;
-	}
-
-	public void setAuthorId(long authorId) {
-		this.authorId = authorId;
-	}
 
 	public StatusType getStatus() {
 		return status;
@@ -131,6 +124,22 @@ public class ComicModel {
 
 	public LocalDateTime getCreatedTime() {
 		return createdTime;
+	}
+
+	public UserModel getUser() {
+		return user;
+	}
+
+	public void setUser(UserModel user) {
+		this.user = user;
+	}
+
+	public AuthorModel getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(AuthorModel author) {
+		this.author = author;
 	}
 
 	public Set<GenreModel> getGenres() {

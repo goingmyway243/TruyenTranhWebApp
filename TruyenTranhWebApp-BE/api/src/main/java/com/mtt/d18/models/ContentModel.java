@@ -1,7 +1,6 @@
 package com.mtt.d18.models;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.Entity;	
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,8 +10,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "content")
@@ -25,10 +22,9 @@ public class ContentModel {
 
 	private int contentIndex;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "chapter_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnore
 	private ChapterModel chapter;
 
 	public ContentModel() {

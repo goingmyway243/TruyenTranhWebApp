@@ -16,17 +16,22 @@ export class ReviewService {
     return this.http.get<ReviewModel[]>(this.apiUrl);
   }
 
-  getById(id: number): Observable<ReviewModel> {
-    let getUrl = `${this.apiUrl}/${id}`;
-    return this.http.get(getUrl).pipe(map(data => Object.assign(new ReviewModel(), data)));
+  getByComicId(comicId: number): Observable<ReviewModel[]> {
+    let getUrl = `${this.apiUrl}/comic/${comicId}`;
+    return this.http.get<ReviewModel[]>(getUrl);
   }
 
   add(review: ReviewModel): Observable<ReviewModel> {
     return this.http.post<ReviewModel>(this.apiUrl, review, AppComponent.httpOptions);
   }
 
-  delete(id: number): Observable<string> {
-    let deleteUrl = `${this.apiUrl}/${id}`;
-    return this.http.delete<string>(deleteUrl, AppComponent.httpOptions);
+  update(review: ReviewModel): Observable<ReviewModel> {
+    let putUrl = `${this.apiUrl}/${review.user!.id}/${review.comic!.id}`;
+    return this.http.put<ReviewModel>(putUrl, review, AppComponent.httpOptions);
+  }
+
+  delete(userId: number, comicId: number): Observable<any> {
+    let deleteUrl = `${this.apiUrl}/${userId}/${comicId}`;
+    return this.http.delete<any>(deleteUrl);
   }
 }

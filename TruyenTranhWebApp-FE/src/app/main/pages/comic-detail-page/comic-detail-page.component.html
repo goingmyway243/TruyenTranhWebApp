@@ -13,11 +13,11 @@
             <ul class="detail">
                 <li>
                     <span><i class="uil uil-user"></i> Người đăng</span>
-                    <span>{{user.name}}</span>
+                    <span>{{comic.user?.name}}</span>
                 </li>
                 <li>
                     <span><i class="uil uil-book-reader"></i> Tác giả</span>
-                    <span>{{author.name}}</span>
+                    <span>{{comic.author?.name}}</span>
                 </li>
                 <li>
                     <span><i class="uil uil-tag-alt"></i> Thể loại</span>
@@ -35,11 +35,11 @@
                 <li class="like-group">
                     <div class="btn-wrapper">
                         <i class="uil uil-heart btn clickable like" (click)="likeComic(true)"></i>
-                        <span>90</span>
+                        <span>{{totalLike}}</span>
                     </div>
                     <div class="btn-wrapper">
                         <i class="uil uil-heart-break btn clickable dislike" (click)="likeComic(false)"></i>
-                        <span>90</span>
+                        <span>{{totalDislike}}</span>
                     </div>
                 </li>
             </ul>
