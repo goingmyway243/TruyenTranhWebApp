@@ -2,9 +2,13 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChapterModel } from 'src/app/models/chapter.model';
 import { ComicModel } from 'src/app/models/comic.model';
+import { CommentModel } from 'src/app/models/comment.model';
 import { ContentModel } from 'src/app/models/content.model';
+import { UserModel } from 'src/app/models/user.model';
 import { ComicService } from 'src/app/services/comic.service';
+import { CommentService } from 'src/app/services/comment.service';
 import { ContentService } from 'src/app/services/content.service';
+import { UserService } from 'src/app/services/user.service';
 import { Utils } from 'src/app/utils/utils';
 
 @Component({
@@ -15,7 +19,9 @@ import { Utils } from 'src/app/utils/utils';
 export class ComicChapterPageComponent implements OnInit {
   comicData: ComicModel = new ComicModel();
   chapterData: ChapterModel = new ChapterModel();
+  userData?: UserModel;
   listContents: ContentModel[] = [];
+  listComments: CommentModel[] = [];
   updatedTime: string = '';
 
   constructor(
@@ -23,7 +29,9 @@ export class ComicChapterPageComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private elementRef: ElementRef,
     private comicService: ComicService,
-    private contentService: ContentService
+    private contentService: ContentService,
+    private userService: UserService,
+    private commentService: CommentService
   ) { }
 
   ngOnInit(): void {
@@ -31,6 +39,11 @@ export class ComicChapterPageComponent implements OnInit {
 
     const comicId = this.activeRoute.snapshot.paramMap.get('id');
     const chapterIndex = this.activeRoute.snapshot.paramMap.get('chapterId');
+    const userId = localStorage.getItem('authorizeToken');
+
+    if (userId) {
+      this.userService.getById(+userId).subscribe(data => this.userData = data);
+    }
 
     if (comicId && chapterIndex) {
       this.comicService.getById(+comicId).subscribe(data => {
@@ -48,6 +61,11 @@ export class ComicChapterPageComponent implements OnInit {
         this.contentService.getByChapterId(this.chapterData.id).subscribe(data => {
           this.listContents = data;
           this.listContents = this.listContents.map(content => Object.assign(new ContentModel(), content));
+        });
+
+        this.commentService.getByChapterId(this.chapterData.id).subscribe(data => {
+          this.listComments = data;
+          this.listComments = this.listComments.sort().map(comment => Object.assign(new CommentModel(), comment));
         });
 
         this.updatedTime = Utils.getUpdatedDateTime(this.chapterData.createdTime);
@@ -85,7 +103,7 @@ export class ComicChapterPageComponent implements OnInit {
 
   scrollFunction(): void {
     const topButton = this.elementRef.nativeElement.querySelector('.top-button') as HTMLElement;
-    if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+    if (document.documentElement.scrollTop > 300) {
       topButton.style.display = "block";
     } else {
       topButton.style.display = "none";
@@ -93,7 +111,10 @@ export class ComicChapterPageComponent implements OnInit {
   }
 
   topFunction(): void {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  onCommentPosted(comment: CommentModel) {
+    this.listComments.unshift(Object.assign(new CommentModel(), comment));
   }
 }

@@ -5,14 +5,13 @@
 
     <div class="wrapper">
         <span>
-            <div class="user-name text-bold">Người dùng</div>
-            <div class="comment">Ê nma để ý outfit của mains đỉnh thật . Bộ nào ra bộ đó qá high fashion. Trang phục đẹp
-                nhất mấy bộ từng coi luôn</div>
+            <div class="user-name text-bold">{{comment.user?.name}}</div>
+            <div class="comment">{{comment.comment}}</div>
         </span>
 
         <div class="more-info">
-            <h5 class="chapter-info">Chapter 0</h5>
-            <h5 class="text-muted">Vừa xong</h5>
+            <h5 class="chapter-info" *ngIf="showChapter">Chapter {{comment.chapter?.chapterIndex}}</h5>
+            <h5 class="text-muted">{{comment.getTimeDiff()}}</h5>
         </div>
     </div>
 </div>

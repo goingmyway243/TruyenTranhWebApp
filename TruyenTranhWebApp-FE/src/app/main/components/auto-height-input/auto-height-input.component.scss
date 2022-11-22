@@ -1,12 +1,14 @@
 .auto-height-input {
     width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 
     textarea {
         width: 100%;
         color: var(--color-dark);
         background-color: var(--color-white);
         padding: 0.5rem;
-        margin: 1rem 0;
         font-size: 1rem;
         min-height: 3rem;
         line-height: 25px;
@@ -14,5 +16,10 @@
         resize: none;
         white-space: pre;
         border: 1px solid var(--color-gray);
+    }
+
+    i {
+        font-size: 1.5rem;
+        color: var(--color-primary);
     }
 }

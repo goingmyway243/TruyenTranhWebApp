@@ -46,6 +46,11 @@ public class ChapterModel {
 	@Fetch(FetchMode.JOIN)
 	@JsonIgnore
 	private Set<ContentModel> contents = new HashSet<>();
+	
+	@OneToMany(mappedBy = "chapter")
+	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
+	private Set<CommentModel> comments = new HashSet<>();
 
 	public ChapterModel() {
 	}

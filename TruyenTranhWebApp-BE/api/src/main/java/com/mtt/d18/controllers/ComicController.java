@@ -1,6 +1,8 @@
 package com.mtt.d18.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mtt.d18.models.ComicModel;
+import com.mtt.d18.models.GenreModel;
 import com.mtt.d18.repositories.IComicRepository;
 
 @RestController
@@ -37,13 +40,36 @@ public class ComicController {
 	}
 
 	@GetMapping("/new")
-	public ResponseEntity<List<ComicModel>> getAllOrderByTime(){
+	public ResponseEntity<List<ComicModel>> getAllOrderByTime() {
 		return new ResponseEntity<List<ComicModel>>(comicRepo.findByOrderByCreatedTimeDesc(), HttpStatus.OK);
 	}
-	
+
+	@GetMapping("/new/{keyword}")
+	public ResponseEntity<List<ComicModel>> getByTitleContainingOrderByTime(@PathVariable String keyword) {
+		return new ResponseEntity<List<ComicModel>>(comicRepo.findByTitleContainingOrderByCreatedTimeDesc(keyword),
+				HttpStatus.OK);
+	}
+
+	@GetMapping("/genre/{genreId}")
+	public ResponseEntity<List<ComicModel>> getByGenreIdOrderByTime(@PathVariable long genreId) {
+		List<ComicModel> listComics = comicRepo.findByOrderByCreatedTimeDesc();
+		List<ComicModel> listResult = new ArrayList<>();
+
+		listComics.forEach(comic -> {
+			List<Long> genreIds = comic.getGenres().stream().map(GenreModel::getId).collect(Collectors.toList());
+
+			if (genreIds.contains(genreId)) {
+				listResult.add(comic);
+			}
+		});
+
+		return new ResponseEntity<List<ComicModel>>(listResult, HttpStatus.OK);
+	}
+
 	@PostMapping
 	public ResponseEntity<ComicModel> create(@RequestBody ComicModel comicModel) {
-		ComicModel newComic = new ComicModel(comicModel.getTitle(), comicModel.getDescription(), 0, comicModel.getStatus());
+		ComicModel newComic = new ComicModel(comicModel.getTitle(), comicModel.getDescription(), 0,
+				comicModel.getStatus());
 		newComic.setAuthor(comicModel.getAuthor());
 		newComic.setUser(comicModel.getUser());
 		newComic.setGenres(comicModel.getGenres());

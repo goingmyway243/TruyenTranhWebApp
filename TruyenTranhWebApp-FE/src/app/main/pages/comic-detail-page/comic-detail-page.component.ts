@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChapterModel } from 'src/app/models/chapter.model';
 import { ComicModel } from 'src/app/models/comic.model';
+import { CommentModel } from 'src/app/models/comment.model';
 import { ReviewModel, ReviewType } from 'src/app/models/review.model';
 import { ComicService } from 'src/app/services/comic.service';
+import { CommentService } from 'src/app/services/comment.service';
 import { ReviewService } from 'src/app/services/review.service';
 import { Utils } from 'src/app/utils/utils';
 import { MainComponent } from '../../main.component';
@@ -16,6 +18,7 @@ import { MainComponent } from '../../main.component';
 export class ComicDetailPageComponent implements OnInit {
   comic: ComicModel = new ComicModel();
   listChapters: ChapterModel[] = [];
+  listComments: CommentModel[] = [];
   updatedTime: string = '';
   totalLike: number = 0;
   totalDislike: number = 0;
@@ -25,18 +28,27 @@ export class ComicDetailPageComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private comicService: ComicService,
-    private reviewService: ReviewService) { }
+    private reviewService: ReviewService,
+    private commentService: CommentService) { }
 
   ngOnInit(): void {
     const id = this.activeRoute.snapshot.paramMap.get('id');
     if (id) {
       this.comicService.getById(+id).subscribe(data => {
         this.comic = data;
+
         this.getComicReviews();
+
         this.listChapters = this.comic.chapters
           .sort((a, b) => b.chapterIndex - a.chapterIndex)
           .slice(0, 3)
           .map(chapter => Object.assign(new ChapterModel(), chapter));
+
+        this.commentService.getByComicId(this.comic.id).subscribe(data => {
+          this.listComments = data;
+          this.listComments = this.listComments.sort().map(comment => Object.assign(new CommentModel(), comment));
+        });
+
         this.updatedTime = Utils.getUpdatedDateTime(this.listChapters.at(-1)!.createdTime);
       });
     }

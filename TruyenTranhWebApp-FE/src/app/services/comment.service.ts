@@ -21,6 +21,16 @@ export class CommentService {
     return this.http.get(getUrl).pipe(map(data => Object.assign(new CommentModel(), data)));
   }
 
+  getByChapterId(chapterId: number): Observable<CommentModel[]> {
+    let getUrl = `${this.apiUrl}/list/${chapterId}`;
+    return this.http.get<CommentModel[]>(getUrl);
+  }
+
+  getByComicId(comicId: number): Observable<CommentModel[]> {
+    let getUrl = `${this.apiUrl}/comic/${comicId}`;
+    return this.http.get<CommentModel[]>(getUrl);
+  }
+
   add(comment: CommentModel): Observable<CommentModel> {
     return this.http.post<CommentModel>(this.apiUrl, comment, AppComponent.httpOptions);
   }

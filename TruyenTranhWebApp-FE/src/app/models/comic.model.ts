@@ -1,6 +1,7 @@
 import { AppComponent } from "../app.component";
 import { AuthorModel } from "./author.model";
 import { ChapterModel } from "./chapter.model";
+import { CommentModel } from "./comment.model";
 import { GenreModel } from "./genre.model";
 import { ReviewModel } from "./review.model";
 import { UserModel } from "./user.model";
@@ -39,6 +40,7 @@ export class ComicModel implements IComicModel {
     author?: AuthorModel;
     genres: GenreModel[];
     chapters: ChapterModel[];
+    comments: CommentModel[];
     reviews: ReviewModel[];
     coverImage?: File;
 
@@ -55,6 +57,7 @@ export class ComicModel implements IComicModel {
 
         this.genres = [];
         this.chapters = [];
+        this.comments = [];
         this.reviews = [];
     }
 

@@ -11,6 +11,7 @@ import { UserService } from '../services/user.service';
 })
 export class MainComponent implements OnInit {
   static currentUser?: UserModel;
+  searchStr: string = '';
 
   constructor(
     private elmRef: ElementRef,
@@ -50,8 +51,8 @@ export class MainComponent implements OnInit {
     });
   }
 
-  onSearch(event: any): void {
-    this.router.navigate(['tim-kiem/aaa']);
+  onSearch(): void {
+    this.router.navigate([`/tim-kiem/${this.searchStr}`]).then(() => window.location.reload());
   }
 
   initAvatarHoverEvent(): void {

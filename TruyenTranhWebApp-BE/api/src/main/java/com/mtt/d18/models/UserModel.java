@@ -45,6 +45,11 @@ public class UserModel {
 	@JsonIgnore
 	private Set<ReviewModel> reviews;
 	
+	@OneToMany(mappedBy = "user")
+	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
+	private Set<CommentModel> comments;
+	
 	public UserModel() {
 	}
 

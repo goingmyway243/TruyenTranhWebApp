@@ -2,9 +2,10 @@
     <div class="container">
         <a class="logo clickable" [routerLink]="['']">TruyenTranh</a>
 
-        <form class="search-bar" (submit)="onSearch($event)">
+        <form class="search-bar" (submit)="onSearch()">
             <i class="uil uil-search"></i>
-            <input type="search" placeholder="Tìm truyện...">
+            <input type="search" placeholder="Tìm truyện..." [(ngModel)]="searchStr"
+                [ngModelOptions]="{standalone: true}">
         </form>
 
         <div class="login-group" [hidden]="getCurrentUser()">

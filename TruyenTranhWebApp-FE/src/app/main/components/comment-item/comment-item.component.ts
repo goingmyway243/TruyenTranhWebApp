@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { CommentModel } from 'src/app/models/comment.model';
 
 @Component({
   selector: 'app-comment-item',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./comment-item.component.scss']
 })
 export class CommentItemComponent implements OnInit {
+  @Input() comment: CommentModel = new CommentModel();
+  @Input() showChapter: boolean = false;
 
   constructor() { }
 

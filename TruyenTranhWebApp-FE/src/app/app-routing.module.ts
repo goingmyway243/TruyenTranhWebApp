@@ -33,7 +33,7 @@ const routes: Routes = [
       { path: 'truyen-tranh/:id', component: ComicDetailPageComponent },
       { path: 'truyen-tranh/:id/chuong/:chapterId', component: ComicChapterPageComponent },
       { path: 'tim-kiem/:keyword', component: SearchResultPageComponent },
-      { path: 'tim-kiem/the-loai/:genre', component: SearchResultPageComponent },
+      { path: 'tim-kiem/the-loai/:genreId', component: SearchResultPageComponent },
       { path: 'them-truyen', component: AddComicPageComponent },
       { path: 'truyen-cua-toi', component: MyComicPageComponent },
       { path: 'thong-tin-ca-nhan', component: MyProfilePageComponent }

@@ -92,13 +92,9 @@
             <span> BÌNH LUẬN</span>
         </div>
 
-        <app-auto-height-input></app-auto-height-input>
-
         <div class="list-comment">
-            <app-comment-item></app-comment-item>
-            <app-comment-item></app-comment-item>
-            <app-comment-item></app-comment-item>
-            <app-comment-item></app-comment-item>
+            <app-comment-item *ngFor="let comment of listComments" [comment]="comment" [showChapter]="true">
+            </app-comment-item>
         </div>
     </div>
 </div>

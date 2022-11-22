@@ -6,8 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
 @Entity
@@ -19,9 +23,15 @@ public class CommentModel {
 	
 	private String comment;
 	
-	private long userId;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "user_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private UserModel user;
 	
-	private long chapterId;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "chapter_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private ChapterModel chapter;
 	
 	@CreatedDate
 	private LocalDateTime createdTime;
@@ -29,10 +39,8 @@ public class CommentModel {
 	public CommentModel() {
 	}
 
-	public CommentModel(String comment, long userId, long chapterId) {
+	public CommentModel(String comment) {
 		this.comment = comment;
-		this.userId = userId;
-		this.chapterId = chapterId;
 		this.createdTime = LocalDateTime.now();
 	}
 
@@ -52,23 +60,23 @@ public class CommentModel {
 		this.comment = comment;
 	}
 
-	public long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
-	public long getChapterId() {
-		return chapterId;
-	}
-
-	public void setChapterId(long chapterId) {
-		this.chapterId = chapterId;
-	}
-
 	public LocalDateTime getCreatedTime() {
 		return createdTime;
+	}
+
+	public UserModel getUser() {
+		return user;
+	}
+
+	public void setUser(UserModel user) {
+		this.user = user;
+	}
+
+	public ChapterModel getChapter() {
+		return chapter;
+	}
+
+	public void setChapter(ChapterModel chapter) {
+		this.chapter = chapter;
 	}
 }

@@ -5,6 +5,8 @@ export interface IContentModel {
     id: number;
     fileName: string;
     contentIndex: number;
+
+    chapter?: ChapterModel;
 }
 
 export class ContentModel implements IContentModel {
