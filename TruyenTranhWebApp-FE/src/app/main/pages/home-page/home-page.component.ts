@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { lastValueFrom } from 'rxjs';
 import { ComicModel } from 'src/app/models/comic.model';
+import { GenreModel } from 'src/app/models/genre.model';
+import { HistoryModel } from 'src/app/models/history.model';
 import { ComicService } from 'src/app/services/comic.service';
+import { GenreService } from 'src/app/services/genre.service';
 
 @Component({
   selector: 'app-home-page',
@@ -11,6 +16,9 @@ import { ComicService } from 'src/app/services/comic.service';
 export class HomePageComponent implements OnInit {
   listComics: ComicModel[] = [];
   listRecommends: ComicModel[] = [];
+  listGenres: GenreModel[] = [];
+  listHistories: ComicModel[] = [];
+  historyJson: HistoryModel[] | undefined;
 
   customOptions: OwlOptions = {
     loop: true,
@@ -48,7 +56,9 @@ export class HomePageComponent implements OnInit {
   }
 
   constructor(
-    private comicService: ComicService
+    private router: Router,
+    private comicService: ComicService,
+    private genreService: GenreService
   ) { }
 
   ngOnInit(): void {
@@ -56,6 +66,39 @@ export class HomePageComponent implements OnInit {
       this.listComics = data;
       this.listRecommends = this.listComics.slice(0, 6);
     });
+
+    this.genreService.getAll().subscribe(data => {
+      this.listGenres = data;
+    });
+
+    this.getListHistories();
   }
 
+  getListHistories(): void {
+    const historyItems = localStorage.getItem('history');
+
+    if (historyItems) {
+      this.historyJson = JSON.parse(historyItems);
+      if (this.historyJson) {
+        this.historyJson.forEach(async (item: HistoryModel) => {
+          let comic = await lastValueFrom(this.comicService.getById(item.comicId));
+          comic.continueChapterIndex = item.chapterIndex;
+          this.listHistories.push(comic);
+        });
+      }
+    }
+  }
+
+  deleteHistoryItem(index: number): void {
+    this.listHistories.splice(index, 1);
+    if (this.historyJson) {
+      this.historyJson?.splice(index, 1);
+
+      localStorage.setItem('history', JSON.stringify(this.historyJson));
+    }
+  }
+
+  searchByGenre(id: number) {
+    this.router.navigate([`/tim-kiem/the-loai/${id}`]).then(() => window.location.reload());
+  }
 }

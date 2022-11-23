@@ -31,8 +31,13 @@ export class ComicService {
     return this.http.get<ComicModel[]>(getUrl);
   }
 
-  getByGenreIdOrderByTime(genreId: string): Observable<ComicModel[]> {
+  getByGenreIdOrderByTime(genreId: number): Observable<ComicModel[]> {
     let getUrl = `${this.apiUrl}/genre/${genreId}`;
+    return this.http.get<ComicModel[]>(getUrl);
+  }
+
+  getByUserIdOrderByTime(userId: number): Observable<ComicModel[]> {
+    let getUrl = `${this.apiUrl}/user/${userId}`;
     return this.http.get<ComicModel[]>(getUrl);
   }
 

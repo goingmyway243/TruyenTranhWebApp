@@ -23,7 +23,8 @@ export class MainComponent implements OnInit {
 
     let userId = localStorage.getItem('authorizeToken');
     if (userId) {
-      this.userService.getById(+userId).subscribe(data => MainComponent.currentUser = data);
+      this.userService.getById(+userId).subscribe(data =>
+        MainComponent.currentUser = Object.assign(new UserModel(), data));
     }
   }
 

@@ -46,6 +46,7 @@ export class ComicModel implements IComicModel {
 
     statusString?: string;
     statusClass?: string;
+    continueChapterIndex?: number;
 
     constructor() {
         this.id = 0;

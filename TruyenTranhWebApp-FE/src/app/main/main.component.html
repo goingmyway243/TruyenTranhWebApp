@@ -16,9 +16,9 @@
 
         <div class="user-info clickable" [hidden]="!getCurrentUser()">
             <div class="avatar">
-                <img src="https://i.pinimg.com/736x/4d/09/f5/4d09f59689e7cce8d16d225e1bd423bd.jpg" alt="">
+                <img [src]="getCurrentUser()?.getAvatar()" alt="">
             </div>
-            <span>Ayano Kyouji</span>
+            <span>{{getCurrentUser()?.name}}</span>
         </div>
     </div>
 </header>

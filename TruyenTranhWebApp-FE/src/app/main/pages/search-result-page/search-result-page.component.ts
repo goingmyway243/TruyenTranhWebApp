@@ -33,7 +33,7 @@ export class SearchResultPageComponent implements OnInit {
       });
     }
     else if (genreId) {
-      this.comicService.getByGenreIdOrderByTime(genreId).subscribe(data => {
+      this.comicService.getByGenreIdOrderByTime(+genreId).subscribe(data => {
         this.listComics = data;
         this.listComics = this.listComics.map(comic => Object.assign(new ComicModel(), comic));
       });

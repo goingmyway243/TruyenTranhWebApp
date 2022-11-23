@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mtt.d18.models.ComicModel;
 import com.mtt.d18.models.GenreModel;
+import com.mtt.d18.models.UserModel;
 import com.mtt.d18.repositories.IComicRepository;
+import com.mtt.d18.repositories.IUserRepository;
 
 @RestController
 @CrossOrigin("*")
@@ -27,6 +29,9 @@ import com.mtt.d18.repositories.IComicRepository;
 public class ComicController {
 	@Autowired
 	private IComicRepository comicRepo;
+	
+	@Autowired
+	private IUserRepository userRepo;
 
 	@GetMapping
 	public ResponseEntity<List<ComicModel>> getAll() {
@@ -64,6 +69,18 @@ public class ComicController {
 		});
 
 		return new ResponseEntity<List<ComicModel>>(listResult, HttpStatus.OK);
+	}
+	
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<List<ComicModel>> getByUserIdOrderByTime(@PathVariable long userId) {
+		UserModel user = userRepo.findById(userId).orElseGet(null);
+		
+		if(user == null)
+		{
+			return new ResponseEntity<List<ComicModel>>(HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<List<ComicModel>>(comicRepo.findByUserOrderByCreatedTimeDesc(user), HttpStatus.OK);
 	}
 
 	@PostMapping

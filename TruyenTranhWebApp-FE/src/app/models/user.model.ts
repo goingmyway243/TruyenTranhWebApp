@@ -1,3 +1,5 @@
+import { AppComponent } from "../app.component";
+import { ComicModel } from "./comic.model";
 import { ReviewModel } from "./review.model";
 
 export enum RoleType {
@@ -21,6 +23,7 @@ export class UserModel implements IUserModel {
     role: RoleType;
 
     reviews: ReviewModel[];
+    comics: ComicModel[];
 
     constructor() {
         this.id = 0;
@@ -30,5 +33,10 @@ export class UserModel implements IUserModel {
         this.role = RoleType.USER;
 
         this.reviews = [];
+        this.comics = [];
+    }
+
+    getAvatar(): string {
+        return `${AppComponent.baseUrl}images/${this.id}.jpg`;
     }
 }

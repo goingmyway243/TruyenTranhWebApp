@@ -4,6 +4,7 @@ import { ChapterModel } from 'src/app/models/chapter.model';
 import { ComicModel } from 'src/app/models/comic.model';
 import { CommentModel } from 'src/app/models/comment.model';
 import { ContentModel } from 'src/app/models/content.model';
+import { HistoryModel } from 'src/app/models/history.model';
 import { UserModel } from 'src/app/models/user.model';
 import { ComicService } from 'src/app/services/comic.service';
 import { CommentService } from 'src/app/services/comment.service';
@@ -23,6 +24,7 @@ export class ComicChapterPageComponent implements OnInit {
   listContents: ContentModel[] = [];
   listComments: CommentModel[] = [];
   updatedTime: string = '';
+  histories: HistoryModel[] = [];
 
   constructor(
     private router: Router,
@@ -72,11 +74,41 @@ export class ComicChapterPageComponent implements OnInit {
 
         this.comicData.view++;
         this.comicService.update(this.comicData).subscribe();
+
+        this.updateHistory(+comicId, +chapterIndex);
       });
     }
     else {
       this.router.navigate(['']);
     }
+  }
+
+  updateHistory(comicId: number, chapterIndex: number) {
+    const historyItems = localStorage.getItem('history');
+
+    if (historyItems) {
+      const historyJson = JSON.parse(historyItems);
+      if (historyJson) {
+        this.histories.push(...historyJson);
+      }
+    }
+
+    this.histories.forEach((item, index) => {
+      if (item.comicId == comicId) {
+        this.histories.splice(index, 1);
+      }
+    });
+
+    let item = new HistoryModel();
+    item.comicId = comicId;
+    item.chapterIndex = chapterIndex;
+    this.histories.unshift(item);
+
+    if (this.histories.length > 5) {
+      this.histories.splice(0, 1);
+    }
+
+    localStorage.setItem('history', JSON.stringify(this.histories));
   }
 
   nextChapter() {
