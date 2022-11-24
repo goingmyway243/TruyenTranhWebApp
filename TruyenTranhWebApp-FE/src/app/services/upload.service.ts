@@ -25,6 +25,16 @@ export class UploadService {
     return this.http.request(req);
   }
 
+  deleteByPath(path: string): Observable<any> {
+    let deleteUrl = `${this.apiUrl}/${path}`;
+    return this.http.delete<any>(deleteUrl);
+  }
+
+  deleteByFolderWithFileName(folder: string, fileName: string): Observable<any> {
+    let deleteUrl = `${this.apiUrl}/${folder}/${fileName}`;
+    return this.http.delete<any>(deleteUrl);
+  }
+
   getFiles(): Observable<any> {
     return this.http.get(this.apiUrl);
   }

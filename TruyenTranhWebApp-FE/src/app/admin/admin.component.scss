@@ -24,6 +24,16 @@ nav {
             width: 5rem;
         }
 
+        .toggle {
+            width: 3rem;
+            height: 3rem;
+            margin-top: 1rem;
+            margin-left: 0.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            color: var(--color-white);
+        }
+
         ul {
             position: absolute;
             top: 5rem;

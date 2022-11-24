@@ -18,6 +18,7 @@ export class ChapterModel implements IChapterModel {
     comic?: ComicModel;
     contents: ContentModel[];
     contentImages: File[];
+    deletedContents: ContentModel[];
 
     constructor() {
         this.id = 0;
@@ -27,6 +28,8 @@ export class ChapterModel implements IChapterModel {
 
         this.contents = [];
         this.contentImages = [];
+
+        this.deletedContents = [];
     }
 
     getChapterName(indexOnly?: boolean): string {

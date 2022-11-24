@@ -65,7 +65,7 @@ public class ContentController {
 
 	@PostMapping()
 	public ResponseEntity<ContentModel> create(@RequestBody ContentModel contentModel) {
-		ContentModel newContent = new ContentModel(contentModel.getFileName(), contentModel.getContentIndex());
+		ContentModel newContent = new ContentModel(contentModel.getContentIndex());
 		newContent.setChapter(contentModel.getChapter());
 		return new ResponseEntity<ContentModel>(contentRepo.save(newContent), HttpStatus.OK);
 	}
@@ -80,7 +80,7 @@ public class ContentController {
 		}
 		
 		listContent.forEach(contentModel -> {
-			ContentModel newContent = new ContentModel(contentModel.getFileName(), contentModel.getContentIndex());
+			ContentModel newContent = new ContentModel(contentModel.getContentIndex());
 			newContent.setChapter(chapter);
 			listResult.add(contentRepo.save(newContent));
 		});

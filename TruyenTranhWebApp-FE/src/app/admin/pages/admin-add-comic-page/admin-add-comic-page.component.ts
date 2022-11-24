@@ -66,6 +66,7 @@ export class AdminAddComicPageComponent implements OnInit {
     const id = this.activeRoute.snapshot.paramMap.get('id');
 
     if (AdminComponent.draftComic) {
+      this.editId = AdminComponent.draftComic.id;
       this.newComic = AdminComponent.draftComic;
       this.coverImage = this.newComic.coverImage;
       this.selectedItems = this.newComic.genres;
@@ -78,6 +79,7 @@ export class AdminAddComicPageComponent implements OnInit {
         this.newComic = data;
         this.newComic.chapters = this.newComic.chapters.map(chapter => Object.assign(new ChapterModel(), chapter));
         this.newComic.chapters.sort((a, b) => a.chapterIndex - b.chapterIndex);
+        this.authorName = this.newComic.author ? this.newComic.author.name : '';
         this.selectedItems = this.newComic.genres;
         this.loadCoverImage();
       });
@@ -241,7 +243,6 @@ export class AdminAddComicPageComponent implements OnInit {
           let image = chapter.contentImages[j];
           let content = new ContentModel();
           content.contentIndex = j;
-          content.fileName = String(j).padStart(3, '0') + '.jpg';
           content.chapter = chapter;
 
           content = await lastValueFrom(this.contentService.add(content));
@@ -277,30 +278,47 @@ export class AdminAddComicPageComponent implements OnInit {
       this.newComic.author = await lastValueFrom(this.authorService.add(newAuthor));
     }
 
-    let chapters = this.newComic.chapters;
-
     this.newComic.genres = this.selectedItems;
     this.newComic.user = AdminComponent.currentUser;
 
     await lastValueFrom(this.comicService.update(this.newComic));
 
-    // let result = await lastValueFrom(this.chapterService.addList(chapters, this.newComic.id));
+    let chapters = this.newComic.chapters;
+    let resultChapters = await lastValueFrom(this.chapterService.addList(chapters, this.newComic.id));
 
-    // for (let i = 0; i < chapters.length; i++) {
-    //   let chapter = chapters[i];
-    //   chapter.id = result[i].id;
+    for (let i = 0; i < chapters.length; i++) {
+      let chapter = chapters[i];
+      chapter.id = resultChapters[i].id;
 
-    //   for (let j = 0; j < chapter.contentImages.length; j++) {
-    //     let image = chapter.contentImages[j];
-    //     let content = new ContentModel();
-    //     content.contentIndex = j;
-    //     content.fileName = String(j).padStart(3, '0') + '.jpg';
-    //     content.chapter = chapter;
+      let total = chapter.contents.length + chapter.contentImages.length;
 
-    //     content = await lastValueFrom(this.contentService.add(content, chapter.id));
-    //     await lastValueFrom(this.uploadService.upload(image, content.id + '.jpg', this.newComic.id + ''));
-    //   }
-    // }
+      for (let j = 0; j < total; j++) {
+        if (j < chapter.contents.length) {
+          let content = chapter.contents[j];
+          let updateContent = new ContentModel();
+          updateContent.id = content.id;
+          updateContent.contentIndex = j;
+          updateContent.chapter = chapter;
+
+          await lastValueFrom(this.contentService.update(content));
+        }
+        else {
+          let image = chapter.contentImages[chapter.contents.length - j];
+          let content = new ContentModel();
+          content.contentIndex = j;
+          content.chapter = chapter;
+
+          content = await lastValueFrom(this.contentService.add(content));
+          await lastValueFrom(this.uploadService.upload(image, content.id + '.jpg', this.newComic.id + ''));
+        }
+      }
+
+      for (let k = 0; k < chapter.deletedContents.length; k++) {
+        let content = chapter.deletedContents[k];
+        await lastValueFrom(this.contentService.delete(content.id));
+        await lastValueFrom(this.uploadService.deleteByFolderWithFileName(`${this.newComic.id}`, `${content.id}.jpg`));
+      }
+    }
 
     this.toggleSpinner();
 

@@ -1,5 +1,6 @@
 package com.mtt.d18.services;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -40,6 +41,24 @@ public class StorageService {
 			throw new RuntimeException("FAIL!");
 		}
 	}
+	
+	public void delete(String path)
+	{
+		try {
+			File file = this.rootLocation.resolve(path).toFile();
+			File[] contents = file.listFiles();
+		    if (contents != null) {
+		        for (File f : contents) {
+		            f.delete();
+		        }
+		    }
+		    file.delete();
+		} catch (Exception e) {
+			throw new RuntimeException("FAIL!");
+		}
+	}
+	
+	
 
 	public Resource loadFile(String filename) {
 		try {

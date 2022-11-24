@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ChapterModel } from 'src/app/models/chapter.model';
 import { ContentModel } from 'src/app/models/content.model';
 import { ContentService } from 'src/app/services/content.service';
+import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2';
 import { AdminComponent } from '../../admin.component';
 
@@ -14,6 +15,7 @@ import { AdminComponent } from '../../admin.component';
 })
 export class AdminAddChapterPageComponent implements OnInit {
   newChapter: ChapterModel = new ChapterModel;
+  selectedImage?: File;
 
   addForm: FormGroup = new FormGroup({
     name: new FormControl(''),
@@ -21,6 +23,7 @@ export class AdminAddChapterPageComponent implements OnInit {
   });
 
   listImages: File[] = [];
+  listDeleted: ContentModel[] = [];
 
   constructor(
     private location: Location,
@@ -28,18 +31,25 @@ export class AdminAddChapterPageComponent implements OnInit {
     private contentService: ContentService) { }
 
   ngOnInit(): void {
+    window.onscroll = () => this.scrollFunction();
+
     if (AdminComponent.draftChapter) {
       this.newChapter = AdminComponent.draftChapter;
       this.listImages = this.newChapter.contentImages;
+      this.listDeleted = this.newChapter.deletedContents;
 
       if (this.newChapter.id != 0) {
         this.contentService.getByChapterId(this.newChapter.id).subscribe(data => {
           this.newChapter.contents = data;
-          this.newChapter.contents.forEach(content => this.loadImageFromContent(content, AdminComponent.draftComic!.id))
+          this.newChapter.contents.forEach(content =>
+            this.loadImageFromContent(content, AdminComponent.draftComic!.id));
+
+          this.listImages.forEach(image => this.loadImage(image));
         });
       }
-
-      this.listImages.forEach(image => this.loadImage(image));
+      else {
+        this.listImages.forEach(image => this.loadImage(image));
+      }
     }
   }
 
@@ -47,23 +57,69 @@ export class AdminAddChapterPageComponent implements OnInit {
     this.location.back();
   }
 
+  moveImage(oldIndex: number, newIndex: number): void {
+    if (newIndex >= this.listImages.length || newIndex < 0) {
+      return;
+    }
+
+    this.listImages = Utils.moveItemInArray(this.listImages, oldIndex, newIndex);
+    const listImgElem = this.elementRef.nativeElement.querySelectorAll('.contents img');
+    console.log(this.listImages);
+    listImgElem[oldIndex].src = URL.createObjectURL(this.listImages[oldIndex]);
+    listImgElem[newIndex].src = URL.createObjectURL(this.listImages[newIndex]);
+  }
+
+  moveUp(): void {
+    if (this.selectedImage) {
+      let index = this.listImages.indexOf(this.selectedImage);
+      let newIndex = index--;
+      this.moveImage(index, newIndex);
+    }
+  }
+
+  moveDown(): void {
+    if (this.selectedImage) {
+      let index = this.listImages.indexOf(this.selectedImage);
+      let newIndex = index++;
+      this.moveImage(index, newIndex);
+    }
+  }
+
   async postChapter(): Promise<void> {
-    if (this.listImages.length > 0 && AdminComponent.draftComic) {
+    if (AdminComponent.draftComic) {
+      if ((this.listImages.length == 0 && this.newChapter.id == 0)
+        || (this.newChapter.id != 0 && this.newChapter.contents.length == 0)) {
+        Swal.fire(
+          `Không hợp lệ!`,
+          `Vui lòng thêm nội dung cho chương này`,
+          'error'
+        );
+        return;
+      }
+
       let duplicateIndex = -1;
       AdminComponent.draftComic.chapters.forEach(chapter => {
         if (this.newChapter.chapterIndex === chapter.chapterIndex) {
-          duplicateIndex = chapter.chapterIndex;
-          return;
+          if (this.newChapter.id == 0 || (this.newChapter.id != 0 && this.newChapter.id != chapter.id)) {
+            duplicateIndex = chapter.chapterIndex;
+            return;
+          }
         }
       });
 
       if (duplicateIndex === -1) {
         this.newChapter.contentImages = this.listImages;
-        AdminComponent.draftComic.chapters.push(this.newChapter);
+        this.newChapter.deletedContents = this.listDeleted;
+
+        if (this.newChapter.id == 0) {
+          AdminComponent.draftComic.chapters.push(this.newChapter);
+        }
+
+        let prefix = this.newChapter.id == 0 ? 'Thêm' : 'Cập nhật';
         Swal.fire({
           position: 'top-end',
           icon: 'success',
-          title: 'Thêm chương truyện thành công!',
+          title: `${prefix} chương truyện thành công!`,
           showConfirmButton: false,
           timer: 1000
         }).then(result => {
@@ -106,6 +162,7 @@ export class AdminAddChapterPageComponent implements OnInit {
   }
 
   loadImage(image: File): void {
+    const moveGroup = this.elementRef.nativeElement.querySelector('.move-group') as HTMLElement;
     const wrapper = this.elementRef.nativeElement.querySelector('.add-content-group .contents') as HTMLElement;
 
     const container = document.createElement('div');
@@ -129,6 +186,9 @@ export class AdminAddChapterPageComponent implements OnInit {
     const img = document.createElement('img');
     img.addEventListener('mouseenter', () => {
       img.style.border = '3px solid var(--color-primary)';
+      // moveGroup.style.display = 'flex';
+      // container.appendChild(moveGroup);
+      // this.selectedImage = image;
     });
     img.addEventListener('mouseleave', () => {
       img.style.borderWidth = '0';
@@ -147,41 +207,69 @@ export class AdminAddChapterPageComponent implements OnInit {
   loadImageFromContent(content: ContentModel, comicId: number) {
     content = Object.assign(new ContentModel(), content);
 
-    const wrapper = this.elementRef.nativeElement.querySelector('.add-content-group .contents') as HTMLElement;
+    let isDeleted = false;
 
-    const container = document.createElement('div');
-    container.style.position = 'relative';
-
-    const removeBtn = document.createElement('span');
-    removeBtn.innerHTML = '<i class="uil uil-multiply"></i>';
-    removeBtn.style.position = 'absolute';
-    removeBtn.style.top = '0.5rem';
-    removeBtn.style.right = '0.5rem';
-    removeBtn.style.fontSize = '2rem';
-    removeBtn.style.color = 'var(--color-danger)';
-    removeBtn.style.fontWeight = '500';
-    removeBtn.style.cursor = 'pointer';
-    removeBtn.addEventListener('click', () => {
-      let index = content.contentIndex;
-      this.listImages.splice(index, 1);
-      container.remove();
+    this.listDeleted.forEach(deleted => {
+      if (deleted.id == content.id) {
+        isDeleted = true;
+        return;
+      }
     });
 
-    const img = document.createElement('img');
-    img.addEventListener('mouseenter', () => {
-      img.style.border = '3px solid var(--color-primary)';
-    });
-    img.addEventListener('mouseleave', () => {
-      img.style.borderWidth = '0';
-    });
-    img.onload = () => {
-      URL.revokeObjectURL(img.src);  // no longer needed, free memory
+    if (!isDeleted) {
+      const moveGroup = this.elementRef.nativeElement.querySelector('.move-group') as HTMLElement;
+      const wrapper = this.elementRef.nativeElement.querySelector('.add-content-group .contents') as HTMLElement;
+
+      const container = document.createElement('div');
+      container.style.position = 'relative';
+
+      const removeBtn = document.createElement('span');
+      removeBtn.innerHTML = '<i class="uil uil-multiply"></i>';
+      removeBtn.style.position = 'absolute';
+      removeBtn.style.top = '0.5rem';
+      removeBtn.style.right = '0.5rem';
+      removeBtn.style.fontSize = '2rem';
+      removeBtn.style.color = 'var(--color-danger)';
+      removeBtn.style.fontWeight = '500';
+      removeBtn.style.cursor = 'pointer';
+      removeBtn.addEventListener('click', () => {
+        let index = content.contentIndex;
+        this.newChapter.contents.splice(index, 1);
+        container.remove();
+        this.listDeleted.push(content);
+      });
+
+      const img = document.createElement('img');
+      img.addEventListener('mouseenter', () => {
+        img.style.border = '3px solid var(--color-primary)';
+        // moveGroup.style.display = 'flex';
+        // container.appendChild(moveGroup);
+      });
+      img.addEventListener('mouseleave', () => {
+        img.style.borderWidth = '0';
+      });
+      img.onload = () => {
+        URL.revokeObjectURL(img.src);  // no longer needed, free memory
+      }
+      img.src = content.getContentImage(comicId); // set src to blob url
+
+      container.appendChild(img);
+      container.appendChild(removeBtn);
+
+      wrapper.appendChild(container);
     }
-    img.src = content.getContentImage(comicId); // set src to blob url
+  }
 
-    container.appendChild(img);
-    container.appendChild(removeBtn);
+  scrollFunction(): void {
+    const topButton = this.elementRef.nativeElement.querySelector('.top-button') as HTMLElement;
+    if (document.documentElement.scrollTop > 300) {
+      topButton.style.display = "block";
+    } else {
+      topButton.style.display = "none";
+    }
+  }
 
-    wrapper.appendChild(container);
+  topFunction(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

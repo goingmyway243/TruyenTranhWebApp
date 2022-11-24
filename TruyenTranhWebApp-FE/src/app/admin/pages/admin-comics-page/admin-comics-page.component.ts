@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { ComicModel, StatusType } from 'src/app/models/comic.model';
 import { ComicService } from 'src/app/services/comic.service';
+import { UploadService } from 'src/app/services/upload.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,7 +18,8 @@ export class AdminComicsPageComponent implements OnInit {
   constructor(
     private elementRef: ElementRef,
     private router: Router,
-    private comicService: ComicService) { }
+    private comicService: ComicService,
+    private uploadService: UploadService) { }
 
   ngOnInit(): void {
     this.getAllComics();
@@ -73,9 +75,10 @@ export class AdminComicsPageComponent implements OnInit {
       cancelButtonText: 'Không',
       confirmButtonColor: 'var(--color-primary)',
       cancelButtonColor: 'var(--color-danger)'
-    }).then(result => {
+    }).then(async result => {
       if (result.isConfirmed) {
-        this.comicService.delete(id).subscribe(
+        await lastValueFrom(this.comicService.delete(id));
+        this.uploadService.deleteByPath(`${id}`).subscribe(
           data => {
             Swal.fire({
               position: 'top-end',

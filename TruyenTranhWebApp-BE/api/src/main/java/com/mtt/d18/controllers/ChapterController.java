@@ -1,6 +1,7 @@
 package com.mtt.d18.controllers;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,22 +61,30 @@ public class ChapterController {
 	}
 
 	@PostMapping("/list/{comicId}")
-	public ResponseEntity<Set<ChapterModel>> createList(@RequestBody Set<ChapterModel> listChapter,
+	public ResponseEntity<List<ChapterModel>> createList(@RequestBody List<ChapterModel> listChapter,
 			@PathVariable long comicId) {
-		Set<ChapterModel> listResult = new HashSet<>();
+		List<ChapterModel> listResult = new ArrayList<>();
 		ComicModel comic = comicRepo.findById(comicId).orElseGet(() -> null);
 		
 		if (comic == null) {
-			return new ResponseEntity<Set<ChapterModel>>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<List<ChapterModel>>(HttpStatus.BAD_REQUEST);
 		}
 
 		listChapter.forEach(chapterModel -> {
-			ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex());
-			newChapter.setComic(comic);
-			listResult.add(chapterRepo.save(newChapter));
+			if(chapterModel.getId() == 0)
+			{
+				ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex());
+				newChapter.setComic(comic);
+				listResult.add(chapterRepo.save(newChapter));
+			}
+			else {
+				chapterModel.setComic(comic);
+				listResult.add(chapterRepo.save(chapterModel));
+			}
 		});
 
-		return new ResponseEntity<Set<ChapterModel>>(listResult, HttpStatus.OK);
+		listResult.sort(Comparator.comparing(ChapterModel::getId));
+		return new ResponseEntity<List<ChapterModel>>(listResult, HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")

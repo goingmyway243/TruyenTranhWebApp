@@ -18,8 +18,6 @@ public class ContentModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	private String fileName;
-
 	private int contentIndex;
 
 	@ManyToOne(optional = false)
@@ -30,8 +28,7 @@ public class ContentModel {
 	public ContentModel() {
 	}
 
-	public ContentModel(String fileName, int contentIndex) {
-		this.fileName = fileName;
+	public ContentModel(int contentIndex) {
 		this.contentIndex = contentIndex;
 	}
 
@@ -41,14 +38,6 @@ public class ContentModel {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 
 	public int getContentIndex() {

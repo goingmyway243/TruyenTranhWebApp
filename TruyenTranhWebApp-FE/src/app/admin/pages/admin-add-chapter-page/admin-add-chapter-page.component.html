@@ -1,13 +1,7 @@
 <div class="admin-add-chapter-page">
-    <div class="topbar">
-        <div class="toggle clickable">
-            <i class="uil uil-bars"></i>
-        </div>
-    </div>
-
     <div class="container">
         <div class="header">
-            <h2>Thêm chương truyện</h2>
+            <h2>{{newChapter.id == 0 ? 'Thêm ': 'Cập nhật '}}chương truyện</h2>
         </div>
 
         <div class="wrapper">
@@ -42,7 +36,21 @@
 
         <div class="button-groups">
             <button class="btn-back" (click)="goBack()">Trở lại</button>
-            <button class="btn-add" (click)="postChapter()">Thêm</button>
+            <button class="btn-add" (click)="postChapter()">{{newChapter.id == 0 ? 'Thêm ': 'Cập nhật '}}</button>
         </div>
+    </div>
+
+    <div (click)="topFunction()" class="top-button">
+        <span class="arrow">
+            <i class="uil uil-angle-up"></i>
+        </span>
+        <span class="segunda">
+            <i class="uil uil-angle-up"></i>
+        </span>
+    </div>
+
+    <div class="move-group">
+        <button class="up" (click)="moveUp()"><i class="uil uil-angle-up"></i></button>
+        <button class="down" (click)="moveDown()"><i class="uil uil-angle-down"></i></button>
     </div>
 </div>

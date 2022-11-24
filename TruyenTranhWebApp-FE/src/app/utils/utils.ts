@@ -47,4 +47,11 @@ export class Utils {
             + `/${Utils.padTo2Digits(dateTime.getMonth() + 1)}`
             + `/${dateTime.getFullYear()}`;
     }
+
+    static moveItemInArray(arr: any[], oldIndex: number, newIndex: number): any[] {
+        const element = arr.splice(oldIndex, 1)[0];
+        arr.splice(newIndex, 0, element);
+
+        return arr;
+    }
 }
