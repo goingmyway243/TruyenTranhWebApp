@@ -1,10 +1,9 @@
 package com.mtt.d18.controllers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,10 +52,19 @@ public class ChapterController {
 				.orElseGet(() -> new ResponseEntity<ChapterModel>(HttpStatus.NOT_FOUND));
 	}
 
-	@PostMapping
-	public ResponseEntity<ChapterModel> create(@RequestBody ChapterModel chapterModel) {
+	@PostMapping("{comicId}")
+	public ResponseEntity<ChapterModel> create(@RequestBody ChapterModel chapterModel, @PathVariable long comicId) {
+		ComicModel comic = comicRepo.findById(comicId).orElseGet(() -> null);
+
+		if (comic == null) {
+			return new ResponseEntity<ChapterModel>(HttpStatus.BAD_REQUEST);
+		}
+
+		comic.setUpdatedTime(LocalDateTime.now());
+		comicRepo.save(comic);
+		
 		ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex());
-		newChapter.setComic(chapterModel.getComic());
+		newChapter.setComic(comic);
 		return new ResponseEntity<ChapterModel>(chapterRepo.save(newChapter), HttpStatus.OK);
 	}
 
@@ -65,19 +73,20 @@ public class ChapterController {
 			@PathVariable long comicId) {
 		List<ChapterModel> listResult = new ArrayList<>();
 		ComicModel comic = comicRepo.findById(comicId).orElseGet(() -> null);
-		
+
 		if (comic == null) {
 			return new ResponseEntity<List<ChapterModel>>(HttpStatus.BAD_REQUEST);
 		}
 
+		comic.setUpdatedTime(LocalDateTime.now());
+		comicRepo.save(comic);
+		
 		listChapter.forEach(chapterModel -> {
-			if(chapterModel.getId() == 0)
-			{
+			if (chapterModel.getId() == 0) {
 				ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex());
 				newChapter.setComic(comic);
 				listResult.add(chapterRepo.save(newChapter));
-			}
-			else {
+			} else {
 				chapterModel.setComic(comic);
 				listResult.add(chapterRepo.save(chapterModel));
 			}

@@ -20,6 +20,7 @@ import { MyComicPageComponent } from './pages/my-comic-page/my-comic-page.compon
 import { MyProfilePageComponent } from './pages/my-profile-page/my-profile-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    NgxPaginationModule
   ]
 })
 export class MainModule { }

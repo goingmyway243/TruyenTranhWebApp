@@ -13,10 +13,14 @@
     </div>
 
     <div class="details">
-        <div>
+        <div class="wrapper">
             <div class="list-comics">
                 <div class="cardHeader">
                     <h2>Danh sách truyện</h2>
+                    <a class="btn btn-secondary clickable" (click)="togglePendingApprove()">
+                        <i class="uil uil-exchange"></i>
+                        {{exchangeText}}
+                    </a>
                     <a class="btn clickable" (click)="addComic()">
                         <i class="uil uil-plus-circle"></i>
                         Thêm mới
@@ -34,7 +38,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let comic of listComics" (mouseenter)="onRowDataHover(comic)">
+                        <tr *ngFor="let comic of listComics | paginate: { itemsPerPage: 10, currentPage: pageIndex }"
+                            (mouseenter)="onRowDataHover(comic)">
                             <td>{{comic.id}}</td>
                             <td>{{comic.title}}</td>
                             <td>{{comic.author?.name}}</td>
@@ -52,6 +57,10 @@
                     </tbody>
                 </table>
             </div>
+
+            <pagination-controls previousLabel="" nextLabel="" [autoHide]="true" [responsive]="true"
+                (pageChange)="pageIndex = $event" class="paginator">
+            </pagination-controls>
         </div>
 
         <div class="preview">

@@ -12,7 +12,15 @@
             <div class="newly-added">
                 <h2 class="title">Truyện mới cập nhật ></h2>
                 <div class="comic-container">
-                    <app-main-comic-item *ngFor="let comic of listComics" [comic]="comic"></app-main-comic-item>
+                    <app-main-comic-item
+                        *ngFor="let comic of listComics | paginate: { itemsPerPage: 12, currentPage: pageIndex }"
+                        [comic]="comic"></app-main-comic-item>
+                </div>
+
+                <div class="paginator">
+                    <pagination-controls previousLabel="" nextLabel="" [autoHide]="true" [responsive]="true"
+                        (pageChange)="pageIndex = $event">
+                    </pagination-controls>
                 </div>
             </div>
 

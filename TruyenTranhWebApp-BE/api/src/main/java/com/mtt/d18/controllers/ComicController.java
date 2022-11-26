@@ -46,18 +46,18 @@ public class ComicController {
 
 	@GetMapping("/new")
 	public ResponseEntity<List<ComicModel>> getAllOrderByTime() {
-		return new ResponseEntity<List<ComicModel>>(comicRepo.findByOrderByCreatedTimeDesc(), HttpStatus.OK);
+		return new ResponseEntity<List<ComicModel>>(comicRepo.findByOrderByUpdatedTimeDesc(), HttpStatus.OK);
 	}
 
 	@GetMapping("/new/{keyword}")
 	public ResponseEntity<List<ComicModel>> getByTitleContainingOrderByTime(@PathVariable String keyword) {
-		return new ResponseEntity<List<ComicModel>>(comicRepo.findByTitleContainingOrderByCreatedTimeDesc(keyword),
+		return new ResponseEntity<List<ComicModel>>(comicRepo.findByTitleContainingOrderByUpdatedTimeDesc(keyword),
 				HttpStatus.OK);
 	}
 
 	@GetMapping("/genre/{genreId}")
 	public ResponseEntity<List<ComicModel>> getByGenreIdOrderByTime(@PathVariable long genreId) {
-		List<ComicModel> listComics = comicRepo.findByOrderByCreatedTimeDesc();
+		List<ComicModel> listComics = comicRepo.findByOrderByUpdatedTimeDesc();
 		List<ComicModel> listResult = new ArrayList<>();
 
 		listComics.forEach(comic -> {
@@ -80,7 +80,7 @@ public class ComicController {
 			return new ResponseEntity<List<ComicModel>>(HttpStatus.BAD_REQUEST);
 		}
 
-		return new ResponseEntity<List<ComicModel>>(comicRepo.findByUserOrderByCreatedTimeDesc(user), HttpStatus.OK);
+		return new ResponseEntity<List<ComicModel>>(comicRepo.findByUserOrderByUpdatedTimeDesc(user), HttpStatus.OK);
 	}
 
 	@PostMapping

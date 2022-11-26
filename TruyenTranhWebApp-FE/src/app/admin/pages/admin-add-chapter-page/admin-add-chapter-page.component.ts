@@ -1,9 +1,12 @@
 import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { lastValueFrom } from 'rxjs';
 import { ChapterModel } from 'src/app/models/chapter.model';
 import { ContentModel } from 'src/app/models/content.model';
+import { ChapterService } from 'src/app/services/chapter.service';
 import { ContentService } from 'src/app/services/content.service';
+import { UploadService } from 'src/app/services/upload.service';
 import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2';
 import { AdminComponent } from '../../admin.component';
@@ -15,6 +18,7 @@ import { AdminComponent } from '../../admin.component';
 })
 export class AdminAddChapterPageComponent implements OnInit {
   newChapter: ChapterModel = new ChapterModel;
+  comicId: number = 0;
   selectedImage?: File;
 
   addForm: FormGroup = new FormGroup({
@@ -28,15 +32,18 @@ export class AdminAddChapterPageComponent implements OnInit {
   constructor(
     private location: Location,
     private elementRef: ElementRef,
-    private contentService: ContentService) { }
+    private chapterService: ChapterService,
+    private contentService: ContentService,
+    private uploadService: UploadService) { }
 
   ngOnInit(): void {
     window.onscroll = () => this.scrollFunction();
 
+    this.comicId = AdminComponent.draftComic?.id ?? 0;
+
     if (AdminComponent.draftChapter) {
       this.newChapter = AdminComponent.draftChapter;
       this.listImages = this.newChapter.contentImages;
-      this.listDeleted = this.newChapter.deletedContents;
 
       if (this.newChapter.id != 0) {
         this.contentService.getByChapterId(this.newChapter.id).subscribe(data => {
@@ -109,13 +116,49 @@ export class AdminAddChapterPageComponent implements OnInit {
 
       if (duplicateIndex === -1) {
         this.newChapter.contentImages = this.listImages;
-        this.newChapter.deletedContents = this.listDeleted;
+        let prefix = this.newChapter.id == 0 ? 'Thêm' : 'Cập nhật';
 
-        if (this.newChapter.id == 0) {
-          AdminComponent.draftComic.chapters.push(this.newChapter);
+        if (this.comicId != 0) {
+          this.newChapter.contentImages = [];
+          this.listDeleted.forEach(async content => {
+            await lastValueFrom(this.contentService.delete(content.id));
+            await lastValueFrom(
+              this.uploadService.deleteByFolderWithFileName(`${this.comicId}`, `${content.id}.jpg`));
+          });
+
+          let total = this.newChapter.contents.length + this.listImages.length;
+
+          for (let i = 0; i < total; i++) {
+            if (i < this.newChapter.contents.length) {
+              let content = this.newChapter.contents[i];
+              let updateContent = new ContentModel();
+              updateContent.id = content.id;
+              updateContent.contentIndex = i;
+              updateContent.chapter = this.newChapter;
+
+              await lastValueFrom(this.contentService.update(updateContent));
+            }
+            else {
+              let chapter = this.newChapter;
+              if (chapter.id == 0) {
+                chapter = await lastValueFrom(this.chapterService.add(chapter, this.comicId));
+                this.newChapter.id = chapter.id;
+              }
+
+              let image = this.listImages[i - this.newChapter.contents.length];
+              let content = new ContentModel();
+              content.contentIndex = i;
+              content.chapter = chapter;
+
+              content = await lastValueFrom(this.contentService.add(content));
+              await lastValueFrom(this.uploadService.upload(image, content.id + '.jpg', this.comicId + ''));
+            }
+          }
         }
 
-        let prefix = this.newChapter.id == 0 ? 'Thêm' : 'Cập nhật';
+        AdminComponent.draftComic.chapters.push(this.newChapter);
+        AdminComponent.draftComic.chapters.sort((a, b) => a.chapterIndex - b.chapterIndex);
+
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -179,7 +222,7 @@ export class AdminAddChapterPageComponent implements OnInit {
     removeBtn.style.cursor = 'pointer';
     removeBtn.addEventListener('click', () => {
       let index = this.listImages.indexOf(image);
-      this.listImages.splice(index, 1);
+      this.listImages = this.listImages.splice(index, 1);
       container.remove();
     });
 
@@ -207,57 +250,46 @@ export class AdminAddChapterPageComponent implements OnInit {
   loadImageFromContent(content: ContentModel, comicId: number) {
     content = Object.assign(new ContentModel(), content);
 
-    let isDeleted = false;
+    const moveGroup = this.elementRef.nativeElement.querySelector('.move-group') as HTMLElement;
+    const wrapper = this.elementRef.nativeElement.querySelector('.add-content-group .contents') as HTMLElement;
 
-    this.listDeleted.forEach(deleted => {
-      if (deleted.id == content.id) {
-        isDeleted = true;
-        return;
-      }
+    const container = document.createElement('div');
+    container.style.position = 'relative';
+
+    const removeBtn = document.createElement('span');
+    removeBtn.innerHTML = '<i class="uil uil-multiply"></i>';
+    removeBtn.style.position = 'absolute';
+    removeBtn.style.top = '0.5rem';
+    removeBtn.style.right = '0.5rem';
+    removeBtn.style.fontSize = '2rem';
+    removeBtn.style.color = 'var(--color-danger)';
+    removeBtn.style.fontWeight = '500';
+    removeBtn.style.cursor = 'pointer';
+    removeBtn.addEventListener('click', () => {
+      let index = this.newChapter.contents.indexOf(content);
+      this.listDeleted.push(content);
+      this.newChapter.contents = this.newChapter.contents.splice(index, 1);
+      container.remove();
     });
 
-    if (!isDeleted) {
-      const moveGroup = this.elementRef.nativeElement.querySelector('.move-group') as HTMLElement;
-      const wrapper = this.elementRef.nativeElement.querySelector('.add-content-group .contents') as HTMLElement;
-
-      const container = document.createElement('div');
-      container.style.position = 'relative';
-
-      const removeBtn = document.createElement('span');
-      removeBtn.innerHTML = '<i class="uil uil-multiply"></i>';
-      removeBtn.style.position = 'absolute';
-      removeBtn.style.top = '0.5rem';
-      removeBtn.style.right = '0.5rem';
-      removeBtn.style.fontSize = '2rem';
-      removeBtn.style.color = 'var(--color-danger)';
-      removeBtn.style.fontWeight = '500';
-      removeBtn.style.cursor = 'pointer';
-      removeBtn.addEventListener('click', () => {
-        let index = content.contentIndex;
-        this.newChapter.contents.splice(index, 1);
-        container.remove();
-        this.listDeleted.push(content);
-      });
-
-      const img = document.createElement('img');
-      img.addEventListener('mouseenter', () => {
-        img.style.border = '3px solid var(--color-primary)';
-        // moveGroup.style.display = 'flex';
-        // container.appendChild(moveGroup);
-      });
-      img.addEventListener('mouseleave', () => {
-        img.style.borderWidth = '0';
-      });
-      img.onload = () => {
-        URL.revokeObjectURL(img.src);  // no longer needed, free memory
-      }
-      img.src = content.getContentImage(comicId); // set src to blob url
-
-      container.appendChild(img);
-      container.appendChild(removeBtn);
-
-      wrapper.appendChild(container);
+    const img = document.createElement('img');
+    img.addEventListener('mouseenter', () => {
+      img.style.border = '3px solid var(--color-primary)';
+      // moveGroup.style.display = 'flex';
+      // container.appendChild(moveGroup);
+    });
+    img.addEventListener('mouseleave', () => {
+      img.style.borderWidth = '0';
+    });
+    img.onload = () => {
+      URL.revokeObjectURL(img.src);  // no longer needed, free memory
     }
+    img.src = content.getContentImage(comicId); // set src to blob url
+
+    container.appendChild(img);
+    container.appendChild(removeBtn);
+
+    wrapper.appendChild(container);
   }
 
   scrollFunction(): void {

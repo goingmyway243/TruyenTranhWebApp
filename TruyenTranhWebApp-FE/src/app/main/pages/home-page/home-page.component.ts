@@ -20,6 +20,8 @@ export class HomePageComponent implements OnInit {
   listHistories: ComicModel[] = [];
   historyJson: HistoryModel[] | undefined;
 
+  pageIndex: number = 1;
+
   customOptions: OwlOptions = {
     loop: true,
     mouseDrag: true,

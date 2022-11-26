@@ -44,6 +44,15 @@
                     <textarea id="description" rows="5" [(ngModel)]="newComic.description"
                         formControlName="description"></textarea>
                 </div>
+                <div>
+                    <label for="comic-status">Trạng thái</label>
+                    <select id="comic-status" formControlName="status" [(ngModel)]="selectedStatus"
+                        [value]="selectedStatus">
+                        <option *ngFor=" let option of comicStatusOptions" [value]="option.value">
+                            {{option.text}}
+                        </option>
+                    </select>
+                </div>
             </form>
 
             <label for="upload-image" class="upload-cover clickable">

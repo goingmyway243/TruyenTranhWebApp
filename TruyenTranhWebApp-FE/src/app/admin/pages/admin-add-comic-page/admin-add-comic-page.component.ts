@@ -5,7 +5,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { lastValueFrom } from 'rxjs';
 import { AuthorModel } from 'src/app/models/author.model';
 import { ChapterModel } from 'src/app/models/chapter.model';
-import { ComicModel } from 'src/app/models/comic.model';
+import { ComicModel, StatusType } from 'src/app/models/comic.model';
 import { ContentModel } from 'src/app/models/content.model';
 import { GenreModel } from 'src/app/models/genre.model';
 import { AuthorService } from 'src/app/services/author.service';
@@ -30,11 +30,21 @@ export class AdminAddComicPageComponent implements OnInit {
   authorName: string = '';
   editId?: number;
 
+  selectedStatus: StatusType = StatusType.PUBLISH;
+
+  comicStatusOptions = [
+    { value: StatusType.PUBLISH, text: 'Duyệt' },
+    { value: StatusType.UNPUBLISH, text: 'Ẩn' },
+    { value: StatusType.REJECTED, text: 'Từ chối' },
+    { value: StatusType.PENDING, text: 'Chờ duyệt' },
+  ];
+
   addForm: FormGroup = new FormGroup({
     title: new FormControl('', Validators.required),
     author: new FormControl('', Validators.required),
     genres: new FormControl([], this.multiSelectRequired()),
-    description: new FormControl('')
+    description: new FormControl(''),
+    status: new FormControl(this.selectedStatus)
   });
 
   dropdownList: GenreModel[] = [];
@@ -71,6 +81,7 @@ export class AdminAddComicPageComponent implements OnInit {
       this.coverImage = this.newComic.coverImage;
       this.selectedItems = this.newComic.genres;
       this.authorName = this.newComic.author!.name;
+      this.selectedStatus = this.newComic.status;
       this.loadCoverImage();
     }
     else if (id) {
@@ -81,6 +92,7 @@ export class AdminAddComicPageComponent implements OnInit {
         this.newComic.chapters.sort((a, b) => a.chapterIndex - b.chapterIndex);
         this.authorName = this.newComic.author ? this.newComic.author.name : '';
         this.selectedItems = this.newComic.genres;
+        this.selectedStatus = +StatusType[this.newComic.status];
         this.loadCoverImage();
       });
     }
@@ -148,6 +160,7 @@ export class AdminAddComicPageComponent implements OnInit {
 
   navigateToAddChapter(chapter?: ChapterModel): void {
     AdminComponent.draftComic = this.newComic;
+    AdminComponent.draftComic.status = this.selectedStatus;
     AdminComponent.draftComic.coverImage = this.coverImage;
     AdminComponent.draftComic.author = new AuthorModel();
     AdminComponent.draftComic.author.name = this.authorName;
@@ -170,12 +183,35 @@ export class AdminAddComicPageComponent implements OnInit {
       cancelButtonText: 'Không',
       confirmButtonColor: 'var(--color-primary)',
       cancelButtonColor: 'var(--color-danger)'
-    }).then(result => {
+    }).then(async result => {
       if (result.isConfirmed) {
-        let index = this.newComic.chapters.indexOf(chapter);
-        this.newComic.chapters.splice(index, 1);
+        await this.processDeleteChapter(chapter);
       }
     });
+  }
+
+  async processDeleteChapter(chapter: ChapterModel): Promise<void> {
+    let index = this.newComic.chapters.indexOf(chapter);
+    this.newComic.chapters.splice(index, 1);
+
+    if (chapter.id != 0) {
+      for (let i = 0; i < chapter.contents.length; i++) {
+        let content = chapter.contents[i];
+        await lastValueFrom(
+          this.uploadService
+            .deleteByFolderWithFileName(this.newComic.id + '', content.id + '.jpg'));
+      }
+
+      this.chapterService.delete(chapter.id).subscribe(data => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Xóa chương truyện thành công!',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      });
+    }
   }
 
   async postComic(): Promise<void> {
@@ -216,6 +252,8 @@ export class AdminAddComicPageComponent implements OnInit {
     }
     else {
       this.toggleSpinner();
+
+      this.newComic.status = this.selectedStatus;
 
       this.newComic.author = await lastValueFrom(this.authorService.getByName(this.authorName));
 
@@ -269,6 +307,8 @@ export class AdminAddComicPageComponent implements OnInit {
   async updateComic(): Promise<void> {
     this.toggleSpinner();
 
+    this.newComic.status = this.selectedStatus;
+
     this.newComic.author = await lastValueFrom(this.authorService.getByName(this.authorName));
 
     if (this.newComic.author.id == 0) {
@@ -282,43 +322,7 @@ export class AdminAddComicPageComponent implements OnInit {
     this.newComic.user = AdminComponent.currentUser;
 
     await lastValueFrom(this.comicService.update(this.newComic));
-
-    let chapters = this.newComic.chapters;
-    let resultChapters = await lastValueFrom(this.chapterService.addList(chapters, this.newComic.id));
-
-    for (let i = 0; i < chapters.length; i++) {
-      let chapter = chapters[i];
-      chapter.id = resultChapters[i].id;
-
-      let total = chapter.contents.length + chapter.contentImages.length;
-
-      for (let j = 0; j < total; j++) {
-        if (j < chapter.contents.length) {
-          let content = chapter.contents[j];
-          let updateContent = new ContentModel();
-          updateContent.id = content.id;
-          updateContent.contentIndex = j;
-          updateContent.chapter = chapter;
-
-          await lastValueFrom(this.contentService.update(content));
-        }
-        else {
-          let image = chapter.contentImages[chapter.contents.length - j];
-          let content = new ContentModel();
-          content.contentIndex = j;
-          content.chapter = chapter;
-
-          content = await lastValueFrom(this.contentService.add(content));
-          await lastValueFrom(this.uploadService.upload(image, content.id + '.jpg', this.newComic.id + ''));
-        }
-      }
-
-      for (let k = 0; k < chapter.deletedContents.length; k++) {
-        let content = chapter.deletedContents[k];
-        await lastValueFrom(this.contentService.delete(content.id));
-        await lastValueFrom(this.uploadService.deleteByFolderWithFileName(`${this.newComic.id}`, `${content.id}.jpg`));
-      }
-    }
+    await lastValueFrom(this.chapterService.addList(this.newComic.chapters, this.newComic.id));
 
     this.toggleSpinner();
 

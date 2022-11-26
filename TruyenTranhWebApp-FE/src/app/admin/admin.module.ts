@@ -14,6 +14,7 @@ import { AdminAddAccountPageComponent } from './pages/admin-add-account-page/adm
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { AdminAddChapterPageComponent } from './pages/admin-add-chapter-page/admin-add-chapter-page.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -36,7 +37,8 @@ import { AdminAddChapterPageComponent } from './pages/admin-add-chapter-page/adm
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    NgxPaginationModule
   ]
 })
 export class AdminModule { }

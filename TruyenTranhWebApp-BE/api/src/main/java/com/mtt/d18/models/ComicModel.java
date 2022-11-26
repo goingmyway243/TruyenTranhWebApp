@@ -47,7 +47,7 @@ public class ComicModel {
 	private StatusType status;
 
 	@CreatedDate
-	private LocalDateTime createdTime;
+	private LocalDateTime updatedTime;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -79,7 +79,7 @@ public class ComicModel {
 		this.description = description;
 		this.view = view;
 		this.status = status;
-		this.createdTime = LocalDateTime.now();
+		this.updatedTime = LocalDateTime.now();
 	}
 
 	public long getId() {
@@ -122,8 +122,12 @@ public class ComicModel {
 		this.status = status;
 	}
 
-	public LocalDateTime getCreatedTime() {
-		return createdTime;
+	public LocalDateTime getUpdatedTime() {
+		return updatedTime;
+	}
+
+	public void setUpdatedTime(LocalDateTime updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 
 	public UserModel getUser() {

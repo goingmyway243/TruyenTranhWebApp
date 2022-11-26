@@ -13,7 +13,11 @@ import Swal from 'sweetalert2';
 })
 export class AdminComicsPageComponent implements OnInit {
   listComics: ComicModel[] = [];
+  listOrigin: ComicModel[] = [];
   isCoverLoaded: boolean = false;
+  exchangeText: string = 'Chờ duyệt'
+  isPendingApprove: boolean = false;
+  pageIndex: number = 1;
 
   constructor(
     private elementRef: ElementRef,
@@ -26,11 +30,26 @@ export class AdminComicsPageComponent implements OnInit {
   }
 
   async getAllComics(): Promise<void> {
-    this.listComics = await lastValueFrom(this.comicService.getAll());
+    this.listComics = await lastValueFrom(this.comicService.getAllOrderByTime());
     this.listComics.forEach(async comic => {
       comic.statusString = this.getComicStatusString(comic);
       comic.statusClass = this.getComicStatusClass(comic);
     });
+
+    this.listOrigin = this.listComics;
+  }
+
+  togglePendingApprove(): void {
+    this.isPendingApprove = !this.isPendingApprove;
+    this.exchangeText = this.isPendingApprove ? 'Toàn bộ' : 'Chờ duyệt';
+
+    if (this.isPendingApprove) {
+      this.listComics = this.listOrigin.filter(comic =>
+        comic.status.toString() == StatusType[StatusType.PENDING]);
+    }
+    else {
+      this.listComics = this.listOrigin;
+    }
   }
 
   onRowDataHover(comic: ComicModel): void {
@@ -113,7 +132,7 @@ export class AdminComicsPageComponent implements OnInit {
         break;
       }
       case StatusType[StatusType.PUBLISH]: {
-        result = 'Công khai';
+        result = 'Duyệt';
         break;
       }
       case StatusType[StatusType.UNPUBLISH]: {
@@ -121,7 +140,7 @@ export class AdminComicsPageComponent implements OnInit {
         break;
       }
       case StatusType[StatusType.REJECTED]: {
-        result = 'Không duyệt';
+        result = 'Từ chối';
         break;
       }
     }

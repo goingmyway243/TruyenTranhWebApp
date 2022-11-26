@@ -46,7 +46,7 @@
             display: grid;
             align-items: flex-start;
             justify-content: space-between;
-            grid-template-columns: auto 300px;
+            grid-template-columns: calc(100% - 300px) 300px;
             width: 100%;
 
             .newly-added {
@@ -62,6 +62,14 @@
                     display: flex;
                     gap: 1.5rem;
                     width: 100%;
+                    min-height: 65vh;
+                }
+
+                .paginator {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 2rem;
                 }
             }
 
