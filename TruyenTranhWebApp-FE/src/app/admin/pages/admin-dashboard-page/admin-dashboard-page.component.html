@@ -1,17 +1,21 @@
 <div class="admin-dashboard-page">
-    <div class="topbar">
+    <!-- <div class="topbar">
         <div class="search">
             <label for="">
                 <input type="text" placeholder="Tìm kiếm...">
                 <i class="uil uil-search"></i>
             </label>
         </div>
+    </div> -->
+
+    <div class="title">
+        <h2>Quản trị</h2>
     </div>
 
     <div class="cardBox">
         <div class="card">
             <div>
-                <div class="numbers">1,504</div>
+                <div class="numbers">{{statistic.totalComic}}</div>
                 <div class="cardName">Truyện</div>
             </div>
             <div class="iconBx">
@@ -20,7 +24,7 @@
         </div>
         <div class="card">
             <div>
-                <div class="numbers">80</div>
+                <div class="numbers">{{statistic.totalGenre}}</div>
                 <div class="cardName">Thể loại</div>
             </div>
             <div class="iconBx">
@@ -29,7 +33,7 @@
         </div>
         <div class="card">
             <div>
-                <div class="numbers">284</div>
+                <div class="numbers">{{statistic.totalAuthor}}</div>
                 <div class="cardName">Tác giả</div>
             </div>
             <div class="iconBx">
@@ -38,7 +42,7 @@
         </div>
         <div class="card">
             <div>
-                <div class="numbers">1,504</div>
+                <div class="numbers">{{statistic.totalUser}}</div>
                 <div class="cardName">Tài khoản</div>
             </div>
             <div class="iconBx">
@@ -54,33 +58,32 @@
                     <h2>Truyện mới đăng</h2>
                     <a [routerLink]="['quan-ly-truyen']" class="btn clickable">Xem tất cả</a>
                 </div>
-                <table>
+                <table (mouseleave)="onTableMouseLeave()">
                     <thead>
                         <tr>
+                            <td>Mã truyện</td>
                             <td>Tên truyện</td>
-                            <td>Mô tả</td>
+                            <td>Tác giả</td>
                             <td>Người đăng</td>
                             <td>Trạng thái</td>
+                            <td></td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>A</td>
-                            <td>A</td>
-                            <td>A</td>
-                            <td><span class="status approved">Đã duyệt</span></td>
-                        </tr>
-                        <tr>
-                            <td>A</td>
-                            <td>A</td>
-                            <td>A</td>
-                            <td><span class="status pending">Chờ duyệt</span></td>
-                        </tr>
-                        <tr>
-                            <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                            <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                            <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                            <td><span class="status hidden">Bị ẩn</span></td>
+                        <tr *ngFor="let comic of listComics" (mouseenter)="onRowDataHover(comic)">
+                            <td>{{comic.id}}</td>
+                            <td>{{comic.title}}</td>
+                            <td>{{comic.author?.name}}</td>
+                            <td>{{comic.user?.name}}</td>
+                            <td><span class="status" [ngClass]="comic.statusClass">{{comic.statusString}}</span></td>
+                            <td>
+                                <span class="edit clickable" (click)="editComic(comic.id)">
+                                    <i class="uil uil-edit"></i>
+                                </span>
+                                <span class="remove clickable" (click)="removeComic(comic.id)">
+                                    <i class=" uil uil-trash-alt"></i>
+                                </span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -89,10 +92,9 @@
 
         <div class="preview">
             <div class="cover" hidden>
-                <img src="https://d827xgdhgqbnd.cloudfront.net/wp-content/uploads/2016/04/09121712/book-cover-placeholder.png"
-                    alt="">
+                <img src="" alt="">
             </div>
-            <div class="default">
+            <div class="placeholder">
                 <div>Bìa truyện</div>
             </div>
         </div>

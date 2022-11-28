@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { UserModel } from '../models/user.model';
+import { RoleType, UserModel } from '../models/user.model';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -31,6 +31,10 @@ export class MainComponent implements OnInit {
   getCurrentUser(): UserModel | undefined {
     return MainComponent.currentUser;
   }
+
+  // isAdmin():boolean{
+  //   return MainComponent.currentUser && MainComponent.currentUser!.role.toString() == RoleType.ADMIN.toString();
+  // }
 
   onLogout(): void {
     Swal.fire({

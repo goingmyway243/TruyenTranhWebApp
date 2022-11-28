@@ -37,6 +37,13 @@
         }
     }
 
+    .title {
+        width: 100%;
+        text-align: center;
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+    }
+
     .cardBox {
         width: 100%;
         padding: 1rem;
@@ -48,6 +55,7 @@
             background: var(--color-white);
             padding: 1.5rem;
             border-radius: 1rem;
+            border: 1px solid var(--color-gray);
             display: flex;
             justify-content: space-between;
             box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
@@ -136,7 +144,23 @@
                         min-width: 5.5rem;
 
                         &:last-child {
-                            text-align: end;
+                            display: flex;
+                            justify-content: flex-end;
+                            gap: 0.5rem;
+
+                            span {
+                                font-size: 1rem;
+                                border-radius: 0.2rem;
+                                padding: 0.1rem 0.2rem;
+
+                                &.edit {
+                                    background-color: var(--color-secondary);
+                                }
+
+                                &.remove {
+                                    background-color: var(--color-danger);
+                                }
+                            }
                         }
                     }
                 }
@@ -162,7 +186,7 @@
                                 border-radius: 0.2rem;
                                 font-size: 0.85rem;
 
-                                &.approved {
+                                &.publish {
                                     background-color: forestgreen;
                                 }
 
@@ -170,8 +194,12 @@
                                     background-color: darkgoldenrod;
                                 }
 
-                                &.hidden {
+                                &.unpublish {
                                     background-color: dimgray;
+                                }
+
+                                &.reject {
+                                    background-color: red;
                                 }
                             }
                         }
@@ -186,11 +214,17 @@
             justify-content: center;
 
             .cover {
-                width: 20vw;
-                height: auto;
+                width: 18vw;
+                height: 25vw;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
             }
 
-            .default {
+            .placeholder {
                 display: flex;
                 align-items: center;
                 justify-content: center;

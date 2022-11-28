@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -70,7 +71,8 @@ export class AdminAddComicPageComponent implements OnInit {
     private contentService: ContentService,
     private uploadService: UploadService,
     private router: Router,
-    private activeRoute: ActivatedRoute) { }
+    private activeRoute: ActivatedRoute,
+    private location: Location) { }
 
   ngOnInit(): void {
     const id = this.activeRoute.snapshot.paramMap.get('id');
@@ -155,7 +157,7 @@ export class AdminAddComicPageComponent implements OnInit {
 
   goBack(): void {
     AdminComponent.draftComic = undefined;
-    this.router.navigate(['quan-tri/quan-ly-truyen']);
+    this.location.back();
   }
 
   navigateToAddChapter(chapter?: ChapterModel): void {
@@ -183,9 +185,9 @@ export class AdminAddComicPageComponent implements OnInit {
       cancelButtonText: 'Không',
       confirmButtonColor: 'var(--color-primary)',
       cancelButtonColor: 'var(--color-danger)'
-    }).then(async result => {
+    }).then(result => {
       if (result.isConfirmed) {
-        await this.processDeleteChapter(chapter);
+        this.processDeleteChapter(chapter).then(() => console.log('success'));
       }
     });
   }

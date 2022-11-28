@@ -1,19 +1,19 @@
 <div class="my-comic-page">
     <div class="container">
-        <h2>Truyện của tôi</h2>
+        <h2>Truyện đã đăng</h2>
 
 
-        <div class="toolbar">
+        <!-- <div class="toolbar">
             <div class="search">
                 <label for="">
                     <input type="text" placeholder="Tìm kiếm...">
                     <i class="uil uil-search"></i>
                 </label>
             </div>
-        </div>
+        </div> -->
 
         <div class="details">
-            <div>
+            <div class="wrapper">
                 <div class="list-comics">
                     <div class="cardHeader">
                         <h2>Danh sách truyện</h2>
@@ -22,45 +22,49 @@
                             Thêm mới
                         </a>
                     </div>
-                    <table>
+                    <table (mouseleave)="onTableMouseLeave()">
                         <thead>
                             <tr>
+                                <td>Mã truyện</td>
                                 <td>Tên truyện</td>
-                                <td>Mô tả</td>
-                                <td>Người đăng</td>
+                                <td>Tác giả</td>
+                                <td>Cập nhật</td>
                                 <td>Trạng thái</td>
+                                <td></td>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>A</td>
-                                <td>A</td>
-                                <td>A</td>
-                                <td><span class="status approved">Đã duyệt</span></td>
-                            </tr>
-                            <tr>
-                                <td>A</td>
-                                <td>A</td>
-                                <td>A</td>
-                                <td><span class="status pending">Chờ duyệt</span></td>
-                            </tr>
-                            <tr>
-                                <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                                <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                                <td>Adsadddd dsadsad dsadsad sa dsad asd sad asd</td>
-                                <td><span class="status hidden">Bị ẩn</span></td>
+                            <tr *ngFor="let comic of listComics | paginate: { itemsPerPage: 8, currentPage: pageIndex }"
+                                (mouseenter)="onRowDataHover(comic)">
+                                <td>{{comic.id}}</td>
+                                <td>{{comic.title}}</td>
+                                <td>{{comic.author?.name}}</td>
+                                <td>{{getComicUpdatedTimeDiff(comic.updatedTime)}}</td>
+                                <td><span class="status" [ngClass]="comic.statusClass">{{comic.statusString}}</span>
+                                </td>
+                                <td>
+                                    <span class="edit clickable" (click)="editComic(comic.id)">
+                                        <i class="uil uil-edit"></i>
+                                    </span>
+                                    <span class="remove clickable" (click)="removeComic(comic.id)">
+                                        <i class=" uil uil-trash-alt"></i>
+                                    </span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
+                <pagination-controls previousLabel="" nextLabel="" [autoHide]="true" [responsive]="true"
+                    (pageChange)="pageIndex = $event" class="paginator">
+                </pagination-controls>
             </div>
 
             <div class="preview">
                 <div class="cover" hidden>
-                    <img src="https://d827xgdhgqbnd.cloudfront.net/wp-content/uploads/2016/04/09121712/book-cover-placeholder.png"
-                        alt="">
+                    <img src="" alt="">
                 </div>
-                <div class="default">
+                <div class="placeholder">
                     <div>Bìa truyện</div>
                 </div>
             </div>
