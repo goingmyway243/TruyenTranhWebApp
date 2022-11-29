@@ -9,14 +9,14 @@ import { ContentService } from 'src/app/services/content.service';
 import { UploadService } from 'src/app/services/upload.service';
 import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2';
-import { AdminComponent } from '../../admin.component';
+import { MainComponent } from '../../main.component';
 
 @Component({
-  selector: 'app-admin-add-chapter-page',
-  templateUrl: './admin-add-chapter-page.component.html',
-  styleUrls: ['./admin-add-chapter-page.component.scss']
+  selector: 'app-add-chapter-page',
+  templateUrl: './add-chapter-page.component.html',
+  styleUrls: ['./add-chapter-page.component.scss']
 })
-export class AdminAddChapterPageComponent implements OnInit {
+export class AddChapterPageComponent implements OnInit {
   newChapter: ChapterModel = new ChapterModel;
   comicId: number = 0;
   selectedImage?: File;
@@ -39,17 +39,17 @@ export class AdminAddChapterPageComponent implements OnInit {
   ngOnInit(): void {
     window.onscroll = () => this.scrollFunction();
 
-    this.comicId = AdminComponent.draftComic?.id ?? 0;
+    this.comicId = MainComponent.draftComic?.id ?? 0;
 
-    if (AdminComponent.draftChapter) {
-      this.newChapter = AdminComponent.draftChapter;
+    if (MainComponent.draftChapter) {
+      this.newChapter = MainComponent.draftChapter;
       this.listImages = this.newChapter.contentImages;
 
       if (this.newChapter.id != 0) {
         this.contentService.getByChapterId(this.newChapter.id).subscribe(data => {
           this.newChapter.contents = data;
           this.newChapter.contents.forEach(content =>
-            this.loadImageFromContent(content, AdminComponent.draftComic!.id));
+            this.loadImageFromContent(content, MainComponent.draftComic!.id));
 
           this.listImages.forEach(image => this.loadImage(image));
         });
@@ -93,7 +93,7 @@ export class AdminAddChapterPageComponent implements OnInit {
   }
 
   async postChapter(): Promise<void> {
-    if (AdminComponent.draftComic) {
+    if (MainComponent.draftComic) {
       if ((this.listImages.length == 0 && this.newChapter.id == 0)
         || (this.newChapter.id != 0 && this.newChapter.contents.length == 0)) {
         Swal.fire(
@@ -105,7 +105,7 @@ export class AdminAddChapterPageComponent implements OnInit {
       }
 
       let duplicateIndex = -1;
-      AdminComponent.draftComic.chapters.forEach(chapter => {
+      MainComponent.draftComic.chapters.forEach(chapter => {
         if (this.newChapter.chapterIndex === chapter.chapterIndex) {
           if (this.newChapter.id == 0 || (this.newChapter.id != 0 && this.newChapter.id != chapter.id)) {
             duplicateIndex = chapter.chapterIndex;
@@ -128,8 +128,8 @@ export class AdminAddChapterPageComponent implements OnInit {
             this.newChapter.id = chapter.id;
           }
 
-          AdminComponent.draftComic.chapters.push(this.newChapter);
-          AdminComponent.draftComic.chapters.sort((a, b) => a.chapterIndex - b.chapterIndex);
+          MainComponent.draftComic.chapters.push(this.newChapter);
+          MainComponent.draftComic.chapters.sort((a, b) => a.chapterIndex - b.chapterIndex);
         }
         else if (this.comicId != 0) {
           chapter = await lastValueFrom(this.chapterService.update(this.newChapter, this.comicId));

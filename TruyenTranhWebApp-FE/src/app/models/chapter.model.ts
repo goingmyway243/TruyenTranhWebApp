@@ -6,6 +6,7 @@ export interface IChapterModel {
     id: number;
     name: string;
     chapterIndex: number;
+    updatedTime: Date;
     createdTime: Date;
 }
 
@@ -13,6 +14,7 @@ export class ChapterModel implements IChapterModel {
     id: number;
     name: string;
     chapterIndex: number;
+    updatedTime: Date;
     createdTime: Date;
 
     comic?: ComicModel;
@@ -23,6 +25,7 @@ export class ChapterModel implements IChapterModel {
         this.id = 0;
         this.name = "";
         this.chapterIndex = 0;
+        this.updatedTime = new Date();
         this.createdTime = new Date();
 
         this.contents = [];

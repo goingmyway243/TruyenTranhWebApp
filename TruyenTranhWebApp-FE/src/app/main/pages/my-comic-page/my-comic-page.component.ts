@@ -6,7 +6,6 @@ import { ComicService } from 'src/app/services/comic.service';
 import { UploadService } from 'src/app/services/upload.service';
 import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2';
-import { MainComponent } from '../../main.component';
 
 @Component({
   selector: 'app-my-comic-page',
@@ -15,6 +14,8 @@ import { MainComponent } from '../../main.component';
 })
 export class MyComicPageComponent implements OnInit {
   listComics: ComicModel[] = [];
+  listOrigin: ComicModel[] = [];
+  searchStr: string = '';
   pageIndex: number = 0;
 
   constructor(
@@ -32,12 +33,25 @@ export class MyComicPageComponent implements OnInit {
     let userId = localStorage.getItem('authorizeToken');
     if (userId) {
       this.comicService.getByUserIdOrderByTime(+userId).subscribe(data => {
+        this.listOrigin = data;
         this.listComics = data;
         this.listComics.forEach(async comic => {
           comic.statusString = this.getComicStatusString(comic);
           comic.statusClass = this.getComicStatusClass(comic);
         });
       });
+    }
+  }
+
+  search(): void {
+    if (this.searchStr) {
+      this.listComics = this.listComics.filter(comic => comic.title.includes(this.searchStr));
+    }
+  }
+
+  offSearch(): void {
+    if (!this.searchStr) {
+      this.listComics = this.listOrigin;
     }
   }
 
@@ -63,8 +77,12 @@ export class MyComicPageComponent implements OnInit {
     img.src = comic.getComicCover();
   }
 
+  addComic(): void {
+    this.router.navigate(['them-truyen']);
+  }
+
   editComic(id: number): void {
-    this.router.navigate([`quan-tri/cap-nhat-truyen/${id}`]);
+    this.router.navigate([`cap-nhat-truyen/${id}`]);
   }
 
   removeComic(id: number): void {

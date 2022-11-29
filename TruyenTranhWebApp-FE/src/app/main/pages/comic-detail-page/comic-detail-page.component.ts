@@ -8,6 +8,7 @@ import { ComicService } from 'src/app/services/comic.service';
 import { CommentService } from 'src/app/services/comment.service';
 import { ReviewService } from 'src/app/services/review.service';
 import { Utils } from 'src/app/utils/utils';
+import Swal from 'sweetalert2';
 import { MainComponent } from '../../main.component';
 
 @Component({
@@ -49,7 +50,7 @@ export class ComicDetailPageComponent implements OnInit {
           this.listComments = this.listComments.sort().map(comment => Object.assign(new CommentModel(), comment));
         });
 
-        this.updatedTime = Utils.getUpdatedDateTime(this.listChapters.at(-1)!.createdTime);
+        this.updatedTime = Utils.getUpdatedDateTime(this.comic.updatedTime);
       });
     }
     else {
@@ -69,6 +70,17 @@ export class ComicDetailPageComponent implements OnInit {
   }
 
   likeComic(isLike: boolean) {
+    if (!MainComponent.currentUser) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Vui lòng đăng nhập để thực hiện chức năng này!',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return;
+    }
+
     if (this.reviewedByUser) {
       if ((isLike && this.reviewedByUser.type.toString() == ReviewType[ReviewType.LIKE])
         || (!isLike && this.reviewedByUser.type.toString() == ReviewType[ReviewType.DISLIKE])) {
@@ -107,5 +119,9 @@ export class ComicDetailPageComponent implements OnInit {
         this.totalDislike++;
       }
     })
+  }
+
+  searchByGenre(id: number) {
+    this.router.navigate([`/tim-kiem/the-loai/${id}`]).then(() => window.location.reload());
   }
 }

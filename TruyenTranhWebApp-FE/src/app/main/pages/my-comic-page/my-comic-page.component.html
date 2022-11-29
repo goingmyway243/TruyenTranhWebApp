@@ -2,22 +2,22 @@
     <div class="container">
         <h2>Truyện đã đăng</h2>
 
-
-        <!-- <div class="toolbar">
+        <div class="topbar">
             <div class="search">
-                <label for="">
-                    <input type="text" placeholder="Tìm kiếm...">
+                <form (submit)="search()">
+                    <input type="text" placeholder="Tìm kiếm..." [(ngModel)]="searchStr"
+                        [ngModelOptions]="{standalone: true}" (ngModelChange)="offSearch()">
                     <i class="uil uil-search"></i>
-                </label>
+                </form>
             </div>
-        </div> -->
+        </div>
 
         <div class="details">
             <div class="wrapper">
                 <div class="list-comics">
                     <div class="cardHeader">
                         <h2>Danh sách truyện</h2>
-                        <a href="them-truyen" class="btn clickable">
+                        <a class="btn clickable" (click)="addComic()">
                             <i class="uil uil-plus-circle"></i>
                             Thêm mới
                         </a>

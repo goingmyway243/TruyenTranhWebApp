@@ -42,7 +42,7 @@
 
 <div class="hover-panel">
     <a [routerLink]="['thong-tin-ca-nhan']"><i class="uil uil-user"></i>Thông tin cá nhân</a>
-    <a [routerLink]="['truyen-cua-toi']"><i class="uil uil-book-alt"></i>Truyện của bạn</a>
-    <a [routerLink]="['quan-tri']"><i class="uil uil-key-skeleton"></i>Quản trị</a>
+    <a [routerLink]="['truyen-cua-toi']" *ngIf="!isAdmin()"><i class="uil uil-book-alt"></i>Truyện của bạn</a>
+    <a [routerLink]="['quan-tri']" *ngIf="isAdmin()"><i class="uil uil-key-skeleton"></i>Quản trị</a>
     <a (click)="onLogout()"><i class="uil uil-signin"></i>Đăng xuất</a>
 </div>

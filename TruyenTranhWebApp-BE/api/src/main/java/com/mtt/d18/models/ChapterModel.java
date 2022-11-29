@@ -34,7 +34,7 @@ public class ChapterModel {
 	private int chapterIndex;
 
 	@CreatedDate
-	private LocalDateTime createdTime;
+	private LocalDateTime updatedTime;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "comic_id", nullable = false)
@@ -58,7 +58,7 @@ public class ChapterModel {
 	public ChapterModel(String name, int chapterIndex) {
 		this.name = name;
 		this.chapterIndex = chapterIndex;
-		this.createdTime = LocalDateTime.now();
+		this.updatedTime = LocalDateTime.now();
 	}
 
 	public long getId() {
@@ -86,7 +86,27 @@ public class ChapterModel {
 	}
 	
 	public LocalDateTime getCreatedTime() {
-		return createdTime;
+		return updatedTime;
+	}
+
+	public Set<ContentModel> getContents() {
+		return contents;
+	}
+
+	public void setContents(Set<ContentModel> contents) {
+		this.contents = contents;
+	}
+
+	public Set<CommentModel> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<CommentModel> comments) {
+		this.comments = comments;
+	}
+
+	public void setUpdatedTime(LocalDateTime updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 
 	public ComicModel getComic() {

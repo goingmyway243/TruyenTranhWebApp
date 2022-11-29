@@ -1,12 +1,13 @@
 <div class="admin-genres-page">
-    <!-- <div class="topbar">
+    <div class="topbar">
         <div class="search">
-            <label for="">
-                <input type="text" placeholder="Tìm kiếm...">
+            <form (submit)="search()">
+                <input type="text" placeholder="Tìm kiếm..." [(ngModel)]="searchStr"
+                    [ngModelOptions]="{standalone: true}" (keyup)="offSearch()">
                 <i class="uil uil-search"></i>
-            </label>
+            </form>
         </div>
-    </div> -->
+    </div>
 
     <div class="title">
         <h2>Quản lý thể loại</h2>

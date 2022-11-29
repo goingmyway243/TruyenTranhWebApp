@@ -12,6 +12,7 @@ import { AdminComicsPageComponent } from './admin/pages/admin-comics-page/admin-
 import { AdminDashboardPageComponent } from './admin/pages/admin-dashboard-page/admin-dashboard-page.component';
 import { AdminGenresPageComponent } from './admin/pages/admin-genres-page/admin-genres-page.component';
 import { MainComponent } from './main/main.component';
+import { AddChapterPageComponent } from './main/pages/add-chapter-page/add-chapter-page.component';
 import { AddComicPageComponent } from './main/pages/add-comic-page/add-comic-page.component';
 import { ComicChapterPageComponent } from './main/pages/comic-chapter-page/comic-chapter-page.component';
 import { ComicDetailPageComponent } from './main/pages/comic-detail-page/comic-detail-page.component';
@@ -35,6 +36,9 @@ const routes: Routes = [
       { path: 'tim-kiem/:keyword', component: SearchResultPageComponent },
       { path: 'tim-kiem/the-loai/:genreId', component: SearchResultPageComponent },
       { path: 'them-truyen', component: AddComicPageComponent },
+      { path: 'them-chuong', component: AddChapterPageComponent },
+      { path: 'cap-nhat-truyen/:id', component: AddComicPageComponent },
+      { path: 'cap-nhat-chuong/:id', component: AddChapterPageComponent },
       { path: 'truyen-cua-toi', component: MyComicPageComponent },
       { path: 'thong-tin-ca-nhan', component: MyProfilePageComponent }
     ]

@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 })
 export class AdminGenresPageComponent implements OnInit {
   listGenres: GenreModel[] = [];
+  listOrigin: GenreModel[] = [];
+  searchStr: string = '';
 
   constructor(
     private router: Router,
@@ -20,8 +22,23 @@ export class AdminGenresPageComponent implements OnInit {
     this.getAllGenres();
   }
 
+  search(): void {
+    if (this.searchStr) {
+      this.listGenres = this.listGenres.filter(genre => genre.name.includes(this.searchStr));
+    }
+  }
+
+  offSearch(): void {
+    if (!this.searchStr) {
+      this.listGenres = this.listOrigin;
+    }
+  }
+
   getAllGenres(): void {
-    this.genreService.getAll().subscribe(data => this.listGenres = data);
+    this.genreService.getAll().subscribe(data => {
+      this.listGenres = data;
+      this.listOrigin = this.listGenres;
+    });
   }
 
   addGenre(): void {

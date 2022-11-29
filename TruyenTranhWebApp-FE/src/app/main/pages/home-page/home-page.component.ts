@@ -66,7 +66,8 @@ export class HomePageComponent implements OnInit {
   ngOnInit(): void {
     this.comicService.getAllOrderByTime().subscribe(data => {
       this.listComics = data;
-      this.listRecommends = this.listComics.slice(0, 6);
+      this.listRecommends.push(...this.listComics);
+      this.listRecommends = this.listRecommends.sort((a, b) => b.view - a.view).slice(0, 6);
     });
 
     this.genreService.getAll().subscribe(data => {

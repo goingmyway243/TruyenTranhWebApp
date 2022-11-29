@@ -23,7 +23,7 @@
                     <span><i class="uil uil-tag-alt"></i> Thể loại</span>
                     <span>
                         <span *ngFor="let genre of comic.genres; let i = index">
-                            <a>{{genre.name}}</a>
+                            <a (click)="searchByGenre(genre.id)">{{genre.name}}</a>
                             <span *ngIf="i < comic.genres.length-1"> - </span>
                         </span>
                     </span>
@@ -93,6 +93,7 @@
         </div>
 
         <div class="list-comment">
+            <div class="no-comment" *ngIf="listComments.length==0">Chưa có bình luận</div>
             <app-comment-item *ngFor="let comment of listComments" [comment]="comment" [showChapter]="true">
             </app-comment-item>
         </div>

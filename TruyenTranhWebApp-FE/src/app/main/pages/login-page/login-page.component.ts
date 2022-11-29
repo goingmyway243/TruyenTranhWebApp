@@ -37,7 +37,7 @@ export class LoginPageComponent implements OnInit {
           timer: 1500
         }).then(result => {
           MainComponent.currentUser = data;
-          this.router.navigate(['']);
+          this.router.navigate(['']).then(() => window.location.reload());
         });
       },
       error => {

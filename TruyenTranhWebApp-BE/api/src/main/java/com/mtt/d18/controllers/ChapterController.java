@@ -65,6 +65,7 @@ public class ChapterController {
 		
 		ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex());
 		newChapter.setComic(comic);
+		newChapter.setUpdatedTime(LocalDateTime.now());
 		return new ResponseEntity<ChapterModel>(chapterRepo.save(newChapter), HttpStatus.OK);
 	}
 
@@ -85,9 +86,11 @@ public class ChapterController {
 			if (chapterModel.getId() == 0) {
 				ChapterModel newChapter = new ChapterModel(chapterModel.getName(), chapterModel.getChapterIndex());
 				newChapter.setComic(comic);
+				newChapter.setUpdatedTime(LocalDateTime.now());
 				listResult.add(chapterRepo.save(newChapter));
 			} else {
 				chapterModel.setComic(comic);
+				chapterModel.setUpdatedTime(LocalDateTime.now());
 				listResult.add(chapterRepo.save(chapterModel));
 			}
 		});
@@ -96,10 +99,11 @@ public class ChapterController {
 		return new ResponseEntity<List<ChapterModel>>(listResult, HttpStatus.OK);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<ChapterModel> update(@PathVariable long id, @RequestBody ChapterModel chapterModel) {
-		return chapterRepo.findById(id).map(chapter -> {
-			chapterModel.setId(chapter.getId());
+	@PutMapping("/{comicId}")
+	public ResponseEntity<ChapterModel> update(@PathVariable long comicId, @RequestBody ChapterModel chapterModel) {
+		return comicRepo.findById(comicId).map(comic -> {
+			chapterModel.setComic(comic);
+			chapterModel.setUpdatedTime(LocalDateTime.now());
 			return new ResponseEntity<ChapterModel>(chapterRepo.save(chapterModel), HttpStatus.OK);
 		}).orElseGet(() -> new ResponseEntity<ChapterModel>(HttpStatus.NOT_FOUND));
 	}

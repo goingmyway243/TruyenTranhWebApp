@@ -10,6 +10,13 @@
             position: relative;
             text-align: center;
 
+            .title {
+                width: 100%;
+                text-align: left;
+                margin-bottom: 1rem;
+                color: var(--color-primary);
+            }
+
             .slide-btn {
                 position: absolute;
                 top: 50%;

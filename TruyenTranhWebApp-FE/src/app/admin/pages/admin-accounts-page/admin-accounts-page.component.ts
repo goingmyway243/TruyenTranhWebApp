@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 })
 export class AdminAccountsPageComponent implements OnInit {
   listAccounts: UserModel[] = [];
+  listOrigin: UserModel[] = [];
+  searchStr: string = ''
 
   constructor(
     private router: Router,
@@ -20,8 +22,23 @@ export class AdminAccountsPageComponent implements OnInit {
     this.getAllAccounts();
   }
 
+  search(): void {
+    if (this.searchStr) {
+      this.listAccounts = this.listAccounts.filter(user => user.name.includes(this.searchStr));
+    }
+  }
+
+  offSearch(): void {
+    if (!this.searchStr) {
+      this.listAccounts = this.listOrigin;
+    }
+  }
+
   getAllAccounts(): void {
-    this.userService.getAll().subscribe(data => this.listAccounts = data);
+    this.userService.getAll().subscribe(data => {
+      this.listAccounts = data;
+      this.listOrigin = this.listAccounts;
+    });
   }
 
   addAccount(): void {

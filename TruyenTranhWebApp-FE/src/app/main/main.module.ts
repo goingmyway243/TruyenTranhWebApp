@@ -21,6 +21,7 @@ import { MyProfilePageComponent } from './pages/my-profile-page/my-profile-page.
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AddChapterPageComponent } from './pages/add-chapter-page/add-chapter-page.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     AutoHeightInputComponent,
     AddComicPageComponent,
     MyComicPageComponent,
-    MyProfilePageComponent
+    MyProfilePageComponent,
+    AddChapterPageComponent
   ],
   imports: [
     CommonModule,

@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 })
 export class AdminAuthorsPageComponent implements OnInit {
   listAuthors: AuthorModel[] = [];
+  listOrigin: AuthorModel[] = [];
+  searchStr: string = '';
 
   constructor(
     private authorService: AuthorService,
@@ -20,8 +22,23 @@ export class AdminAuthorsPageComponent implements OnInit {
     this.getAllAuthors();
   }
 
+  search(): void {
+    if (this.searchStr) {
+      this.listAuthors = this.listAuthors.filter(author => author.name.includes(this.searchStr));
+    }
+  }
+
+  offSearch(): void {
+    if (!this.searchStr) {
+      this.listAuthors = this.listOrigin;
+    }
+  }
+
   getAllAuthors(): void {
-    this.authorService.getAll().subscribe(data => this.listAuthors = data);
+    this.authorService.getAll().subscribe(data => {
+      this.listAuthors = data;
+      this.listOrigin = this.listAuthors;
+    });
   }
 
   addAuthor(): void {

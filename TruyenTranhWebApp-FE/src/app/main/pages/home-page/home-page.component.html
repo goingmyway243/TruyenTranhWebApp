@@ -1,6 +1,7 @@
 <div class="home-page">
     <div class="container">
         <div class="slider">
+            <h2 class="title">Truyện xem nhiều nhất ></h2>
             <owl-carousel-o [options]="customOptions">
                 <ng-template carouselSlide *ngFor="let comic of listRecommends">
                     <app-slide-comic-item [comic]="comic"></app-slide-comic-item>
@@ -28,7 +29,6 @@
                 <div class="history" *ngIf="listHistories.length > 0">
                     <div class="header">
                         <span>Lịch sử đọc truyện</span>
-                        <a href="">Xem tất cả</a>
                     </div>
                     <div class="items">
                         <app-mini-comic-item *ngFor="let comic of listHistories; let i=index" [comic]="comic"

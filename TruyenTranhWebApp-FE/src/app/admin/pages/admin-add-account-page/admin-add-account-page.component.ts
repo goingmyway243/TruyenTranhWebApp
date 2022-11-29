@@ -13,15 +13,21 @@ import Swal from 'sweetalert2';
 export class AdminAddAccountPageComponent implements OnInit {
   newAccount: UserModel = new UserModel();
   retypePass: string = '';
-  selectedRole: number = 0;
   editId?: number;
+
+  selectedRole: RoleType = RoleType.USER;
+
+  roleOptions = [
+    { value: RoleType.ADMIN, text: 'Quản trị viên' },
+    { value: RoleType.USER, text: 'Người dùng' },
+  ];
 
   addForm: FormGroup = new FormGroup({
     name: new FormControl(this.newAccount.name, Validators.required),
     email: new FormControl(this.newAccount.email, [Validators.required, Validators.email]),
     pass: new FormControl(this.newAccount.pass, Validators.required),
     repass: new FormControl(this.retypePass, Validators.required),
-    role: new FormControl(this.selectedRole, Validators.required)
+    role: new FormControl(this.selectedRole)
   });
 
   get name() { return this.addForm.get('name'); }
@@ -41,7 +47,7 @@ export class AdminAddAccountPageComponent implements OnInit {
       this.userService.getById(this.editId).subscribe(data => {
         this.newAccount = data;
         this.retypePass = this.newAccount.pass;
-        this.selectedRole = this.newAccount.role.toString() == RoleType[RoleType.ADMIN] ? 1 : 0;
+        this.selectedRole = +RoleType[this.newAccount.role];
       });
     }
   }
@@ -52,7 +58,7 @@ export class AdminAddAccountPageComponent implements OnInit {
 
   postAccount(): void {
     if (this.addForm.valid) {
-      this.newAccount.role = this.selectedRole == 1 ? RoleType.ADMIN : RoleType.USER;
+      this.newAccount.role = this.selectedRole;
 
       if (this.editId) {
         this.updateAccount();

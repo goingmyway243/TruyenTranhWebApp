@@ -18,6 +18,7 @@ export class AdminComicsPageComponent implements OnInit {
   exchangeText: string = 'Chờ duyệt'
   isPendingApprove: boolean = false;
   pageIndex: number = 1;
+  searchStr: string = '';
 
   constructor(
     private elementRef: ElementRef,
@@ -40,6 +41,8 @@ export class AdminComicsPageComponent implements OnInit {
   }
 
   togglePendingApprove(): void {
+    this.searchStr = '';
+
     this.isPendingApprove = !this.isPendingApprove;
     this.exchangeText = this.isPendingApprove ? 'Toàn bộ' : 'Chờ duyệt';
 
@@ -72,6 +75,18 @@ export class AdminComicsPageComponent implements OnInit {
 
     wrapper.setAttribute('hidden', '');
     placeHolder.removeAttribute('hidden');
+  }
+
+  search(): void {
+    if (this.searchStr) {
+      this.listComics = this.listComics.filter(comic => comic.title.includes(this.searchStr));
+    }
+  }
+
+  offSearch(): void {
+    if (!this.searchStr) {
+      this.listComics = this.listOrigin;
+    }
   }
 
   addComic(): void {

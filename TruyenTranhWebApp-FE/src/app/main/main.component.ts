@@ -1,6 +1,8 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { ChapterModel } from '../models/chapter.model';
+import { ComicModel } from '../models/comic.model';
 import { RoleType, UserModel } from '../models/user.model';
 import { UserService } from '../services/user.service';
 
@@ -11,6 +13,8 @@ import { UserService } from '../services/user.service';
 })
 export class MainComponent implements OnInit {
   static currentUser?: UserModel;
+  static draftComic?: ComicModel;
+  static draftChapter?: ChapterModel;
   searchStr: string = '';
 
   constructor(
@@ -32,9 +36,12 @@ export class MainComponent implements OnInit {
     return MainComponent.currentUser;
   }
 
-  // isAdmin():boolean{
-  //   return MainComponent.currentUser && MainComponent.currentUser!.role.toString() == RoleType.ADMIN.toString();
-  // }
+  isAdmin(): boolean {
+    if (!MainComponent.currentUser)
+      return false;
+
+    return MainComponent.currentUser.role.toString() == RoleType[RoleType.ADMIN].toString();
+  }
 
   onLogout(): void {
     Swal.fire({
