@@ -13,6 +13,7 @@ export interface IUserModel {
     email: string;
     pass: string;
     role: RoleType;
+    isDeleted: boolean;
 }
 
 export class UserModel implements IUserModel {
@@ -21,6 +22,7 @@ export class UserModel implements IUserModel {
     email: string;
     pass: string;
     role: RoleType;
+    isDeleted: boolean;
 
     reviews: ReviewModel[];
     comics: ComicModel[];
@@ -31,6 +33,7 @@ export class UserModel implements IUserModel {
         this.email = "";
         this.pass = "";
         this.role = RoleType.USER;
+        this.isDeleted = false;
 
         this.reviews = [];
         this.comics = [];

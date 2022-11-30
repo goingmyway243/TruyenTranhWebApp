@@ -1,4 +1,5 @@
 import { AppComponent } from "../app.component";
+import { Utils } from "../utils/utils";
 import { AuthorModel } from "./author.model";
 import { ChapterModel } from "./chapter.model";
 import { CommentModel } from "./comment.model";
@@ -64,5 +65,9 @@ export class ComicModel implements IComicModel {
 
     getComicCover(): string {
         return `${AppComponent.baseUrl}images/${this.id}/cover.jpg`;
+    }
+
+    getTimeDiff(): string {
+        return Utils.getTimeDiff(this.updatedTime);
     }
 }

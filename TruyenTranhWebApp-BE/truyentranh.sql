@@ -30,16 +30,6 @@ CREATE TABLE `author` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `author`
---
-
-LOCK TABLES `author` WRITE;
-/*!40000 ALTER TABLE `author` DISABLE KEYS */;
-INSERT INTO `author` VALUES (1,'Hiroki'),(2,'Sawano'),(3,'Kayaba'),(4,'Hinata'),(5,'Kinugasa Shougo'),(6,'Đang cập nhật'),(7,'Sysadmin'),(8,'Tôi');
-/*!40000 ALTER TABLE `author` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `chapter`
 --
 
@@ -55,18 +45,8 @@ CREATE TABLE `chapter` (
   PRIMARY KEY (`id`),
   KEY `comicId` (`comic_id`),
   CONSTRAINT `chapter_ibfk_1` FOREIGN KEY (`comic_id`) REFERENCES `comic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `chapter`
---
-
-LOCK TABLES `chapter` WRITE;
-/*!40000 ALTER TABLE `chapter` DISABLE KEYS */;
-INSERT INTO `chapter` VALUES (1,'Khởi đầu',1,1,'2022-11-10 00:50:45'),(2,'Bạn mới',2,16,'2022-11-10 21:53:07'),(3,'Khởi đầu',1,16,'2022-11-10 21:53:07'),(12,'Bạn mới',2,22,'2022-11-10 23:45:56'),(13,'Khởi đầu',1,22,'2022-11-10 23:45:56'),(15,'Khởi đầu',1,23,'2022-11-12 00:12:29'),(18,'Bạn mới',2,26,'2022-11-12 00:42:35'),(19,'Khởi đầu',1,26,'2022-11-12 00:42:35'),(20,'Dịch chuyển',1,27,'2022-11-12 00:50:44'),(21,'Trổ tài',2,27,'2022-11-12 00:50:44'),(22,'Nấu ăn',3,27,'2022-11-12 00:50:44'),(24,'Test',1,29,'2022-11-18 23:15:52'),(26,'Test 3',3,29,'2022-11-24 23:20:12'),(28,'Oan gia',1,28,'2022-11-25 21:51:30'),(30,'Test tiếp',2,28,'2022-11-25 22:36:34'),(32,'',0,30,'2022-11-25 22:47:29'),(33,'',1,30,'2022-11-25 23:06:11'),(34,'',2,30,'2022-11-25 23:07:34'),(35,'',1,31,'2022-11-26 01:17:50'),(36,'Khởi đầu',1,25,'2022-11-28 14:28:24'),(37,'Abcde',0,9,'2022-11-29 23:00:11'),(38,'Test',0,32,'2022-11-30 00:36:47');
-/*!40000 ALTER TABLE `chapter` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `comic`
@@ -93,16 +73,6 @@ CREATE TABLE `comic` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comic`
---
-
-LOCK TABLES `comic` WRITE;
-/*!40000 ALTER TABLE `comic` DISABLE KEYS */;
-INSERT INTO `comic` VALUES (1,'Test','Test desc',0,'PUBLISH',1,3,'2022-11-29 22:24:01'),(9,'Yokoso','Test chapter',1,'PUBLISH',1,5,'2022-11-29 22:24:32'),(16,'Test kết quả','fsadsad',6,'PUBLISH',1,5,'2022-11-29 22:24:08'),(22,'Merry Christmas','Câu chuyện về Ayano Kyouji viết thư pháp bá chủ ngôi trường',4,'PUBLISH',1,5,'2022-11-29 22:23:48'),(23,'Yokoso Jiysuryoku 1','dsad',0,'PUBLISH',1,5,'2022-11-29 22:23:40'),(25,'Yokoso Jiysuryoku 2131','dsad',2,'PUBLISH',1,5,'2022-11-28 21:29:47'),(26,'Yokoso Jiysuryoku Mirai he','dsadsad',9,'PUBLISH',1,5,'2022-11-29 22:23:31'),(27,'TENSEI SHITE INAKA DE SLOWLIFE WO OKURITAI','Nhân vật chính của chúng ta, Inaka Yuuji do làm việc quá nhiều nên đã kiệt sức và bị truck-sama thông nhầm tông. Được tái sinh, Inaka Yuuji quyết định sẽ sống một cuộc sống nhàn nhã ở một vùng quê với hình dáng đứa trẻ 3 tuổi...',100,'PUBLISH',1,6,'2022-11-29 22:23:24'),(28,'Oan gia chung nhà','Chàng quỷ Otaku và nàng thiên thần Wibu',9,'PUBLISH',1,6,'2022-11-29 22:23:15'),(29,'Ảnh bìa','Tổng hợp ảnh bìa',87,'PUBLISH',1,7,'2022-11-26 01:18:16'),(30,'Chainsaw man','Quỷ cưa và Makima',0,'PUBLISH',1,6,'2022-11-26 01:15:10'),(31,'Yokoso Jiysuryoku','',2,'PUBLISH',1,5,'2022-11-26 01:17:50'),(32,'Truyện của người dùng','Vui lên',0,'PENDING',2,8,'2022-11-30 00:36:47');
-/*!40000 ALTER TABLE `comic` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `comic_genre`
 --
 
@@ -118,16 +88,6 @@ CREATE TABLE `comic_genre` (
   CONSTRAINT `comic_genre_ibfk_2` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `comic_genre`
---
-
-LOCK TABLES `comic_genre` WRITE;
-/*!40000 ALTER TABLE `comic_genre` DISABLE KEYS */;
-INSERT INTO `comic_genre` VALUES (1,1),(1,2),(9,1),(9,3),(16,1),(16,2),(22,1),(22,2),(23,2),(23,3),(25,2),(25,3),(26,1),(26,2),(27,1),(27,2),(28,1),(28,2),(29,1),(29,2),(29,3),(29,4),(29,5),(29,6),(30,3),(30,4),(31,1),(31,2),(32,1);
-/*!40000 ALTER TABLE `comic_genre` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `comment`
@@ -151,16 +111,6 @@ CREATE TABLE `comment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comment`
---
-
-LOCK TABLES `comment` WRITE;
-/*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (1,'Helo những ngời anh em',1,24,'2022-11-21 23:19:28'),(2,'Tui nè.\n\n\nNhớ tui khom?',1,24,'2022-11-21 23:21:51'),(3,'Alo',1,24,'2022-11-21 23:22:57'),(6,'Comment chap 3 trước',1,22,'2022-11-22 00:35:43'),(7,'Comment chap 1 nhì',1,20,'2022-11-22 00:36:16'),(8,'Comment chap 2 cuối nè',1,21,'2022-11-22 00:36:42'),(9,'Xin chào',1,35,'2022-11-29 21:33:05');
-/*!40000 ALTER TABLE `comment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `content`
 --
 
@@ -174,18 +124,8 @@ CREATE TABLE `content` (
   PRIMARY KEY (`id`),
   KEY `chapterId` (`chapter_id`),
   CONSTRAINT `content_ibfk_1` FOREIGN KEY (`chapter_id`) REFERENCES `chapter` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `content`
---
-
-LOCK TABLES `content` WRITE;
-/*!40000 ALTER TABLE `content` DISABLE KEYS */;
-INSERT INTO `content` VALUES (7,0,13),(8,1,13),(9,0,12),(12,0,15),(19,0,18),(20,1,18),(21,0,19),(22,0,20),(23,1,20),(24,2,20),(25,0,22),(26,1,22),(27,2,22),(28,0,21),(32,0,24),(37,0,26),(47,0,28),(52,1,28),(54,2,28),(55,3,28),(56,0,30),(57,1,30),(59,0,32),(60,1,32),(61,0,33),(62,0,34),(63,0,35),(64,1,35),(65,2,35),(66,0,36),(67,1,36),(68,0,37),(69,0,38);
-/*!40000 ALTER TABLE `content` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `genre`
@@ -200,16 +140,6 @@ CREATE TABLE `genre` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `genre`
---
-
-LOCK TABLES `genre` WRITE;
-/*!40000 ALTER TABLE `genre` DISABLE KEYS */;
-INSERT INTO `genre` VALUES (1,'Hài hước'),(2,'Lãng mạn'),(3,'Hành động'),(4,'Kinh dị'),(5,'Harem'),(6,'Chuyển sinh');
-/*!40000 ALTER TABLE `genre` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `review`
@@ -231,16 +161,6 @@ CREATE TABLE `review` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `review`
---
-
-LOCK TABLES `review` WRITE;
-/*!40000 ALTER TABLE `review` DISABLE KEYS */;
-INSERT INTO `review` VALUES (1,27,'LIKE','2022-11-19 00:58:33'),(1,31,'LIKE','2022-11-29 21:30:43');
-/*!40000 ALTER TABLE `review` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `user`
 --
 
@@ -253,20 +173,11 @@ CREATE TABLE `user` (
   `email` varchar(320) NOT NULL,
   `pass` varchar(128) NOT NULL,
   `role` enum('ADMIN','USER') NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'System Admin','sysadmin@gmail.com','123','ADMIN'),(2,'Tester','test@gmail.com','123','USER'),(3,'Nguyễn Hải Đăng','nguyenhaidang240800@gmail.com','123','USER'),(4,'Người dùng mới','user@gmail.com','123','USER');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -277,4 +188,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-30  0:46:22
+-- Dump completed on 2022-12-01  0:01:32

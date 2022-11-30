@@ -49,8 +49,10 @@
         width: 100%;
         padding: 1rem 5rem;
         display: flex;
+        flex-direction: column;
+        gap: 1rem;
 
-        .recent-comics {
+        .list-accounts {
             width: 100%;
             display: grid;
             min-height: 5rem;
@@ -118,7 +120,11 @@
                                 }
 
                                 &.lock {
-                                    background-color: var(--color-secondary);
+                                    background-color: var(--color-danger);
+                                }
+
+                                &.unlock {
+                                    background-color: var(--color-success);
                                 }
 
                                 &.remove {
@@ -166,6 +172,12 @@
                     }
                 }
             }
+        }
+
+        .paginator {
+            display: flex;
+            font-size: 1rem;
+            justify-content: center;
         }
     }
 }

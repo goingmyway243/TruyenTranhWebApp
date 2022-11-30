@@ -12,7 +12,8 @@ import Swal from 'sweetalert2';
 export class AdminAccountsPageComponent implements OnInit {
   listAccounts: UserModel[] = [];
   listOrigin: UserModel[] = [];
-  searchStr: string = ''
+  searchStr: string = '';
+  pageIndex: number = 1;
 
   constructor(
     private router: Router,
@@ -24,7 +25,7 @@ export class AdminAccountsPageComponent implements OnInit {
 
   search(): void {
     if (this.searchStr) {
-      this.listAccounts = this.listAccounts.filter(user => user.name.includes(this.searchStr));
+      this.listAccounts = this.listOrigin.filter(user => user.name.includes(this.searchStr));
     }
   }
 
@@ -49,8 +50,25 @@ export class AdminAccountsPageComponent implements OnInit {
     this.router.navigate([`quan-tri/cap-nhat-tai-khoan/${id}`]);
   }
 
-  lockAccount(id: number): void {
-
+  lockAccount(account: UserModel): void {
+    let choice = account.isDeleted ? 'Mở khóa' : 'Khóa';
+    Swal.fire({
+      icon: 'question',
+      title: choice,
+      text: `Bạn có chắc muốn ${choice.toLowerCase()} tài khoản có mã '${account.id}'?`,
+      showCancelButton: true,
+      showConfirmButton: true,
+      focusCancel: true,
+      confirmButtonText: choice,
+      cancelButtonText: 'Không',
+      confirmButtonColor: 'var(--color-primary)',
+      cancelButtonColor: 'var(--color-danger)'
+    }).then(result => {
+      if (result.isConfirmed) {
+        account.isDeleted = !account.isDeleted;
+        this.userService.update(account).subscribe(data => console.log(data));
+      }
+    });
   }
 
   removeAccount(id: number): void {

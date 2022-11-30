@@ -1,5 +1,6 @@
 package com.mtt.d18.controllers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mtt.d18.enums.StatusType;
 import com.mtt.d18.models.ComicModel;
 import com.mtt.d18.models.GenreModel;
 import com.mtt.d18.models.UserModel;
@@ -29,7 +31,7 @@ import com.mtt.d18.repositories.IUserRepository;
 public class ComicController {
 	@Autowired
 	private IComicRepository comicRepo;
-	
+
 	@Autowired
 	private IUserRepository userRepo;
 
@@ -49,10 +51,20 @@ public class ComicController {
 		return new ResponseEntity<List<ComicModel>>(comicRepo.findByOrderByUpdatedTimeDesc(), HttpStatus.OK);
 	}
 
-	@GetMapping("/new/{keyword}")
+	@GetMapping("/published")
+	public ResponseEntity<List<ComicModel>> getAllPublishedOrderByTime() {
+		List<ComicModel> listComic = comicRepo.findByOrderByUpdatedTimeDesc();
+		listComic.removeIf(comic -> comic.getStatus() != StatusType.PUBLISH);
+
+		return new ResponseEntity<List<ComicModel>>(listComic, HttpStatus.OK);
+	}
+
+	@GetMapping("/published/{keyword}")
 	public ResponseEntity<List<ComicModel>> getByTitleContainingOrderByTime(@PathVariable String keyword) {
-		return new ResponseEntity<List<ComicModel>>(comicRepo.findByTitleContainingOrderByUpdatedTimeDesc(keyword),
-				HttpStatus.OK);
+		List<ComicModel> listComic = comicRepo.findByTitleContainingOrderByUpdatedTimeDesc(keyword);
+		listComic.removeIf(comic -> comic.getStatus() != StatusType.PUBLISH);
+
+		return new ResponseEntity<List<ComicModel>>(listComic, HttpStatus.OK);
 	}
 
 	@GetMapping("/genre/{genreId}")
@@ -63,20 +75,19 @@ public class ComicController {
 		listComics.forEach(comic -> {
 			List<Long> genreIds = comic.getGenres().stream().map(GenreModel::getId).collect(Collectors.toList());
 
-			if (genreIds.contains(genreId)) {
+			if (genreIds.contains(genreId) && comic.getStatus() == StatusType.PUBLISH) {
 				listResult.add(comic);
 			}
 		});
 
 		return new ResponseEntity<List<ComicModel>>(listResult, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/user/{userId}")
 	public ResponseEntity<List<ComicModel>> getByUserIdOrderByTime(@PathVariable long userId) {
 		UserModel user = userRepo.findById(userId).orElseGet(null);
-		
-		if(user == null)
-		{
+
+		if (user == null) {
 			return new ResponseEntity<List<ComicModel>>(HttpStatus.BAD_REQUEST);
 		}
 
@@ -98,6 +109,7 @@ public class ComicController {
 	public ResponseEntity<ComicModel> update(@PathVariable("id") long id, @RequestBody ComicModel comicModel) {
 		return comicRepo.findById(id).map(comic -> {
 			comicModel.setId(comic.getId());
+			comicModel.setUpdatedTime(LocalDateTime.now());
 			return new ResponseEntity<>(comicRepo.save(comicModel), HttpStatus.OK);
 		}).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}

@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ChapterModel } from '../models/chapter.model';
 import { ComicModel } from '../models/comic.model';
 import { UserModel } from '../models/user.model';
@@ -14,12 +15,14 @@ export class AdminComponent implements OnInit, AfterViewInit {
   static draftComic?: ComicModel;
   static draftChapter?: ChapterModel;
 
-  constructor(private elmRef: ElementRef, private userService: UserService) { }
+  constructor(private elmRef: ElementRef, private router: Router, private userService: UserService) { }
 
   ngOnInit(): void {
     let userId = localStorage.getItem('authorizeToken');
     if (userId) {
       this.userService.getById(+userId).subscribe(data => AdminComponent.currentUser = data);
+    } else {
+      this.router.navigate(['']);
     }
   }
 

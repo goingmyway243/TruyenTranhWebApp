@@ -14,7 +14,7 @@
     </div>
 
     <div class="details">
-        <div class="recent-comics">
+        <div class="list-authors">
             <div class="cardHeader">
                 <h2>Danh sách tác giả</h2>
                 <a class="btn clickable" (click)="addAuthor()">
@@ -31,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let author of listAuthors">
+                    <tr *ngFor="let author of listAuthors | paginate: { itemsPerPage: 10, currentPage: pageIndex }">
                         <td>{{author.id}}</td>
                         <td>{{author.name}}</td>
                         <td>
@@ -46,5 +46,9 @@
                 </tbody>
             </table>
         </div>
+
+        <pagination-controls previousLabel="" nextLabel="" [autoHide]="true" [responsive]="true"
+            (pageChange)="pageIndex = $event" class="paginator">
+        </pagination-controls>
     </div>
 </div>

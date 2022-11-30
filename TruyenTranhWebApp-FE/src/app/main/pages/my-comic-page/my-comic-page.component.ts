@@ -40,12 +40,14 @@ export class MyComicPageComponent implements OnInit {
           comic.statusClass = this.getComicStatusClass(comic);
         });
       });
+    } else {
+      this.router.navigate(['']);
     }
   }
 
   search(): void {
     if (this.searchStr) {
-      this.listComics = this.listComics.filter(comic => comic.title.includes(this.searchStr));
+      this.listComics = this.listOrigin.filter(comic => comic.title.includes(this.searchStr));
     }
   }
 

@@ -13,6 +13,7 @@ export class AdminAuthorsPageComponent implements OnInit {
   listAuthors: AuthorModel[] = [];
   listOrigin: AuthorModel[] = [];
   searchStr: string = '';
+  pageIndex: number = 1;
 
   constructor(
     private authorService: AuthorService,
@@ -24,7 +25,7 @@ export class AdminAuthorsPageComponent implements OnInit {
 
   search(): void {
     if (this.searchStr) {
-      this.listAuthors = this.listAuthors.filter(author => author.name.includes(this.searchStr));
+      this.listAuthors = this.listOrigin.filter(author => author.name.includes(this.searchStr));
     }
   }
 

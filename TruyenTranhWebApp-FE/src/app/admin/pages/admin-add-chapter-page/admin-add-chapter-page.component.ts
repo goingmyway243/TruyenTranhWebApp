@@ -156,8 +156,6 @@ export class AdminAddChapterPageComponent implements OnInit {
               await lastValueFrom(this.contentService.update(updateContent));
             }
             else {
-
-
               let image = this.listImages[i - this.newChapter.contents.length];
               let content = new ContentModel();
               content.contentIndex = i;
@@ -182,7 +180,6 @@ export class AdminAddChapterPageComponent implements OnInit {
         });
       }
       else {
-        this.toggleSpinner();
         Swal.fire(
           `Không hợp lệ`,
           `Chương ${duplicateIndex} đã tồn tại!`,

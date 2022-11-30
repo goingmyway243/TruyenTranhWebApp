@@ -14,7 +14,7 @@
     </div>
 
     <div class="details">
-        <div class="recent-comics">
+        <div class="list-genres">
             <div class="cardHeader">
                 <h2>Danh sách thể loại</h2>
                 <a class="btn clickable" (click)="addGenre()">
@@ -31,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let genre of listGenres">
+                    <tr *ngFor="let genre of listGenres | paginate: { itemsPerPage: 10, currentPage: pageIndex }">
                         <td>{{genre.id}}</td>
                         <td>{{genre.name}}</td>
                         <td>
@@ -46,5 +46,9 @@
                 </tbody>
             </table>
         </div>
+
+        <pagination-controls previousLabel="" nextLabel="" [autoHide]="true" [responsive]="true"
+            (pageChange)="pageIndex = $event" class="paginator">
+        </pagination-controls>
     </div>
 </div>

@@ -44,7 +44,7 @@ public class ReviewController {
 	public ResponseEntity<List<ReviewModel>> getAllByComicId(@PathVariable long comicId) {
 		return new ResponseEntity<List<ReviewModel>>(reviewRepo.findByReviewIdComicId(comicId), HttpStatus.OK);
 	}
-
+	
 	@PostMapping
 	public ResponseEntity<ReviewModel> create(@RequestBody ReviewModel reviewModel) {
 		ReviewModel newReview = new ReviewModel(reviewModel.getUser(), reviewModel.getComic(), reviewModel.getType());

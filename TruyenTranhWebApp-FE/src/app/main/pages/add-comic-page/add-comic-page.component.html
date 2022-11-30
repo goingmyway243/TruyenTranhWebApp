@@ -8,7 +8,7 @@
             <form [formGroup]="addForm" class="input-fields">
                 <div>
                     <label for="title">Tên truyện</label>
-                    <input id="title" [(ngModel)]="newComic.title" formControlName="title">
+                    <input id="title" type="text" maxlength="255" [(ngModel)]="newComic.title" formControlName="title">
                     <div *ngIf="addForm.get('title')!.invalid && (addForm.get('title')!.dirty || addForm.get('title')!.touched)"
                         class="alert alert-danger">
                         <div *ngIf="addForm.get('title')!.errors?.['required']">
@@ -18,7 +18,7 @@
                 </div>
                 <div>
                     <label for="author">Tác giả</label>
-                    <input id="author" [(ngModel)]="authorName" formControlName="author">
+                    <input id="author" type="text" maxlength="255" [(ngModel)]="authorName" formControlName="author">
                     <div *ngIf="addForm.get('author')!.invalid && (addForm.get('author')!.dirty || addForm.get('author')!.touched)"
                         class="alert alert-danger">
                         <div *ngIf="addForm.get('author')!.errors?.['required']">
@@ -41,7 +41,7 @@
                 </div>
                 <div>
                     <label for="description">Mô tả</label>
-                    <textarea id="description" rows="5" [(ngModel)]="newComic.description"
+                    <textarea id="description" rows="5" maxlength="1000" [(ngModel)]="newComic.description"
                         formControlName="description"></textarea>
                 </div>
             </form>

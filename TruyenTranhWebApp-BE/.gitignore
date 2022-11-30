@@ -1,2 +1,3 @@
 /.metadata/
 /api/src/main/resources/static/images/*
+!/api/src/main/resources/static/images/default.jpg

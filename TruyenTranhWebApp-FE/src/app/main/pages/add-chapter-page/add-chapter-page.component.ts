@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { ChapterModel } from 'src/app/models/chapter.model';
 import { ContentModel } from 'src/app/models/content.model';
@@ -32,12 +33,19 @@ export class AddChapterPageComponent implements OnInit {
   constructor(
     private location: Location,
     private elementRef: ElementRef,
+    private router: Router,
     private chapterService: ChapterService,
     private contentService: ContentService,
     private uploadService: UploadService) { }
 
   ngOnInit(): void {
     window.onscroll = () => this.scrollFunction();
+
+    let userId = localStorage.getItem('authorizeToken');
+    if (userId) {
+      this.router.navigate(['']);
+      return;
+    }
 
     this.comicId = MainComponent.draftComic?.id ?? 0;
 
@@ -156,8 +164,6 @@ export class AddChapterPageComponent implements OnInit {
               await lastValueFrom(this.contentService.update(updateContent));
             }
             else {
-
-
               let image = this.listImages[i - this.newChapter.contents.length];
               let content = new ContentModel();
               content.contentIndex = i;
@@ -182,7 +188,6 @@ export class AddChapterPageComponent implements OnInit {
         });
       }
       else {
-        this.toggleSpinner();
         Swal.fire(
           `Không hợp lệ`,
           `Chương ${duplicateIndex} đã tồn tại!`,

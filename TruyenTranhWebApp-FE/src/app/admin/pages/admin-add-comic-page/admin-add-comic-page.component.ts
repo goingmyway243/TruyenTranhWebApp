@@ -321,10 +321,11 @@ export class AdminAddComicPageComponent implements OnInit {
     }
 
     this.newComic.genres = this.selectedItems;
-    this.newComic.user = AdminComponent.currentUser;
+    if (!this.newComic.user) {
+      this.newComic.user = AdminComponent.currentUser;
+    }
 
     await lastValueFrom(this.comicService.update(this.newComic));
-    await lastValueFrom(this.chapterService.addList(this.newComic.chapters, this.newComic.id));
 
     this.toggleSpinner();
 

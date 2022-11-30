@@ -65,6 +65,12 @@ export class AddComicPageComponent implements OnInit {
     private location: Location) { }
 
   ngOnInit(): void {
+    let userId = localStorage.getItem('authorizeToken');
+    if (userId) {
+      this.router.navigate(['']);
+      return;
+    }
+
     const id = this.activeRoute.snapshot.paramMap.get('id');
 
     if (MainComponent.draftComic) {
@@ -309,7 +315,6 @@ export class AddComicPageComponent implements OnInit {
     this.newComic.user = MainComponent.currentUser;
 
     await lastValueFrom(this.comicService.update(this.newComic));
-    await lastValueFrom(this.chapterService.addList(this.newComic.chapters, this.newComic.id));
 
     this.toggleSpinner();
 

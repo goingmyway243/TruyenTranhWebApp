@@ -3,23 +3,49 @@
 
     <form class="signup-info" [formGroup]="signUpForm">
         <div>
-            <label for="signup-name">Tên người dùng</label>
-            <input id="signup-name" type="text" maxlength="24" [(ngModel)]="newUser.name" formControlName="name">
+            <label for="account-add-name">Tên người dùng</label>
+            <input id="account-add-name" type="text" maxlength="24" [(ngModel)]="newUser.name" formControlName="name">
+            <div *ngIf="name!.invalid && (name!.dirty || name!.touched)" class="alert alert-danger">
+                <div *ngIf="name!.errors?.['required']">
+                    Vui lòng nhập tên người dùng
+                </div>
+            </div>
         </div>
 
         <div>
-            <label for="signup-email">Email</label>
-            <input id="signup-email" type="email" maxlength="320" [(ngModel)]="newUser.email" formControlName="email">
+            <label for="account-add-email">Email</label>
+            <input id="account-add-email" type="email" maxlength="320" [(ngModel)]="newUser.email"
+                formControlName="email">
+            <div *ngIf="email!.invalid && (email!.dirty || email!.touched)" class="alert alert-danger">
+                <div *ngIf="email!.errors?.['required']">
+                    Vui lòng nhập email
+                </div>
+                <div *ngIf="email!.errors?.['email']">
+                    Email không hợp lệ
+                </div>
+            </div>
         </div>
 
         <div>
-            <label for="signup-pass">Mật khẩu</label>
-            <input id="signup-pass" type="password" maxlength="128" [(ngModel)]="newUser.pass" formControlName="pass">
+            <label for="account-add-pass">Mật khẩu</label>
+            <input id="account-add-pass" type="password" maxlength="128" [(ngModel)]="newUser.pass"
+                formControlName="pass">
+            <div *ngIf="pass!.invalid && (pass!.dirty || pass!.touched)" class="alert alert-danger">
+                <div *ngIf="pass!.errors?.['required']">
+                    Vui lòng nhập mật khẩu
+                </div>
+            </div>
         </div>
 
         <div>
-            <label for="signup-repass">Nhập lại mật khẩu</label>
-            <input id="signup-repass" type="password" maxlength="128" [(ngModel)]="retypePass" formControlName="repass">
+            <label for="account-add-repass">Nhập lại mật khẩu</label>
+            <input id="account-add-repass" type="password" maxlength="128" [(ngModel)]="retypePass"
+                formControlName="repass">
+            <div *ngIf="repass!.invalid && (repass!.dirty || repass!.touched)" class="alert alert-danger">
+                <div *ngIf="repass!.errors?.['required']">
+                    Vui lòng nhập lại mật khẩu
+                </div>
+            </div>
         </div>
     </form>
 

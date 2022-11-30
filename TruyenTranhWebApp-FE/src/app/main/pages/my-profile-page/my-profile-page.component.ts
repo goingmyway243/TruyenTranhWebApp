@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { UserModel } from 'src/app/models/user.model';
 import { ComicService } from 'src/app/services/comic.service';
@@ -22,6 +23,7 @@ export class MyProfilePageComponent implements OnInit {
 
   constructor(
     private elementRef: ElementRef,
+    private router: Router,
     private userService: UserService,
     private comicService: ComicService,
     private uploadService: UploadService) { }
@@ -36,6 +38,8 @@ export class MyProfilePageComponent implements OnInit {
           this.comicCount = data.length;
         });
       });
+    } else {
+      this.router.navigate(['']);
     }
   }
 
@@ -118,7 +122,7 @@ export class MyProfilePageComponent implements OnInit {
       showConfirmButton: false,
       timer: 1500
     }).then(() => {
-      this.cancelEdit(true);
+      window.location.reload();
     });
   }
 }

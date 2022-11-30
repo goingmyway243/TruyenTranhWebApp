@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mtt.d18.models.UserModel;
 import com.mtt.d18.repositories.IUserRepository;
+import com.mtt.d18.services.StorageService;
 
 @RestController
 @CrossOrigin("*")
@@ -26,6 +27,9 @@ public class UserController {
 	@Autowired
 	private IUserRepository userRepo;
 
+	@Autowired
+	StorageService storageService;
+	
 	@GetMapping
 	public ResponseEntity<List<UserModel>> getAll() {
 		List<UserModel> users = new ArrayList<>();
@@ -54,7 +58,10 @@ public class UserController {
 		
 		newUser = new UserModel(userModel.getName(), userModel.getEmail(), userModel.getPass(),
 				userModel.getRole());
-		return new ResponseEntity<UserModel>(userRepo.save(newUser), HttpStatus.OK);
+		newUser = userRepo.save(newUser);
+		
+		storageService.copyDefaultAvatar(newUser.getId()+".jpg");
+		return new ResponseEntity<UserModel>(newUser, HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")
@@ -78,6 +85,10 @@ public class UserController {
 			return new ResponseEntity<UserModel>(HttpStatus.NOT_FOUND);
 		}
 
+		if(auditUser.getIsDeleted()) {
+			return new ResponseEntity<UserModel>(HttpStatus.NOT_ACCEPTABLE);
+		}
+		
 		return new ResponseEntity<UserModel>(auditUser, HttpStatus.OK);
 	}
 }

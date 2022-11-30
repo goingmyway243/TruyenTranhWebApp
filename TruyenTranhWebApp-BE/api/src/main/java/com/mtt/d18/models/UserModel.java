@@ -35,6 +35,8 @@ public class UserModel {
 	@Enumerated(EnumType.STRING)
 	private RoleType role;
 	
+	private boolean isDeleted;
+	
 	@OneToMany(mappedBy = "user")
 	@Fetch(FetchMode.JOIN)
 	@JsonIgnore
@@ -58,6 +60,7 @@ public class UserModel {
 		this.email = email;
 		this.pass = pass;
 		this.role = role;
+		this.isDeleted = false;
 	}
 
 	public long getId() {
@@ -100,11 +103,35 @@ public class UserModel {
 		this.role = role;
 	}
 
+	public boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	public Set<ReviewModel> getReviews() {
 		return reviews;
 	}
 
 	public void setReviews(Set<ReviewModel> reviews) {
 		this.reviews = reviews;
+	}
+
+	public Set<ComicModel> getComics() {
+		return comics;
+	}
+
+	public void setComics(Set<ComicModel> comics) {
+		this.comics = comics;
+	}
+
+	public Set<CommentModel> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<CommentModel> comments) {
+		this.comments = comments;
 	}
 }

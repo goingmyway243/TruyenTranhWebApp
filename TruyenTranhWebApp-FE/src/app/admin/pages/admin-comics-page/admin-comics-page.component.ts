@@ -79,7 +79,7 @@ export class AdminComicsPageComponent implements OnInit {
 
   search(): void {
     if (this.searchStr) {
-      this.listComics = this.listComics.filter(comic => comic.title.includes(this.searchStr));
+      this.listComics = this.listOrigin.filter(comic => comic.title.includes(this.searchStr));
     }
   }
 

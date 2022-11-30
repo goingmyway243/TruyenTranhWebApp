@@ -58,7 +58,15 @@ public class StorageService {
 		}
 	}
 	
-	
+	public void copyDefaultAvatar(String fileName) {
+		try {
+			Path src = this.rootLocation.resolve("default.jpg");
+			Path dest = this.rootLocation.resolve(fileName);
+			Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING);
+		} catch (Exception e) {
+			throw new RuntimeException("FAIL!");
+		}
+	}
 
 	public Resource loadFile(String filename) {
 		try {

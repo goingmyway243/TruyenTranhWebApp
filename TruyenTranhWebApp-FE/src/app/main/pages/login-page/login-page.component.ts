@@ -19,12 +19,20 @@ export class LoginPageComponent implements OnInit {
     email: new FormControl('', Validators.required),
     pass: new FormControl('', Validators.required)
   });
+
+  get email() { return this.loginForm.get('email'); }
+  get pass() { return this.loginForm.get('pass'); }
+
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   onLogin(): void {
+    if (this.loginForm.invalid) {
+      return;
+    }
+
     this.userService.login(this.loginUser).subscribe(
       data => {
         localStorage.setItem('authorizeToken', data.id + '');
@@ -46,6 +54,15 @@ export class LoginPageComponent implements OnInit {
             position: 'top-end',
             icon: 'error',
             title: 'Email hoặc mật khẩu không đúng!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+        else if (error.status == 406) {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Tài khoản đã bị khóa!',
             showConfirmButton: false,
             timer: 1500
           });

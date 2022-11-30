@@ -8,7 +8,7 @@
             <form class="input-fields" [formGroup]="addForm">
                 <div>
                     <label for="name">Tên chương (nếu có)</label>
-                    <input id="name" [(ngModel)]="newChapter.name" formControlName="name">
+                    <input id="name" type="text" maxlength="255" [(ngModel)]="newChapter.name" formControlName="name">
                 </div>
                 <div>
                     <label for="index">Chương số</label>

@@ -13,6 +13,7 @@ export class AdminGenresPageComponent implements OnInit {
   listGenres: GenreModel[] = [];
   listOrigin: GenreModel[] = [];
   searchStr: string = '';
+  pageIndex: number = 1;
 
   constructor(
     private router: Router,
@@ -24,7 +25,7 @@ export class AdminGenresPageComponent implements OnInit {
 
   search(): void {
     if (this.searchStr) {
-      this.listGenres = this.listGenres.filter(genre => genre.name.includes(this.searchStr));
+      this.listGenres = this.listOrigin.filter(genre => genre.name.includes(this.searchStr));
     }
   }
 

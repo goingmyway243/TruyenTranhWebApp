@@ -8,7 +8,7 @@
             <form class="input-fields" [formGroup]="addForm">
                 <div>
                     <label for="name">Tên tác giả</label>
-                    <input id="name" [(ngModel)]="newAuthor.name" formControlName="name">
+                    <input id="name" type="text" maxlength="255" [(ngModel)]="newAuthor.name" formControlName="name">
                     <div *ngIf="name!.invalid && (name!.dirty || name!.touched)" class="alert alert-danger">
                         <div *ngIf="name!.errors?.['required']">
                             Vui lòng nhập tên tác giả
