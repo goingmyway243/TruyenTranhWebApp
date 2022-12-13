@@ -42,7 +42,7 @@ export class AddChapterPageComponent implements OnInit {
     window.onscroll = () => this.scrollFunction();
 
     let userId = localStorage.getItem('authorizeToken');
-    if (userId) {
+    if (!userId) {
       this.router.navigate(['']);
       return;
     }

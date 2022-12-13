@@ -66,7 +66,7 @@ export class AddComicPageComponent implements OnInit {
 
   ngOnInit(): void {
     let userId = localStorage.getItem('authorizeToken');
-    if (userId) {
+    if (!userId) {
       this.router.navigate(['']);
       return;
     }
